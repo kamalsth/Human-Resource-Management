@@ -1,0 +1,20 @@
+syntax="proto3";
+
+package proto;
+import "StaffRequest.proto";
+import "StaffResponse.proto";
+import "StatusResponse.proto";
+import "StaffListRequest.proto";
+import "StaffListResponse.proto";
+option java_package = "generatedClasses";
+
+
+service StaffService{
+  rpc AddStaff(StaffRequest) returns (StaffResponse);
+  rpc GetStaffInfo(StaffRequest1) returns (StaffResponse);
+  rpc GetAllStaffInfo(StaffListRequest) returns (stream StaffListResponse);
+  rpc UpdateStaff(StaffRequest) returns (StaffResponse);
+  rpc RemoveStaff(StaffRequest1) returns (StatusResponse);
+
+}
+
