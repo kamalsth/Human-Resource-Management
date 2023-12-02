@@ -1,0 +1,13 @@
+syntax= "proto3";
+
+package proto;
+option java_package = "generatedClasses";
+
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string name = 3;
+  string email = 4;
+  string phone = 5;
+}

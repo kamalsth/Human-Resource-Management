@@ -28,6 +28,7 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
     @Override
     public void getStaffInfo(StaffRequestOuterClass.StaffRequest1 request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
+        System.out.println("request= "+request);
         StaffResponseOuterClass.StaffResponse response=staffFacade.getStaffById(request.getStaffId());
         responseObserver.onNext(response);
         responseObserver.onCompleted();
