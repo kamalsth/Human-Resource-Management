@@ -29,6 +29,17 @@ public class TableCreation {
                 + "contact_renew_date BIGINT NOT NULL"
                 + ")";
         createTableIfNotExists("staff",createStaffTableQuery);
+
+        String createUserTableQuery = "CREATE TABLE IF NOT EXISTS users ("
+                + "user_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,"
+                + "username VARCHAR(255) NOT NULL,"
+                + "password VARCHAR(255) NOT NULL,"
+                + "name VARCHAR(255) NOT NULL,"
+                + "email VARCHAR(255) NOT NULL,"
+                + "phone VARCHAR(15) NOT NULL,"
+                + "role VARCHAR(25) NOT NULL"
+                + ")";
+        createTableIfNotExists("users", createUserTableQuery);
     }
     private void createTableIfNotExists(String tableName, String createTableQuery) {
         try (Connection connection = dataSource.getConnection();
