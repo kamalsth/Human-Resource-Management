@@ -16,6 +16,7 @@ import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -25,7 +26,9 @@ import java.util.List;
 
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConifg {
+
 
     private final JwtAuthProvider jwtAuthProvider;
     private final JwtTokenUtil jwtTokenUtil;
@@ -36,7 +39,7 @@ public class SecurityConifg {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(){
+    AuthenticationManager authenticationManager() {
         return new ProviderManager(jwtAuthProvider);
     }
 
@@ -49,7 +52,7 @@ public class SecurityConifg {
             List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
                     .map(SimpleGrantedAuthority::new)
                     .toList();
-            User user= new User(claims.getSubject(), "", authorities);
+            User user = new User(claims.getSubject(), "", authorities);
             return new UsernamePasswordAuthenticationToken(user, token, authorities);
         });
 
@@ -59,7 +62,7 @@ public class SecurityConifg {
     @Bean
     GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
         ManualGrpcSecurityMetadataSource source = new ManualGrpcSecurityMetadataSource();
-        source.setDefault(AccessPredicate.permitAll());
+        source.setDefault(AccessPredicate.denyAll());
         source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole("ADMIN"));
         source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole("ADMIN"));
         source.set(StaffServiceGrpc.getRemoveStaffMethod(), AccessPredicate.hasRole("ADMIN"));

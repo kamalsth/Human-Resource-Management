@@ -1,26 +1,28 @@
 package com.grpc.hrm.config;
 
+import com.grpc.hrm.service.serviceimpl.UserServiceImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.List;
 
 
 @Component
 public class JwtAuthProvider implements AuthenticationProvider {
+    private final UserServiceImpl userService;
+
+    public JwtAuthProvider(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//        if (!authentication.isAuthenticated()) {
-//            UserDetails userDetails = new UserDetailsService().loadUserByUsername(authentication.getName());
-//            return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-//        }
+        if (!authentication.isAuthenticated()) {
+            UserDetails userDetails = userService.loadUserByUsername(authentication.getName());
+            return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+        }
         return authentication;
     }
 
