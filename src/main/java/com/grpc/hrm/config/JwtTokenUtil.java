@@ -26,7 +26,6 @@ public class JwtTokenUtil {
                 .signWith(key)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                .signWith(key)
                 .compact();
     }
 
