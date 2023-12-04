@@ -16,16 +16,16 @@ public class JwtTokenUtil {
 
     SecretKey key = Jwts.SIG.HS512.key().build();
 
-//    SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    //    SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String username) {
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-                .subject(username)
-                .signWith(key)
+                .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .signWith(key)
                 .compact();
     }
 

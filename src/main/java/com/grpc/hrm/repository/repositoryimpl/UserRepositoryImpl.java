@@ -1,5 +1,6 @@
 package com.grpc.hrm.repository.repositoryimpl;
 
+import com.grpc.hrm.entity.Role;
 import com.grpc.hrm.entity.User;
 import com.grpc.hrm.repository.UserRepository;
 import org.springframework.stereotype.Repository;
@@ -37,29 +38,91 @@ public class UserRepositoryImpl implements UserRepository {
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
         }
         return user;
     }
 
-        @Override
-        public User getUserById ( int userId){
-            return null;
+    @Override
+    public User getUserById(int userId) {
+        try (Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "SELECT * FROM users WHERE user_id = " + userId;
+                ResultSet resultSet = statement.executeQuery(sql);
+                if (resultSet.next()) {
+                    return mapToUser(resultSet);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
         }
+        return null;
+    }
 
-        @Override
-        public User getUserByUsername (String username){
-            return null;
+
+    @Override
+    public User getUserByUsername(String username) {
+        try (Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "SELECT * FROM users WHERE username = '" + username + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                if (resultSet.next()) {
+                    return mapToUser(resultSet);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
         }
+        return null;
+    }
 
-        @Override
-        public void updateUser ( int userId, User user){
-
-        }
-
-        @Override
-        public void deleteUser ( int userId){
-
+    @Override
+    public void updateUser(int userId, User user) {
+        try (Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', email = '" + user.getEmail() + "', phone = '" + user.getPhone() + "', role = '" + user.getRole() + "' WHERE user_id = " + userId;
+                statement.executeUpdate(sql);
+                System.out.println("User updated successfully");
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
         }
     }
+
+    @Override
+    public void deleteUser(int userId) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "DELETE FROM users WHERE user_id = " + userId;
+                statement.executeUpdate(sql);
+                System.out.println("User deleted successfully");
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+    }
+
+    private User mapToUser(ResultSet resultSet) throws SQLException {
+        int userId = resultSet.getInt("user_id");
+        String username = resultSet.getString("username");
+        String password = resultSet.getString("password");
+        String name = resultSet.getString("name");
+        String email = resultSet.getString("email");
+        String phone = resultSet.getString("phone");
+        Role role = Role.valueOf(resultSet.getString("role"));
+        return new User(userId, username, password, name, email, phone, role);
+    }
+}

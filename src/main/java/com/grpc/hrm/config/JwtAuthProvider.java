@@ -17,10 +17,10 @@ import java.util.List;
 public class JwtAuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (!authentication.isAuthenticated()) {
-            UserDetails userDetails = new UserDetailsService().loadUserByUsername(authentication.getName());
-            return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-        }
+//        if (!authentication.isAuthenticated()) {
+//            UserDetails userDetails = new UserDetailsService().loadUserByUsername(authentication.getName());
+//            return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+//        }
         return authentication;
     }
 
@@ -29,13 +29,13 @@ public class JwtAuthProvider implements AuthenticationProvider {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
-    static class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
-
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            String role = username.equals("admin") ? "ROLE_ADMIN" : "ROLE_USER";
-            List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
-            return new CustomUserDetails(username, "", authorities);
-        }
-    }
+//    static class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+//
+//        @Override
+//        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//            String role = username.equals("admin") ? "ROLE_ADMIN" : "ROLE_USER";
+//            List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
+//            return new CustomUserDetails(username, "", authorities);
+//        }
+//    }
 }
