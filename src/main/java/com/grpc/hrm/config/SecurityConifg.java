@@ -1,5 +1,6 @@
 package com.grpc.hrm.config;
 
+import com.grpc.hrm.entity.Role;
 import generatedClasses.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
@@ -16,9 +17,7 @@ import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +25,6 @@ import java.util.List;
 
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConifg {
 
 
@@ -52,7 +50,9 @@ public class SecurityConifg {
             List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
                     .map(SimpleGrantedAuthority::new)
                     .toList();
-            User user = new User(claims.getSubject(), "", authorities);
+
+
+            CustomUserDetails user = new CustomUserDetails(claims.getSubject(), "", authorities);
             return new UsernamePasswordAuthenticationToken(user, token, authorities);
         });
 
@@ -62,11 +62,10 @@ public class SecurityConifg {
     @Bean
     GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
         ManualGrpcSecurityMetadataSource source = new ManualGrpcSecurityMetadataSource();
-        source.setDefault(AccessPredicate.denyAll());
-        source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole("ADMIN"));
-        source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole("ADMIN"));
-        source.set(StaffServiceGrpc.getRemoveStaffMethod(), AccessPredicate.hasRole("ADMIN"));
-
+        source.setDefault(AccessPredicate.permitAll());
+        source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(StaffServiceGrpc.getGetAllStaffInfoMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
+        source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         return source;
     }
 
@@ -77,4 +76,5 @@ public class SecurityConifg {
         return new UnanimousBased(accessDecisionVoters);
 
     }
+
 }

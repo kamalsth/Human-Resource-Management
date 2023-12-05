@@ -26,4 +26,6 @@ public class UserFacade {
         LoginDto loginDto = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
         return  userService.login(loginDto);
     }
+
+
 }

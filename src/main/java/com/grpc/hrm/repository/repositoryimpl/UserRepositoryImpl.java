@@ -21,7 +21,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User addUser(User user) {
+    public void register(User user) {
         try (Connection connection = dataSource.getConnection()) {
             System.out.println("Connected to the database");
             try (Statement statement = connection.createStatement()) {
@@ -41,7 +41,6 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
         }
-        return user;
     }
 
     @Override
@@ -113,6 +112,25 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
         }
+    }
+
+    @Override
+    public String getRoleByUsername(String username) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "SELECT role FROM users WHERE username = '" + username + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                if (resultSet.next()) {
+                    return resultSet.getString("role");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+        return null;
     }
 
     private User mapToUser(ResultSet resultSet) throws SQLException {
