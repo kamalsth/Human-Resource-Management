@@ -4,6 +4,7 @@ import com.grpc.hrm.entity.Role;
 import generatedClasses.AuthServiceGrpc;
 import generatedClasses.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.security.SignatureException;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
 import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import net.devh.boot.grpc.server.security.check.AccessPredicate;
@@ -19,6 +20,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +35,12 @@ public class SecurityConifg {
 
     private final JwtAuthProvider jwtAuthProvider;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConifg(JwtAuthProvider jwtAuthProvider, JwtTokenUtil jwtTokenUtil) {
+    public SecurityConifg(JwtAuthProvider jwtAuthProvider, JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -47,14 +53,31 @@ public class SecurityConifg {
     GrpcAuthenticationReader grpcAuthenticationReader() {
         return new BearerAuthenticationReader(token ->
         {
-            Claims claims = jwtTokenUtil.extractAllClaims(token);
-            List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
-                    .map(SimpleGrantedAuthority::new)
-                    .toList();
+            String username =null;
+            if (token != null) {
+                try {
+                    username = jwtTokenUtil.extractUsername(token);
+                } catch (SignatureException e) {
+                    throw new SignatureException("Invalid JWT token");
+                }
+            }
 
-
-            CustomUserDetails user = new CustomUserDetails(claims.getSubject(), "", authorities);
-            return new UsernamePasswordAuthenticationToken(user, token, authorities);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (!jwtTokenUtil.isTokenExpired(token) && jwtTokenUtil.validateToken(token, userDetails)) {
+                    Claims claims = jwtTokenUtil.extractAllClaims(token);
+                    List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
+                            .map(SimpleGrantedAuthority::new)
+                            .toList();
+                    CustomUserDetails user = new CustomUserDetails(claims.getSubject(), userDetails.getPassword(), authorities);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    return authenticationToken;
+                } else {
+                    throw new SignatureException("Invalid JWT token");
+                }
+            }
+            return null;
         });
 
     }
@@ -64,11 +87,11 @@ public class SecurityConifg {
     GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
         ManualGrpcSecurityMetadataSource source = new ManualGrpcSecurityMetadataSource();
         source.setDefault(AccessPredicate.authenticated());
-        source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
-        source.set(StaffServiceGrpc.getGetAllStaffInfoMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
-        source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
-        source.set(AuthServiceGrpc.getLoginMethod(),AccessPredicate.permitAll());
-        source.set(AuthServiceGrpc.getRegisterMethod(),AccessPredicate.permitAll());
+        source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(StaffServiceGrpc.getGetAllStaffInfoMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(AuthServiceGrpc.getLoginMethod(), AccessPredicate.permitAll());
+        source.set(AuthServiceGrpc.getRegisterMethod(), AccessPredicate.permitAll());
         return source;
     }
 

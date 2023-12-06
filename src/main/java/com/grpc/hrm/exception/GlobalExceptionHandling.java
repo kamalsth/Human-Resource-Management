@@ -29,6 +29,6 @@ public class GlobalExceptionHandling {
 
     @GrpcExceptionHandler(SignatureException.class)
     public Status handleException(SignatureException exception) {
-        return Status.INTERNAL.withDescription("Invalid token").withCause(exception);
+        return Status.INTERNAL.withDescription(exception.getMessage()).withCause(exception);
     }
 }
