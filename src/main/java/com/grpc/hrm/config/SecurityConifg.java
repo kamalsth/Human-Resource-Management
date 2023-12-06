@@ -1,6 +1,7 @@
 package com.grpc.hrm.config;
 
 import com.grpc.hrm.entity.Role;
+import generatedClasses.AuthServiceGrpc;
 import generatedClasses.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
@@ -62,10 +63,12 @@ public class SecurityConifg {
     @Bean
     GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
         ManualGrpcSecurityMetadataSource source = new ManualGrpcSecurityMetadataSource();
-        source.setDefault(AccessPredicate.permitAll());
+        source.setDefault(AccessPredicate.authenticated());
         source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         source.set(StaffServiceGrpc.getGetAllStaffInfoMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
         source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(AuthServiceGrpc.getLoginMethod(),AccessPredicate.permitAll());
+        source.set(AuthServiceGrpc.getRegisterMethod(),AccessPredicate.permitAll());
         return source;
     }
 

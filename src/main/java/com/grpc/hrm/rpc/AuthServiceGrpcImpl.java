@@ -5,6 +5,8 @@ import com.grpc.hrm.facade.UserFacade;
 import generatedClasses.*;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @GrpcService
 public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
@@ -17,11 +19,16 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void login(LoginRequestOuterClass.LoginRequest request, StreamObserver<LoginResponseOuterClass.LoginResponse> responseObserver) {
-        JwtTokenResponse jwtTokenResponse = userFacade.login(request);
-        responseObserver.onNext(LoginResponseOuterClass.LoginResponse.newBuilder()
-                .setToken(jwtTokenResponse.getToken())
-                .build());
-        responseObserver.onCompleted();
+        try{
+            JwtTokenResponse jwtTokenResponse = userFacade.login(request);
+            responseObserver.onNext(LoginResponseOuterClass.LoginResponse.newBuilder()
+                    .setToken(jwtTokenResponse.getToken())
+                    .build());
+            responseObserver.onCompleted();
+        }catch (UsernameNotFoundException | BadCredentialsException e){
+            responseObserver.onError(e);
+        }
+
     }
 
     @Override

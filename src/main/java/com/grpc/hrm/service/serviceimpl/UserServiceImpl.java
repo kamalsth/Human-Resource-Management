@@ -9,6 +9,7 @@ import com.grpc.hrm.entity.Role;
 import com.grpc.hrm.entity.User;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.UserService;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found with username: " + user.getUsername());
         }
         if (!new PasswordEncoder().matches(user.getPassword(), userDetails.getPassword())) {
-            throw new UsernameNotFoundException("Password not correct of username: " + user.getUsername());
+            throw new BadCredentialsException("Password not correct of username: " + user.getUsername());
         }
         System.out.println("User logged in successfully!!");
         Authentication authentication = jwtAuthProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
