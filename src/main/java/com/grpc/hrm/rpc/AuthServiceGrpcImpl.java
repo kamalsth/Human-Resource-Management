@@ -33,7 +33,7 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void register(RegisterRequestOuterClass.RegisterRequest request, StreamObserver<RegisterResponseOuterClass.RegisterResponse> responseObserver) {
-        userFacade.addUser(request.getUser());
+        userFacade.register(request.getUser());
         responseObserver.onNext(RegisterResponseOuterClass.RegisterResponse.newBuilder()
                 .setStatus("User registered successfully!!")
                 .build());

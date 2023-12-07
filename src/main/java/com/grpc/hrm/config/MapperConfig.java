@@ -32,6 +32,7 @@ public interface MapperConfig {
 
     @Mapping(source = "role", target = "role", qualifiedByName = "mapStringToRole")
     UserOuterClass.User mapToUserProto(User user);
+    
     @Named("mapStringToRole")
     default UserOuterClass.UserRole mapStringToRole(String role) {
         return UserOuterClass.UserRole.valueOf(role);

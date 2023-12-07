@@ -17,7 +17,7 @@ public class UserFacade {
         this.userService = userService;
     }
 
-    public void addUser(UserOuterClass.User user) {
+    public void register(UserOuterClass.User user) {
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
         userService.register(user1);
     }
