@@ -11,4 +11,9 @@ public interface StaffRepository {
     public void updateStaff(int staffId,Staff staff);
     public void deleteStaff(int staffId);
 
+    public void addFileByStaffId(int staffId,String filePath);
+
+
+    public void addImageByStaffId(int staffId,String filePath);
+
 }

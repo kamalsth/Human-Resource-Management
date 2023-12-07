@@ -41,4 +41,14 @@ public class StaffServiceImpl implements StaffService {
     public void deleteStaff(int staffId) {
         staffRepository.deleteStaff(staffId);
     }
+
+    @Override
+    public void addFileByStaffId(int staffId, String filePath) {
+        staffRepository.addFileByStaffId(staffId, filePath);
+    }
+
+    @Override
+    public void addImageByStaffId(int staffId, String filePath) {
+        staffRepository.addImageByStaffId(staffId, filePath);
+    }
 }

@@ -121,6 +121,38 @@ public class StaffRepositoryImpl implements StaffRepository {
         }
     }
 
+    @Override
+    public void addFileByStaffId(int staffId, String filePath) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "UPDATE staff SET contact_doc_pdf = '" + filePath + "' WHERE staff_id = " + staffId;
+                statement.executeUpdate(sql);
+                System.out.println("File added successfully");
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void addImageByStaffId(int staffId, String filePath) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "UPDATE staff SET citizenship_photo = '" + filePath + "' WHERE staff_id = " + staffId;
+                statement.executeUpdate(sql);
+                System.out.println("Image added successfully");
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+    }
+
     private Staff mapToStaff(ResultSet resultSet) throws SQLException {
         int staffId = resultSet.getInt("staff_id");
         String name = resultSet.getString("name");

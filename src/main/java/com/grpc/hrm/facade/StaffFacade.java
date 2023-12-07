@@ -43,4 +43,12 @@ public class StaffFacade {
         staffService.deleteStaff(staffId);
     }
 
+    public void addFileByStaffId(int staffId,String filePath){
+        staffService.addFileByStaffId(staffId,filePath);
+    }
+
+    public void addImageByStaffId(int staffId,String filePath){
+        staffService.addImageByStaffId(staffId,filePath);
+    }
+
 }

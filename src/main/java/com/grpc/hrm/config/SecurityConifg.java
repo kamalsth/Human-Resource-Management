@@ -2,6 +2,7 @@ package com.grpc.hrm.config;
 
 import com.grpc.hrm.entity.Role;
 import generatedClasses.AuthServiceGrpc;
+import generatedClasses.FileUploadServiceGrpc;
 import generatedClasses.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.SignatureException;
@@ -92,6 +93,8 @@ public class SecurityConifg {
         source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
         source.set(AuthServiceGrpc.getLoginMethod(), AccessPredicate.permitAll());
         source.set(AuthServiceGrpc.getRegisterMethod(), AccessPredicate.permitAll());
+        source.set(FileUploadServiceGrpc.getUploadFileMethod(), AccessPredicate.permitAll());
+        source.set(FileUploadServiceGrpc.getUploadImageMethod(), AccessPredicate.permitAll());
         return source;
     }
 

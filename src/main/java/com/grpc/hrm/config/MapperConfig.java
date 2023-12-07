@@ -39,5 +39,4 @@ public interface MapperConfig {
     }
 
     LoginDto mapToLoginDto(LoginRequestOuterClass.LoginRequest loginRequest);
-//    RegisterResponseOuterClass.RegisterResponse mapToUserProto(User user);
 }
