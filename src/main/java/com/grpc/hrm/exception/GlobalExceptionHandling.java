@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.security.SignatureException;
+import java.sql.SQLException;
 
 @GrpcAdvice
 public class GlobalExceptionHandling {
@@ -27,8 +28,18 @@ public class GlobalExceptionHandling {
         return Status.UNKNOWN.withDescription(exception.getMessage()).withCause(exception);
     }
 
+    @GrpcExceptionHandler(RuntimeException.class)
+    public Status handleERuntimeException(RuntimeException exception) {
+        return Status.INTERNAL.withDescription(exception.getMessage()).withCause(exception);
+    }
+
     @GrpcExceptionHandler(SignatureException.class)
     public Status handleException(SignatureException exception) {
+        return Status.INTERNAL.withDescription(exception.getMessage()).withCause(exception);
+    }
+
+    @GrpcExceptionHandler(SQLException.class)
+    public Status handleSQLException(SQLException exception) {
         return Status.INTERNAL.withDescription(exception.getMessage()).withCause(exception);
     }
 }

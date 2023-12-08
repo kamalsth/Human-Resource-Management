@@ -18,14 +18,27 @@ public class UserFacade {
     }
 
     public void register(UserOuterClass.User user) {
+        validateUsersForRegister(user);
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
         userService.register(user1);
     }
 
     public JwtTokenResponse login(LoginRequestOuterClass.LoginRequest loginRequest) {
+        if(loginRequest.getUsername().isEmpty() || loginRequest.getPassword().isEmpty()){
+            throw new IllegalArgumentException("Fields should not be empty");
+        }
         LoginDto loginDto = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
         return  userService.login(loginDto);
     }
 
+
+    public void validateUsersForRegister(UserOuterClass.User user){
+        if(user==null){
+            throw new NullPointerException("User is null");
+        }
+        if(user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Fields should not be empty");
+        }
+    }
 
 }

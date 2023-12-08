@@ -20,18 +20,27 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
     @Override
     public void addStaff(StaffRequestOuterClass.StaffRequest request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
-        StaffResponseOuterClass.StaffResponse response = staffFacade.saveStaff(request.getStaff());
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+        try {
+            StaffResponseOuterClass.StaffResponse response = staffFacade.saveStaff(request.getStaff());
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException e) {
+            responseObserver.onError(e);
+        }
+
 
     }
 
     @Override
     public void getStaffInfo(StaffRequestOuterClass.StaffRequest1 request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
-        System.out.println("request= " + request);
-        StaffResponseOuterClass.StaffResponse response = staffFacade.getStaffById(request.getStaffId());
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+        try {
+            StaffResponseOuterClass.StaffResponse response = staffFacade.getStaffById(request.getStaffId());
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (RuntimeException e) {
+            responseObserver.onError(e);
+        }
+
     }
 
 
@@ -47,18 +56,28 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
     @Override
     public void updateStaff(StaffRequestOuterClass.StaffRequest request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
-        StaffResponseOuterClass.StaffResponse response = staffFacade.updateStaff(request.getStaff().getStaffId(), request.getStaff());
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+        try {
+            StaffResponseOuterClass.StaffResponse response = staffFacade.updateStaff(request.getStaff().getStaffId(), request.getStaff());
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (RuntimeException e) {
+            responseObserver.onError(e);
+        }
+
     }
 
     @Override
     public void removeStaff(StaffRequestOuterClass.StaffRequest1 request, StreamObserver<StatusResponseOuterClass.StatusResponse> responseObserver) {
-        staffFacade.deleteStaff(request.getStaffId());
-        StatusResponseOuterClass.StatusResponse response = StatusResponseOuterClass.StatusResponse.newBuilder()
-                .setStatus("Staff deleted successfully!!")
-                .build();
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+        try {
+            staffFacade.deleteStaff(request.getStaffId());
+            StatusResponseOuterClass.StatusResponse response = StatusResponseOuterClass.StatusResponse.newBuilder()
+                    .setStatus("Staff deleted successfully!!")
+                    .build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (RuntimeException e) {
+            responseObserver.onError(e);
+        }
+
     }
 }

@@ -37,6 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
@@ -55,6 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
@@ -75,6 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
@@ -92,6 +95,7 @@ public class UserRepositoryImpl implements UserRepository {
                 System.out.println("User updated successfully");
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
@@ -108,6 +112,7 @@ public class UserRepositoryImpl implements UserRepository {
                 System.out.println("User deleted successfully");
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
@@ -126,6 +131,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());

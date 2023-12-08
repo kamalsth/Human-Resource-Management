@@ -30,6 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
+        User existingUser = userRepository.getUserByUsername(user.getUsername());
+        if(existingUser != null){
+            throw new RuntimeException("User already exists for username : " + user.getUsername());
+        }
         user.setRole(Role.MEMBER);
         user.setPassword(hashPassword(user.getPassword()));
         userRepository.register(user);
@@ -53,21 +57,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int userId) {
+        User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found for user id : " + userId);
+        }
         return userRepository.getUserById(userId);
     }
 
-    @Override
-    public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
-    }
 
     @Override
     public void updateUser(int userId, User user) {
+        User user1 = userRepository.getUserById(userId);
+        if (user1 == null) {
+            throw new RuntimeException("User not found for user id : " + userId);
+        }
         userRepository.updateUser(userId, user);
     }
 
     @Override
     public void deleteUser(int userId) {
+        User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found for user id : " + userId);
+        }
         userRepository.deleteUser(userId);
     }
 

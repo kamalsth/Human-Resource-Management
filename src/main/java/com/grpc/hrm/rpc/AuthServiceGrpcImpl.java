@@ -8,6 +8,8 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.sql.SQLException;
+
 @GrpcService
 public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
     private final UserFacade userFacade;
@@ -25,7 +27,7 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
                     .setToken(jwtTokenResponse.getToken())
                     .build());
             responseObserver.onCompleted();
-        }catch (UsernameNotFoundException | BadCredentialsException e){
+        }catch (UsernameNotFoundException | BadCredentialsException | IllegalArgumentException e){
             responseObserver.onError(e);
         }
 
@@ -33,11 +35,15 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void register(RegisterRequestOuterClass.RegisterRequest request, StreamObserver<RegisterResponseOuterClass.RegisterResponse> responseObserver) {
+        try{
         userFacade.register(request.getUser());
         responseObserver.onNext(RegisterResponseOuterClass.RegisterResponse.newBuilder()
                 .setStatus("User registered successfully!!")
                 .build());
         responseObserver.onCompleted();
+        }catch (IllegalArgumentException | NullPointerException e){
+            responseObserver.onError(e);
+        }
     }
 
 

@@ -16,4 +16,5 @@ public interface StaffRepository {
 
     public void addImageByStaffId(int staffId,String filePath);
 
+    public String getEmergencyContactNumber(String name);
 }

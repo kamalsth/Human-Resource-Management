@@ -19,11 +19,19 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public Staff saveStaff(Staff staff) {
+        String emargencyContactNumber = staffRepository.getEmergencyContactNumber(staff.getName());
+        if(staff.getEmergencyContactNumber().equals(emargencyContactNumber)){
+            throw new RuntimeException("User already exists with this Emergency contact number : " + staff.getEmergencyContactNumber());
+        }
         return staffRepository.saveStaff(staff);
     }
 
     @Override
     public Staff getStaffById(int staffId) {
+        Staff staff = staffRepository.getStaffById(staffId);
+        if(staff == null){
+            throw new RuntimeException("Staff not found for staff id : " + staffId);
+        }
         return staffRepository.getStaffById(staffId);
     }
 
@@ -34,21 +42,37 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void updateStaff(int staffId, Staff staff) {
+        Staff staff1 = staffRepository.getStaffById(staffId);
+        if(staff1 == null){
+            throw new RuntimeException("Staff not found for staff id : " + staffId);
+        }
         staffRepository.updateStaff(staffId, staff);
     }
 
     @Override
     public void deleteStaff(int staffId) {
+        Staff staff = staffRepository.getStaffById(staffId);
+        if(staff == null){
+            throw new RuntimeException("Staff not found for staff id : " + staffId);
+        }
         staffRepository.deleteStaff(staffId);
     }
 
     @Override
     public void addFileByStaffId(int staffId, String filePath) {
+        Staff staff = staffRepository.getStaffById(staffId);
+        if(staff == null){
+            throw new RuntimeException("Staff not found for staff id : " + staffId);
+        }
         staffRepository.addFileByStaffId(staffId, filePath);
     }
 
     @Override
     public void addImageByStaffId(int staffId, String filePath) {
+        Staff staff = staffRepository.getStaffById(staffId);
+        if(staff == null){
+            throw new RuntimeException("Staff not found for staff id : " + staffId);
+        }
         staffRepository.addImageByStaffId(staffId, filePath);
     }
 }
