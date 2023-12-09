@@ -3,8 +3,6 @@ package com.grpc.hrm.service.serviceimpl;
 import com.grpc.hrm.entity.Staff;
 import com.grpc.hrm.repository.StaffRepository;
 import com.grpc.hrm.service.StaffService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +17,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public Staff saveStaff(Staff staff) {
-        String emargencyContactNumber = staffRepository.getEmergencyContactNumber(staff.getName());
-        if(staff.getEmergencyContactNumber().equals(emargencyContactNumber)){
+        String emergencyContactNumber = staffRepository.getEmergencyContactNumber(staff.getName());
+        if(staff.getEmergencyContactNumber().equals(emergencyContactNumber)){
             throw new RuntimeException("User already exists with this Emergency contact number : " + staff.getEmergencyContactNumber());
         }
         return staffRepository.saveStaff(staff);
