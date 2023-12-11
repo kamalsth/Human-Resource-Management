@@ -35,7 +35,7 @@ public class GlobalExceptionHandling {
 
     @GrpcExceptionHandler(SignatureException.class)
     public Status handleException(SignatureException exception) {
-        return Status.INTERNAL.withDescription(exception.getMessage()).withCause(exception);
+        return Status.UNAUTHENTICATED.withDescription(exception.getMessage()).withCause(exception);
     }
 
     @GrpcExceptionHandler(SQLException.class)
