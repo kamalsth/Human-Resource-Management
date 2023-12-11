@@ -1,4 +1,4 @@
-<!-- src/main/resources/db/changelog/db.changelog-master.xml -->
+<!-- src/main/resources/db/changelog/changelog-master.xml -->
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
@@ -8,6 +8,10 @@
         <createTable tableName="staff">
             <column name="staff_id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" unique="true" nullable="false"/>
+
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="personal_phone" type="VARCHAR(15)">
                 <constraints nullable="false"/>
