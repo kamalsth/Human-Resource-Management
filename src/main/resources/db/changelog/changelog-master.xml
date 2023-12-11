@@ -34,7 +34,6 @@
             <column name="contact_renew_date" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <!-- Add more columns as needed -->
         </createTable>
     </changeSet>
 
