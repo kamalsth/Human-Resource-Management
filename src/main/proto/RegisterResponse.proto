@@ -1,0 +1,9 @@
+syntax= "proto3";
+
+package proto;
+option java_package = "generatedClasses";
+
+
+message RegisterResponse {
+  string status = 1;
+}

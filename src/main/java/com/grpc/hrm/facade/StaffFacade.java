@@ -20,6 +20,7 @@ public class StaffFacade {
     }
 
     public StaffResponseOuterClass.StaffResponse saveStaff(StaffOuterClass.Staff staff){
+        validateStaff(staff);
         Staff staff1= MapperConfig.INSTANCE.mapToStaff(staff);
         return MapperConfig.INSTANCE.mapToProto(staffService.saveStaff(staff1));
     }
@@ -41,6 +42,21 @@ public class StaffFacade {
 
     public void deleteStaff(int staffId){
         staffService.deleteStaff(staffId);
+    }
+
+    public void addFileByStaffId(int staffId,String filePath){
+        staffService.addFileByStaffId(staffId,filePath);
+    }
+
+    public void addImageByStaffId(int staffId,String filePath){
+        staffService.addImageByStaffId(staffId,filePath);
+    }
+
+
+    public void validateStaff(StaffOuterClass.Staff staff){
+        if(staff.getName().isEmpty() || staff.getPersonalPhone().isEmpty() || staff.getEmergencyContactNumber().isEmpty() || staff.getPosition().isEmpty() || staff.getJoinDate()==0){
+            throw new IllegalArgumentException("Fields should not be empty");
+        }
     }
 
 }

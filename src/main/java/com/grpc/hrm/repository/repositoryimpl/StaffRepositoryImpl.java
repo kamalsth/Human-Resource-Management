@@ -38,9 +38,12 @@ public class StaffRepositoryImpl implements StaffRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
+
         }
         return staff;
     }
@@ -57,6 +60,8 @@ public class StaffRepositoryImpl implements StaffRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+
             }
 
         } catch (SQLException e) {
@@ -80,6 +85,7 @@ public class StaffRepositoryImpl implements StaffRepository {
                 }
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
 
         } catch (SQLException e) {
@@ -98,6 +104,7 @@ public class StaffRepositoryImpl implements StaffRepository {
                 System.out.println("Staff updated successfully");
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
@@ -115,10 +122,67 @@ public class StaffRepositoryImpl implements StaffRepository {
                 System.out.println("Staff deleted successfully");
             } catch (SQLException e) {
                 System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("Error connecting to the database" + e.getMessage());
         }
+    }
+
+    @Override
+    public void addFileByStaffId(int staffId, String filePath) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "UPDATE staff SET contact_doc_pdf = '" + filePath + "' WHERE staff_id = " + staffId;
+                statement.executeUpdate(sql);
+                System.out.println("File added successfully");
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void addImageByStaffId(int staffId, String filePath) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "UPDATE staff SET citizenship_photo = '" + filePath + "' WHERE staff_id = " + staffId;
+                statement.executeUpdate(sql);
+                System.out.println("Image added successfully");
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+    }
+
+    @Override
+    public String getEmergencyContactNumber(String name) {
+        try(Connection connection = dataSource.getConnection()) {
+            System.out.println("Connected to the database");
+            try (Statement statement = connection.createStatement()) {
+                String sql = "SELECT emergency_contact_number FROM staff WHERE name = '" + name + "'";
+                ResultSet resultSet = statement.executeQuery(sql);
+                if (resultSet.next()) {
+                    return resultSet.getString("emergency_contact_number");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database" + e.getMessage());
+        }
+        return null;
     }
 
     private Staff mapToStaff(ResultSet resultSet) throws SQLException {
