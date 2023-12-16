@@ -95,8 +95,8 @@ public class SecurityConifg {
         source.set(StaffServiceGrpc.getRemoveStaffMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
         source.set(AuthServiceGrpc.getLoginMethod(), AccessPredicate.permitAll());
         source.set(AuthServiceGrpc.getRegisterMethod(), AccessPredicate.permitAll());
-        source.set(FileUploadServiceGrpc.getUploadFileMethod(), AccessPredicate.permitAll());
-        source.set(FileUploadServiceGrpc.getUploadImageMethod(), AccessPredicate.permitAll());
+        source.set(FileUploadServiceGrpc.getUploadFileMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(FileUploadServiceGrpc.getUploadImageMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
         return source;
     }
 

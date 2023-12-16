@@ -8,10 +8,10 @@ public class Staff {
     private String position;
     private String citizenshipPhoto;
     private String contactDocPdf;
-    private long joinDate;
-    private long contactRenewDate;
+    private String joinDate;
+    private String contactRenewDate;
 
-    public Staff(int staffId, String name, String personalPhone, String emergencyContactNumber, String position, String citizenshipPhoto, String contactDocPdf, long joinDate, long contactRenewDate) {
+    public Staff(int staffId, String name, String personalPhone, String emergencyContactNumber, String position, String citizenshipPhoto, String contactDocPdf, String joinDate, String contactRenewDate) {
         this.staffId = staffId;
         this.name = name;
         this.personalPhone = personalPhone;
@@ -79,19 +79,19 @@ public class Staff {
         this.contactDocPdf = contactDocPdf;
     }
 
-    public long getJoinDate() {
+    public String getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(long joinDate) {
+    public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
     }
 
-    public long getContactRenewDate() {
+    public String getContactRenewDate() {
         return contactRenewDate;
     }
 
-    public void setContactRenewDate(long contactRenewDate) {
+    public void setContactRenewDate(String contactRenewDate) {
         this.contactRenewDate = contactRenewDate;
     }
 }

@@ -3,7 +3,6 @@ package com.grpc.hrm.facade;
 import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.entity.Staff;
 import com.grpc.hrm.service.StaffService;
-import generatedClasses.StaffListResponseOuterClass;
 import generatedClasses.StaffOuterClass;
 import generatedClasses.StaffResponseOuterClass;
 import org.springframework.stereotype.Service;
@@ -54,7 +53,7 @@ public class StaffFacade {
 
 
     public void validateStaff(StaffOuterClass.Staff staff){
-        if(staff.getName().isEmpty() || staff.getPersonalPhone().isEmpty() || staff.getEmergencyContactNumber().isEmpty() || staff.getPosition().isEmpty() || staff.getJoinDate()==0){
+        if(staff.getName().isEmpty() || staff.getPersonalPhone().isEmpty() || staff.getEmergencyContactNumber().isEmpty() || staff.getPosition().isEmpty() || staff.getJoinDate().isEmpty()){
             throw new IllegalArgumentException("Fields should not be empty");
         }
     }
