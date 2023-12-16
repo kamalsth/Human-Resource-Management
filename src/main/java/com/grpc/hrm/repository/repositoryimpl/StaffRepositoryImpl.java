@@ -193,8 +193,8 @@ public class StaffRepositoryImpl implements StaffRepository {
         String position = resultSet.getString("position");
         String citizenshipPhoto = resultSet.getString("citizenship_photo");
         String contactDocPdf = resultSet.getString("contact_doc_pdf");
-        long joinDate = resultSet.getLong("join_date");
-        long contactRenewDate = resultSet.getLong("contact_renew_date");
+        String  joinDate = resultSet.getString("join_date");
+        String contactRenewDate = resultSet.getString("contact_renew_date");
         return new Staff(staffId, name, personalPhone, emergencyContactNumber, position, citizenshipPhoto, contactDocPdf, joinDate, contactRenewDate);
     }
 }
