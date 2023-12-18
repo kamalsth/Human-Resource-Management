@@ -97,16 +97,28 @@ public final class StaffResponseOuterClass {
         getContactDocPdfBytes();
 
     /**
-     * <code>int64 join_date = 8;</code>
+     * <code>string join_date = 8;</code>
      * @return The joinDate.
      */
-    long getJoinDate();
+    java.lang.String getJoinDate();
+    /**
+     * <code>string join_date = 8;</code>
+     * @return The bytes for joinDate.
+     */
+    com.google.protobuf.ByteString
+        getJoinDateBytes();
 
     /**
-     * <code>int64 contact_renew_date = 9;</code>
+     * <code>string contact_renew_date = 9;</code>
      * @return The contactRenewDate.
      */
-    long getContactRenewDate();
+    java.lang.String getContactRenewDate();
+    /**
+     * <code>string contact_renew_date = 9;</code>
+     * @return The bytes for contactRenewDate.
+     */
+    com.google.protobuf.ByteString
+        getContactRenewDateBytes();
   }
   /**
    * Protobuf type {@code proto.StaffResponse}
@@ -127,6 +139,8 @@ public final class StaffResponseOuterClass {
       position_ = "";
       citizenshipPhoto_ = "";
       contactDocPdf_ = "";
+      joinDate_ = "";
+      contactRenewDate_ = "";
     }
 
     @java.lang.Override
@@ -200,14 +214,16 @@ public final class StaffResponseOuterClass {
               contactDocPdf_ = s;
               break;
             }
-            case 64: {
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              joinDate_ = input.readInt64();
+              joinDate_ = s;
               break;
             }
-            case 72: {
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              contactRenewDate_ = input.readInt64();
+              contactRenewDate_ = s;
               break;
             }
             default: {
@@ -482,25 +498,79 @@ public final class StaffResponseOuterClass {
     }
 
     public static final int JOIN_DATE_FIELD_NUMBER = 8;
-    private long joinDate_;
+    private volatile java.lang.Object joinDate_;
     /**
-     * <code>int64 join_date = 8;</code>
+     * <code>string join_date = 8;</code>
      * @return The joinDate.
      */
     @java.lang.Override
-    public long getJoinDate() {
-      return joinDate_;
+    public java.lang.String getJoinDate() {
+      java.lang.Object ref = joinDate_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        joinDate_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string join_date = 8;</code>
+     * @return The bytes for joinDate.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getJoinDateBytes() {
+      java.lang.Object ref = joinDate_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        joinDate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int CONTACT_RENEW_DATE_FIELD_NUMBER = 9;
-    private long contactRenewDate_;
+    private volatile java.lang.Object contactRenewDate_;
     /**
-     * <code>int64 contact_renew_date = 9;</code>
+     * <code>string contact_renew_date = 9;</code>
      * @return The contactRenewDate.
      */
     @java.lang.Override
-    public long getContactRenewDate() {
-      return contactRenewDate_;
+    public java.lang.String getContactRenewDate() {
+      java.lang.Object ref = contactRenewDate_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        contactRenewDate_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string contact_renew_date = 9;</code>
+     * @return The bytes for contactRenewDate.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getContactRenewDateBytes() {
+      java.lang.Object ref = contactRenewDate_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        contactRenewDate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -538,11 +608,11 @@ public final class StaffResponseOuterClass {
       if (!getContactDocPdfBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, contactDocPdf_);
       }
-      if (joinDate_ != 0L) {
-        output.writeInt64(8, joinDate_);
+      if (!getJoinDateBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, joinDate_);
       }
-      if (contactRenewDate_ != 0L) {
-        output.writeInt64(9, contactRenewDate_);
+      if (!getContactRenewDateBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, contactRenewDate_);
       }
       unknownFields.writeTo(output);
     }
@@ -575,13 +645,11 @@ public final class StaffResponseOuterClass {
       if (!getContactDocPdfBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, contactDocPdf_);
       }
-      if (joinDate_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(8, joinDate_);
+      if (!getJoinDateBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, joinDate_);
       }
-      if (contactRenewDate_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(9, contactRenewDate_);
+      if (!getContactRenewDateBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, contactRenewDate_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -612,10 +680,10 @@ public final class StaffResponseOuterClass {
           .equals(other.getCitizenshipPhoto())) return false;
       if (!getContactDocPdf()
           .equals(other.getContactDocPdf())) return false;
-      if (getJoinDate()
-          != other.getJoinDate()) return false;
-      if (getContactRenewDate()
-          != other.getContactRenewDate()) return false;
+      if (!getJoinDate()
+          .equals(other.getJoinDate())) return false;
+      if (!getContactRenewDate()
+          .equals(other.getContactRenewDate())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -642,11 +710,9 @@ public final class StaffResponseOuterClass {
       hash = (37 * hash) + CONTACT_DOC_PDF_FIELD_NUMBER;
       hash = (53 * hash) + getContactDocPdf().hashCode();
       hash = (37 * hash) + JOIN_DATE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getJoinDate());
+      hash = (53 * hash) + getJoinDate().hashCode();
       hash = (37 * hash) + CONTACT_RENEW_DATE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getContactRenewDate());
+      hash = (53 * hash) + getContactRenewDate().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -794,9 +860,9 @@ public final class StaffResponseOuterClass {
 
         contactDocPdf_ = "";
 
-        joinDate_ = 0L;
+        joinDate_ = "";
 
-        contactRenewDate_ = 0L;
+        contactRenewDate_ = "";
 
         return this;
       }
@@ -908,11 +974,13 @@ public final class StaffResponseOuterClass {
           contactDocPdf_ = other.contactDocPdf_;
           onChanged();
         }
-        if (other.getJoinDate() != 0L) {
-          setJoinDate(other.getJoinDate());
+        if (!other.getJoinDate().isEmpty()) {
+          joinDate_ = other.joinDate_;
+          onChanged();
         }
-        if (other.getContactRenewDate() != 0L) {
-          setContactRenewDate(other.getContactRenewDate());
+        if (!other.getContactRenewDate().isEmpty()) {
+          contactRenewDate_ = other.contactRenewDate_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1430,64 +1498,154 @@ public final class StaffResponseOuterClass {
         return this;
       }
 
-      private long joinDate_ ;
+      private java.lang.Object joinDate_ = "";
       /**
-       * <code>int64 join_date = 8;</code>
+       * <code>string join_date = 8;</code>
        * @return The joinDate.
        */
-      @java.lang.Override
-      public long getJoinDate() {
-        return joinDate_;
+      public java.lang.String getJoinDate() {
+        java.lang.Object ref = joinDate_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          joinDate_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int64 join_date = 8;</code>
+       * <code>string join_date = 8;</code>
+       * @return The bytes for joinDate.
+       */
+      public com.google.protobuf.ByteString
+          getJoinDateBytes() {
+        java.lang.Object ref = joinDate_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          joinDate_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string join_date = 8;</code>
        * @param value The joinDate to set.
        * @return This builder for chaining.
        */
-      public Builder setJoinDate(long value) {
-        
+      public Builder setJoinDate(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         joinDate_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 join_date = 8;</code>
+       * <code>string join_date = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearJoinDate() {
         
-        joinDate_ = 0L;
+        joinDate_ = getDefaultInstance().getJoinDate();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string join_date = 8;</code>
+       * @param value The bytes for joinDate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setJoinDateBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        joinDate_ = value;
         onChanged();
         return this;
       }
 
-      private long contactRenewDate_ ;
+      private java.lang.Object contactRenewDate_ = "";
       /**
-       * <code>int64 contact_renew_date = 9;</code>
+       * <code>string contact_renew_date = 9;</code>
        * @return The contactRenewDate.
        */
-      @java.lang.Override
-      public long getContactRenewDate() {
-        return contactRenewDate_;
+      public java.lang.String getContactRenewDate() {
+        java.lang.Object ref = contactRenewDate_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          contactRenewDate_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int64 contact_renew_date = 9;</code>
+       * <code>string contact_renew_date = 9;</code>
+       * @return The bytes for contactRenewDate.
+       */
+      public com.google.protobuf.ByteString
+          getContactRenewDateBytes() {
+        java.lang.Object ref = contactRenewDate_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          contactRenewDate_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string contact_renew_date = 9;</code>
        * @param value The contactRenewDate to set.
        * @return This builder for chaining.
        */
-      public Builder setContactRenewDate(long value) {
-        
+      public Builder setContactRenewDate(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         contactRenewDate_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 contact_renew_date = 9;</code>
+       * <code>string contact_renew_date = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearContactRenewDate() {
         
-        contactRenewDate_ = 0L;
+        contactRenewDate_ = getDefaultInstance().getContactRenewDate();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string contact_renew_date = 9;</code>
+       * @param value The bytes for contactRenewDate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContactRenewDateBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        contactRenewDate_ = value;
         onChanged();
         return this;
       }
@@ -1563,8 +1721,8 @@ public final class StaffResponseOuterClass {
       "\n\016personal_phone\030\003 \001(\t\022 \n\030emergency_cont" +
       "act_number\030\004 \001(\t\022\020\n\010position\030\005 \001(\t\022\031\n\021ci" +
       "tizenship_photo\030\006 \001(\t\022\027\n\017contact_doc_pdf" +
-      "\030\007 \001(\t\022\021\n\tjoin_date\030\010 \001(\003\022\032\n\022contact_ren" +
-      "ew_date\030\t \001(\003B\022\n\020generatedClassesb\006proto" +
+      "\030\007 \001(\t\022\021\n\tjoin_date\030\010 \001(\t\022\032\n\022contact_ren" +
+      "ew_date\030\t \001(\tB\022\n\020generatedClassesb\006proto" +
       "3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

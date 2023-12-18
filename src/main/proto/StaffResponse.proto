@@ -12,6 +12,6 @@ message StaffResponse{
   string position = 5;
   string citizenship_photo = 6;
   string contact_doc_pdf = 7;
-  int64 join_date = 8;
-  int64 contact_renew_date = 9;
+  string join_date = 8;
+  string contact_renew_date = 9;
 }
