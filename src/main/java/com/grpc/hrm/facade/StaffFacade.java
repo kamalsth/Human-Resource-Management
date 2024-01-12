@@ -3,6 +3,7 @@ package com.grpc.hrm.facade;
 import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.service.StaffService;
+import com.grpc.hrm.util.ValidateStaff;
 import com.ks.proto.staff.StaffResponse;
 
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class StaffFacade {
     }
 
     public StaffResponse saveStaff(com.ks.proto.staff.Staff staff){
-        validateStaff(staff);
+        ValidateStaff.validateStaff(staff);
         Staff staff1= MapperConfig.INSTANCE.mapToStaff(staff);
         return MapperConfig.INSTANCE.mapToProto(staffService.saveStaff(staff1));
     }
@@ -52,10 +53,5 @@ public class StaffFacade {
     }
 
 
-    public void validateStaff(com.ks.proto.staff.Staff staff){
-        if(staff.getName().isEmpty() || staff.getPersonalPhone().isEmpty() || staff.getEmergencyContactNumber().isEmpty() || staff.getPosition().isEmpty() || staff.getJoinDate().isEmpty()){
-            throw new IllegalArgumentException("Fields should not be empty");
-        }
-    }
 
 }
