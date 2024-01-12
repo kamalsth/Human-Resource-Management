@@ -1,7 +1,7 @@
 package com.grpc.hrm.repository.repositoryimpl;
 
-import com.grpc.hrm.entity.Role;
-import com.grpc.hrm.entity.User;
+import com.grpc.hrm.model.Role;
+import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 

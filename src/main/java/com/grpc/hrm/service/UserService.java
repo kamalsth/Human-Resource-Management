@@ -2,7 +2,7 @@ package com.grpc.hrm.service;
 
 import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.dto.LoginDto;
-import com.grpc.hrm.entity.User;
+import com.grpc.hrm.model.User;
 
 public interface UserService {
     public void register(User user);

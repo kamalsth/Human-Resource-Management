@@ -1,6 +1,6 @@
 package com.grpc.hrm.service;
 
-import com.grpc.hrm.entity.Staff;
+import com.grpc.hrm.model.Staff;
 
 import java.util.List;
 

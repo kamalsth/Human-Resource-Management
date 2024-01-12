@@ -2,8 +2,8 @@ package com.grpc.hrm.config;
 
 
 import com.grpc.hrm.dto.LoginDto;
-import com.grpc.hrm.entity.Staff;
-import com.grpc.hrm.entity.User;
+import com.grpc.hrm.model.Staff;
+import com.grpc.hrm.model.User;
 import com.ks.proto.auth.LoginRequest;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.user.UserRole;

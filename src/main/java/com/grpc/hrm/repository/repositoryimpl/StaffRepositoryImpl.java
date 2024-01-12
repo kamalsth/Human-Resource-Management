@@ -1,6 +1,6 @@
 package com.grpc.hrm.repository.repositoryimpl;
 
-import com.grpc.hrm.entity.Staff;
+import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.repository.StaffRepository;
 import org.springframework.stereotype.Repository;
 

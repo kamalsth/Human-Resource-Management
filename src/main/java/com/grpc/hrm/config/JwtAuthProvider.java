@@ -1,6 +1,6 @@
 package com.grpc.hrm.config;
 
-import com.grpc.hrm.entity.User;
+import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

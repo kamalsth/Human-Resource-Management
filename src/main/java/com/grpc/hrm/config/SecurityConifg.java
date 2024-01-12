@@ -1,6 +1,6 @@
 package com.grpc.hrm.config;
 
-import com.grpc.hrm.entity.Role;
+import com.grpc.hrm.model.Role;
 import com.ks.proto.auth.AuthServiceGrpc;
 import com.ks.proto.staff.FileUploadServiceGrpc;
 import com.ks.proto.staff.StaffServiceGrpc;

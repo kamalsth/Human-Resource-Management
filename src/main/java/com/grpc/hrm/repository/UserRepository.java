@@ -1,6 +1,6 @@
 package com.grpc.hrm.repository;
 
-import com.grpc.hrm.entity.User;
+import com.grpc.hrm.model.User;
 
 public interface UserRepository {
 

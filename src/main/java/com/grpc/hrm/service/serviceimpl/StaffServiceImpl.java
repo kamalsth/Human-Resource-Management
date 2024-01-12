@@ -1,6 +1,6 @@
 package com.grpc.hrm.service.serviceimpl;
 
-import com.grpc.hrm.entity.Staff;
+import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.repository.StaffRepository;
 import com.grpc.hrm.service.StaffService;
 import org.springframework.stereotype.Service;

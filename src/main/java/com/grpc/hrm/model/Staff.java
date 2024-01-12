@@ -1,4 +1,4 @@
-package com.grpc.hrm.entity;
+package com.grpc.hrm.model;
 
 public class Staff {
     private int staffId;
