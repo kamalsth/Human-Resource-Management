@@ -1,4 +1,4 @@
-package com.grpc.hrm.rpc;
+package com.grpc.hrm.endpoint;
 
 import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.facade.UserFacade;
@@ -7,8 +7,6 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.sql.SQLException;
 
 @GrpcService
 public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {

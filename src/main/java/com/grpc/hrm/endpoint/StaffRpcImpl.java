@@ -1,4 +1,4 @@
-package com.grpc.hrm.rpc;
+package com.grpc.hrm.endpoint;
 
 
 import com.grpc.hrm.facade.StaffFacade;
