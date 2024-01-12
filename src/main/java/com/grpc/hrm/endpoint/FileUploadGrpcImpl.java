@@ -1,8 +1,10 @@
 package com.grpc.hrm.endpoint;
 
 import com.grpc.hrm.facade.StaffFacade;
-import generatedClasses.FileUpload;
-import generatedClasses.FileUploadServiceGrpc;
+import com.ks.proto.staff.FileUploadRequest;
+import com.ks.proto.staff.FileUploadResponse;
+import com.ks.proto.staff.FileUploadServiceGrpc;
+
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
@@ -17,12 +19,12 @@ public class FileUploadGrpcImpl extends FileUploadServiceGrpc.FileUploadServiceI
     }
 
     @Override
-    public void uploadFile(FileUpload.FileUploadRequest request, StreamObserver<FileUpload.FileUploadResponse> responseObserver) {
+    public void uploadFile(FileUploadRequest request, StreamObserver<FileUploadResponse> responseObserver) {
         String filePath = request.getFilePath();
         String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
         staffFacade.addFileByStaffId(request.getStaffId(), request.getFilePath());
 
-        responseObserver.onNext(FileUpload.FileUploadResponse.newBuilder()
+        responseObserver.onNext(FileUploadResponse.newBuilder()
                 .setFileName(fileName)
                 .setUploadStatus("File uploaded successfully")
                 .build());
@@ -30,11 +32,11 @@ public class FileUploadGrpcImpl extends FileUploadServiceGrpc.FileUploadServiceI
     }
 
     @Override
-    public void uploadImage(FileUpload.FileUploadRequest request, StreamObserver<FileUpload.FileUploadResponse> responseObserver) {
+    public void uploadImage(FileUploadRequest request, StreamObserver<FileUploadResponse> responseObserver) {
         String filePath = request.getFilePath();
         String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
         staffFacade.addImageByStaffId(request.getStaffId(), request.getFilePath());
-        responseObserver.onNext(FileUpload.FileUploadResponse.newBuilder()
+        responseObserver.onNext(FileUploadResponse.newBuilder()
                 .setFileName(fileName)
                 .setUploadStatus("Image uploaded successfully")
                 .build());

@@ -3,8 +3,8 @@ package com.grpc.hrm.facade;
 import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.entity.Staff;
 import com.grpc.hrm.service.StaffService;
-import generatedClasses.StaffOuterClass;
-import generatedClasses.StaffResponseOuterClass;
+import com.ks.proto.staff.StaffResponse;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,22 +18,22 @@ public class StaffFacade {
         this.staffService = staffService;
     }
 
-    public StaffResponseOuterClass.StaffResponse saveStaff(StaffOuterClass.Staff staff){
+    public StaffResponse saveStaff(com.ks.proto.staff.Staff staff){
         validateStaff(staff);
         Staff staff1= MapperConfig.INSTANCE.mapToStaff(staff);
         return MapperConfig.INSTANCE.mapToProto(staffService.saveStaff(staff1));
     }
 
-    public StaffResponseOuterClass.StaffResponse getStaffById(int staffId){
+    public StaffResponse getStaffById(int staffId){
         return MapperConfig.INSTANCE.mapToProto(staffService.getStaffById(staffId));
     }
 
-    public List<StaffOuterClass.Staff> getAllStaff() {
+    public List<com.ks.proto.staff.Staff> getAllStaff() {
         List<Staff> staffs = staffService.getAllStaff();
         return staffs.stream().map(MapperConfig.INSTANCE::mapToListProto).toList();
     }
 
-    public StaffResponseOuterClass.StaffResponse updateStaff(int staffId,StaffOuterClass.Staff staff){
+    public StaffResponse updateStaff(int staffId, com.ks.proto.staff.Staff staff){
         Staff staff1= MapperConfig.INSTANCE.mapToStaff(staff);
         staffService.updateStaff(staffId,staff1);
         return MapperConfig.INSTANCE.mapToProto(staff1);
@@ -52,7 +52,7 @@ public class StaffFacade {
     }
 
 
-    public void validateStaff(StaffOuterClass.Staff staff){
+    public void validateStaff(com.ks.proto.staff.Staff staff){
         if(staff.getName().isEmpty() || staff.getPersonalPhone().isEmpty() || staff.getEmergencyContactNumber().isEmpty() || staff.getPosition().isEmpty() || staff.getJoinDate().isEmpty()){
             throw new IllegalArgumentException("Fields should not be empty");
         }

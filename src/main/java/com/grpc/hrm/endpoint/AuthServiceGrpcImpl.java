@@ -2,7 +2,11 @@ package com.grpc.hrm.endpoint;
 
 import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.facade.UserFacade;
-import generatedClasses.*;
+import com.ks.proto.auth.AuthServiceGrpc;
+import com.ks.proto.auth.LoginRequest;
+import com.ks.proto.auth.LoginResponse;
+import com.ks.proto.auth.RegisterRequest;
+import com.ks.proto.common.StatusResponse;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,10 +22,10 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
 
     @Override
-    public void login(LoginRequestOuterClass.LoginRequest request, StreamObserver<LoginResponseOuterClass.LoginResponse> responseObserver) {
+    public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
         try{
             JwtTokenResponse jwtTokenResponse = userFacade.login(request);
-            responseObserver.onNext(LoginResponseOuterClass.LoginResponse.newBuilder()
+            responseObserver.onNext(LoginResponse.newBuilder()
                     .setToken(jwtTokenResponse.getToken())
                     .build());
             responseObserver.onCompleted();
@@ -32,10 +36,10 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
     }
 
     @Override
-    public void register(RegisterRequestOuterClass.RegisterRequest request, StreamObserver<RegisterResponseOuterClass.RegisterResponse> responseObserver) {
+    public void register(RegisterRequest request, StreamObserver<StatusResponse> responseObserver) {
         try{
         userFacade.register(request.getUser());
-        responseObserver.onNext(RegisterResponseOuterClass.RegisterResponse.newBuilder()
+        responseObserver.onNext(StatusResponse.newBuilder()
                 .setStatus("User registered successfully!!")
                 .build());
         responseObserver.onCompleted();

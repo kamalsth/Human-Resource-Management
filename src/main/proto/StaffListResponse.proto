@@ -1,8 +1,0 @@
-syntax="proto3";
-package proto;
-import "Staff.proto";
-option java_package = "generatedClasses";
-
-message StaffListResponse{
-  repeated Staff staff=1;
-}

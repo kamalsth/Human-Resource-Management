@@ -1,9 +1,9 @@
 package com.grpc.hrm.config;
 
 import com.grpc.hrm.entity.Role;
-import generatedClasses.AuthServiceGrpc;
-import generatedClasses.FileUploadServiceGrpc;
-import generatedClasses.StaffServiceGrpc;
+import com.ks.proto.auth.AuthServiceGrpc;
+import com.ks.proto.staff.FileUploadServiceGrpc;
+import com.ks.proto.staff.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.SignatureException;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;

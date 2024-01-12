@@ -1,8 +1,0 @@
-syntax="proto3";
-
-package proto;
-option java_package = "generatedClasses";
-
-message StatusResponse{
-  string status=1;
-}

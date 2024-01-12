@@ -1,7 +1,8 @@
 package com.grpc.hrm.client.service;
 
-import generatedClasses.FileUpload;
-import generatedClasses.FileUploadServiceGrpc;
+import com.ks.proto.staff.FileUploadRequest;
+import com.ks.proto.staff.FileUploadResponse;
+import com.ks.proto.staff.FileUploadServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -23,10 +24,10 @@ public class GrpcClientService {
     }
 
 
-    private StreamObserver<FileUpload.FileUploadResponse> createResponseObserver() {
-        return new StreamObserver<FileUpload.FileUploadResponse>() {
+    private StreamObserver<FileUploadResponse> createResponseObserver() {
+        return new StreamObserver<FileUploadResponse>() {
             @Override
-            public void onNext(FileUpload.FileUploadResponse response) {
+            public void onNext(FileUploadResponse response) {
                 System.out.println("gRPC Response: " + response);
             }
 
@@ -45,9 +46,9 @@ public class GrpcClientService {
     public void callGrpcServer(int staffId, String filePath, boolean isImage) {
         ManagedChannel channel = createChannel();
         FileUploadServiceGrpc.FileUploadServiceStub stub = FileUploadServiceGrpc.newStub(channel);
-        StreamObserver<FileUpload.FileUploadResponse> responseObserver = createResponseObserver();
+        StreamObserver<FileUploadResponse> responseObserver = createResponseObserver();
 
-        FileUpload.FileUploadRequest request = FileUpload.FileUploadRequest.newBuilder()
+        FileUploadRequest request = FileUploadRequest.newBuilder()
                 .setStaffId(staffId)
                 .setFilePath(filePath)
                 .build();

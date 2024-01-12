@@ -2,7 +2,8 @@ package com.grpc.hrm.endpoint;
 
 
 import com.grpc.hrm.facade.StaffFacade;
-import generatedClasses.*;
+import com.ks.proto.common.StatusResponse;
+import com.ks.proto.staff.*;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
@@ -19,7 +20,7 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
     }
 
     @Override
-    public void addStaff(StaffRequestOuterClass.StaffRequest request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
+    public void addStaff(StaffRequest request, StreamObserver<StaffResponse> responseObserver) {
         try {
             responseObserver.onNext(staffFacade.saveStaff(request.getStaff()));
             responseObserver.onCompleted();
@@ -31,7 +32,7 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
     }
 
     @Override
-    public void getStaffInfo(StaffRequestOuterClass.StaffRequest1 request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
+    public void getStaffInfo(StaffRequestById request, StreamObserver<StaffResponse> responseObserver) {
         try {
             responseObserver.onNext(staffFacade.getStaffById(request.getStaffId()));
             responseObserver.onCompleted();
@@ -43,16 +44,17 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
 
     @Override
-    public void getAllStaffInfo(StaffListRequestOuterClass.StaffListRequest request, StreamObserver<StaffListResponseOuterClass.StaffListResponse> responseObserver) {
-        List<StaffOuterClass.Staff> staffs = staffFacade.getAllStaff();
-        responseObserver.onNext(StaffListResponseOuterClass.StaffListResponse.newBuilder()
-                .addAllStaff(staffs)
+    public void getAllStaffInfo(StaffListRequest  request, StreamObserver<StaffListResponse> responseObserver) {
+        List<Staff> staffs = staffFacade.getAllStaff();
+        responseObserver.onNext(StaffListResponse.newBuilder()
+
+                .addAllStaffList(staffs)
                 .build());
         responseObserver.onCompleted();
     }
 
     @Override
-    public void updateStaff(StaffRequestOuterClass.StaffRequest request, StreamObserver<StaffResponseOuterClass.StaffResponse> responseObserver) {
+    public void updateStaff(StaffRequest request, StreamObserver<StaffResponse> responseObserver) {
         try {
             responseObserver.onNext(staffFacade.updateStaff(request.getStaff().getStaffId(), request.getStaff()));
             responseObserver.onCompleted();
@@ -63,10 +65,10 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
     }
 
     @Override
-    public void removeStaff(StaffRequestOuterClass.StaffRequest1 request, StreamObserver<StatusResponseOuterClass.StatusResponse> responseObserver) {
+    public void removeStaff(StaffRequestById request, StreamObserver<StatusResponse> responseObserver) {
         try {
             staffFacade.deleteStaff(request.getStaffId());
-            responseObserver.onNext(StatusResponseOuterClass.StatusResponse.newBuilder()
+            responseObserver.onNext(StatusResponse.newBuilder()
                     .setStatus("Staff deleted successfully!!")
                     .build());
             responseObserver.onCompleted();

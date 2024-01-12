@@ -5,8 +5,7 @@ import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.dto.LoginDto;
 import com.grpc.hrm.entity.User;
 import com.grpc.hrm.service.UserService;
-import generatedClasses.LoginRequestOuterClass;
-import generatedClasses.UserOuterClass;
+import com.ks.proto.auth.LoginRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,13 +16,13 @@ public class UserFacade {
         this.userService = userService;
     }
 
-    public void register(UserOuterClass.User user) {
+    public void register(com.ks.proto.user.User user) {
         validateUsersForRegister(user);
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
         userService.register(user1);
     }
 
-    public JwtTokenResponse login(LoginRequestOuterClass.LoginRequest loginRequest) {
+    public JwtTokenResponse login(LoginRequest loginRequest) {
         if(loginRequest.getUsername().isEmpty() || loginRequest.getPassword().isEmpty()){
             throw new IllegalArgumentException("Fields should not be empty");
         }
@@ -32,7 +31,7 @@ public class UserFacade {
     }
 
 
-    public void validateUsersForRegister(UserOuterClass.User user){
+    public void validateUsersForRegister(com.ks.proto.user.User user){
         if(user==null){
             throw new NullPointerException("User is null");
         }
