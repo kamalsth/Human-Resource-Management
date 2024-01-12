@@ -1,4 +1,4 @@
-package com.grpc.hrm.util;
+package com.grpc.hrm.utils;
 
 public class ValidateStaff {
 
