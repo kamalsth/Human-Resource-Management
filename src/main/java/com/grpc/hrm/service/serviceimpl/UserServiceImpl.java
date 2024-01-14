@@ -9,6 +9,8 @@ import com.grpc.hrm.model.Role;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final JwtAuthProvider jwtAuthProvider;
+    private final Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository, JwtTokenUtil jwtTokenUtil, JwtAuthProvider jwtAuthProvider) {
         this.userRepository = userRepository;
@@ -49,7 +52,7 @@ public class UserServiceImpl implements UserService {
         if (!new PasswordEncoder().matches(user.getPassword(), userDetails.getPassword())) {
             throw new BadCredentialsException("Password not correct of username: " + user.getUsername());
         }
-        System.out.println("User logged in successfully!!");
+        logger.info("User logged in successfully!!");
         Authentication authentication = jwtAuthProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         String token = jwtTokenUtil.generateToken(authentication);
         return new JwtTokenResponse(token);

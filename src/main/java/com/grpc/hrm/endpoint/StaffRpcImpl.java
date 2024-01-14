@@ -7,8 +7,6 @@ import com.ks.proto.staff.*;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
-import java.util.List;
-
 @GrpcService
 public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
@@ -45,10 +43,8 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
     @Override
     public void getAllStaffInfo(StaffListRequest  request, StreamObserver<StaffListResponse> responseObserver) {
-        List<Staff> staffs = staffFacade.getAllStaff();
         responseObserver.onNext(StaffListResponse.newBuilder()
-
-                .addAllStaffList(staffs)
+                .addAllStaffList(staffFacade.getAllStaff())
                 .build());
         responseObserver.onCompleted();
     }

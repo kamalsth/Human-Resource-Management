@@ -5,6 +5,7 @@ import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.dto.LoginDto;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.service.UserService;
+import com.grpc.hrm.utils.ValidateUserLogin;
 import com.ks.proto.auth.LoginRequest;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,7 @@ public class UserFacade {
     }
 
     public JwtTokenResponse login(LoginRequest loginRequest) {
-        if(loginRequest.getUsername().isEmpty() || loginRequest.getPassword().isEmpty()){
-            throw new IllegalArgumentException("Fields should not be empty");
-        }
+        ValidateUserLogin.validateUserLogin(loginRequest);
         LoginDto loginDto = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
         return  userService.login(loginDto);
     }
