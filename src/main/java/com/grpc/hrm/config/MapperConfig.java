@@ -16,12 +16,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface MapperConfig {
     MapperConfig INSTANCE = Mappers.getMapper(MapperConfig.class);
+
     Staff mapToStaff(com.ks.proto.staff.Staff staff);
 
-//    @Mapping(target = "staffId", source = "staff.staffId")
     StaffResponse mapToProto(Staff staff);
 
-   com.ks.proto.staff.Staff mapToListProto(Staff staff);
+    com.ks.proto.staff.Staff mapToListProto(Staff staff);
 
 
     @Mapping(source = "role", target = "role", qualifiedByName = "mapRoleToString")
@@ -34,7 +34,7 @@ public interface MapperConfig {
 
     @Mapping(source = "role", target = "role", qualifiedByName = "mapStringToRole")
     com.ks.proto.user.User mapToUserProto(User user);
-    
+
     @Named("mapStringToRole")
     default UserRole mapStringToRole(String role) {
         return UserRole.valueOf(role);
