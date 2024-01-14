@@ -2,6 +2,8 @@ package com.grpc.hrm.repository.repositoryimpl;
 
 import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.repository.StaffRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,7 @@ import java.util.List;
 public class StaffRepositoryImpl implements StaffRepository {
 
     private final DataSource dataSource;
+    private final Logger logger= LoggerFactory.getLogger(StaffRepositoryImpl.class);
 
     public StaffRepositoryImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -24,11 +27,11 @@ public class StaffRepositoryImpl implements StaffRepository {
     @Override
     public Staff saveStaff(Staff staff) {
         try (Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "INSERT INTO staff (name, personal_phone, emergency_contact_number, position,citizenship_photo,contact_doc_pdf,join_date,contact_renew_date) VALUES ('" + staff.getName() + "', '" + staff.getPersonalPhone() + "', '" + staff.getEmergencyContactNumber() + "', '" + staff.getPosition() + "', '" + staff.getCitizenshipPhoto() + "', '" + staff.getContactDocPdf() + "', '" + staff.getJoinDate() + "', '" + staff.getContactRenewDate() + "')";
                 statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-                System.out.println("Staff saved successfully");
+                logger.info("Staff saved successfully");
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         staff.setStaffId(generatedKeys.getInt(1));
@@ -37,12 +40,12 @@ public class StaffRepositoryImpl implements StaffRepository {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
 
             }
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
 
         }
         return staff;
@@ -51,7 +54,7 @@ public class StaffRepositoryImpl implements StaffRepository {
     @Override
     public Staff getStaffById(int staffId) {
         try (Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "SELECT * FROM staff WHERE staff_id = " + staffId;
                 ResultSet resultSet = statement.executeQuery(sql);
@@ -59,13 +62,13 @@ public class StaffRepositoryImpl implements StaffRepository {
                     return mapToStaff(resultSet);
                 }
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
 
             }
 
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
         return null;
     }
@@ -76,7 +79,7 @@ public class StaffRepositoryImpl implements StaffRepository {
     public List<Staff> getAllStaff() {
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "SELECT * FROM staff";
                 ResultSet resultSet = statement.executeQuery(sql);
@@ -84,12 +87,12 @@ public class StaffRepositoryImpl implements StaffRepository {
                     staffList.add(mapToStaff(resultSet));
                 }
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
 
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
         return staffList;
     }
@@ -97,17 +100,17 @@ public class StaffRepositoryImpl implements StaffRepository {
     @Override
     public void updateStaff(int staffId, Staff staff) {
         try(Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "UPDATE staff SET name = '" + staff.getName() + "', personal_phone = '" + staff.getPersonalPhone() + "', emergency_contact_number = '" + staff.getEmergencyContactNumber() + "', position = '" + staff.getPosition() + "', citizenship_photo = '" + staff.getCitizenshipPhoto() + "', contact_doc_pdf = '" + staff.getContactDocPdf() + "', join_date = '" + staff.getJoinDate() + "', contact_renew_date = '" + staff.getContactRenewDate() + "' WHERE staff_id = " + staffId;
                 statement.executeUpdate(sql);
-                System.out.println("Staff updated successfully");
+                logger.info("Staff updated successfully");
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
 
     }
@@ -115,58 +118,58 @@ public class StaffRepositoryImpl implements StaffRepository {
     @Override
     public void deleteStaff(int staffId) {
         try(Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "DELETE FROM staff WHERE staff_id = " + staffId;
                 statement.executeUpdate(sql);
-                System.out.println("Staff deleted successfully");
+                logger.info("Staff deleted successfully");
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
     }
 
     @Override
     public void addFileByStaffId(int staffId, String filePath) {
         try(Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "UPDATE staff SET contact_doc_pdf = '" + filePath + "' WHERE staff_id = " + staffId;
                 statement.executeUpdate(sql);
-                System.out.println("File added successfully");
+                logger.info("File added successfully");
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
     }
 
     @Override
     public void addImageByStaffId(int staffId, String filePath) {
         try(Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "UPDATE staff SET citizenship_photo = '" + filePath + "' WHERE staff_id = " + staffId;
                 statement.executeUpdate(sql);
-                System.out.println("Image added successfully");
+                logger.info("Image added successfully");
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
     }
 
     @Override
     public String getEmergencyContactNumber(String name) {
         try(Connection connection = dataSource.getConnection()) {
-            System.out.println("Connected to the database");
+            logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
                 String sql = "SELECT emergency_contact_number FROM staff WHERE name = '" + name + "'";
                 ResultSet resultSet = statement.executeQuery(sql);
@@ -174,13 +177,13 @@ public class StaffRepositoryImpl implements StaffRepository {
                     return resultSet.getString("emergency_contact_number");
                 }
             } catch (SQLException e) {
-                System.out.println("Error executing the SQL query" + e.getMessage());
+                logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
 
             }
 
         } catch (SQLException e) {
-            System.out.println("Error connecting to the database" + e.getMessage());
+            logger.error("Error connecting to the database" + e.getMessage());
         }
         return null;
     }
