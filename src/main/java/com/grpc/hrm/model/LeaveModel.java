@@ -1,6 +1,6 @@
 package com.grpc.hrm.model;
 
-public class Leave {
+public class LeaveModel {
     private String id;
     private String from;
     private String to;
@@ -8,10 +8,10 @@ public class Leave {
     private LeaveStatus status;
     private int userId;
 
-    public Leave() {
+    public LeaveModel() {
     }
 
-    public Leave(String id, String from, String to, String subject, LeaveStatus status, int userId) {
+    public LeaveModel(String id, String from, String to, String subject, LeaveStatus status, int userId) {
         this.id = id;
         this.from = from;
         this.to = to;
