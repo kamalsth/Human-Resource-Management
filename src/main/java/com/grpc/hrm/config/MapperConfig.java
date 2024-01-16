@@ -2,9 +2,11 @@ package com.grpc.hrm.config;
 
 
 import com.grpc.hrm.dto.LoginDto;
+import com.grpc.hrm.model.LeaveRequestModel;
 import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.model.User;
 import com.ks.proto.auth.LoginRequest;
+import com.ks.proto.leave.*;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.user.UserRole;
 import org.mapstruct.Mapper;
@@ -41,4 +43,29 @@ public interface MapperConfig {
     }
 
     LoginDto mapToLoginDto(LoginRequest loginRequest);
+
+    @Mapping(source = "leaveStatus", target = "status", qualifiedByName = "mapLeaveStatusToString")
+    LeaveRequestModel mapTOLeaveRequestModel(LeaveRequest leaveRequest);
+
+    @Named("mapLeaveStatusToString")
+    default String mapLeaveStatusToString(LeaveStatus leaveStatus) {
+        return leaveStatus.name();
+    }
+
+    @Mapping(source = "status", target = "leaveStatus", qualifiedByName = "mapStringToLeaveStatus")
+    LeaveResponse mapToLeaveRequestProto(LeaveRequestModel leaveRequestModel);
+
+    @Named("mapStringToLeaveStatus")
+    default LeaveStatus mapStringToLeaveStatus(String leaveStatus) {
+        return LeaveStatus.valueOf(leaveStatus);
+    }
+
+    LeaveResponse mapToLeaveListProto(LeaveRequestModel leaveRequestModel);
+
+
+    @Mapping(source = "leaveStatus", target = "leaveStatus", qualifiedByName = "mapLeaveStatusToString")
+    com.grpc.hrm.model.ConfirmLeaveRequest mapToConfirmLeaveRequest(ConfirmLeaveRequest request);
+
+
+
 }

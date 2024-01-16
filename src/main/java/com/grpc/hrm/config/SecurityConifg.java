@@ -2,6 +2,7 @@ package com.grpc.hrm.config;
 
 import com.grpc.hrm.model.Role;
 import com.ks.proto.auth.AuthServiceGrpc;
+import com.ks.proto.leave.LeaveServiceGrpc;
 import com.ks.proto.staff.FileUploadServiceGrpc;
 import com.ks.proto.staff.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
@@ -97,6 +98,11 @@ public class SecurityConifg {
         source.set(AuthServiceGrpc.getRegisterMethod(), AccessPredicate.permitAll());
         source.set(FileUploadServiceGrpc.getUploadFileMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
         source.set(FileUploadServiceGrpc.getUploadImageMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(LeaveServiceGrpc.getRequestLeaveMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
+        source.set(LeaveServiceGrpc.getUpdateLeaveMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
+
+        source.set(LeaveServiceGrpc.getGetLeaveListMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(LeaveServiceGrpc.getConfirmLeaveMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         return source;
     }
 

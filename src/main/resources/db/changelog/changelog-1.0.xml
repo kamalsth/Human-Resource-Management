@@ -63,4 +63,58 @@
         </createTable>
     </changeSet>
 
+
+    <changeSet id="3" author="kamal">
+        <createTable tableName="leave_request">
+            <column name="id" type="CHAR(32)" >
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="from" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="kamal">
+        <modifyDataType tableName="leave_request" columnName="user_id" newDataType="INT"/>
+    </changeSet>
+
+
+
+
+
+<!--    <changeSet id="3" author="kamal">-->
+<!--        <createTable tableName="leave_request">-->
+<!--            <column name="id" type="VARCHAR(32)" >-->
+<!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="from" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="to" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="subject" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="status" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--            <column name="user_id" type="INT">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
 </databaseChangeLog>
