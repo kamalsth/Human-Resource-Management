@@ -10,8 +10,9 @@ public class Staff {
     private String contactDocPdf;
     private String joinDate;
     private String contactRenewDate;
+    private double salary;
 
-    public Staff(int staffId, String name, String personalPhone, String emergencyContactNumber, String position, String citizenshipPhoto, String contactDocPdf, String joinDate, String contactRenewDate) {
+    public Staff(int staffId, String name, String personalPhone, String emergencyContactNumber, String position, String citizenshipPhoto, String contactDocPdf, String joinDate, String contactRenewDate, double salary) {
         this.staffId = staffId;
         this.name = name;
         this.personalPhone = personalPhone;
@@ -21,6 +22,7 @@ public class Staff {
         this.contactDocPdf = contactDocPdf;
         this.joinDate = joinDate;
         this.contactRenewDate = contactRenewDate;
+        this.salary = salary;
     }
 
     public int getStaffId() {
@@ -93,5 +95,13 @@ public class Staff {
 
     public void setContactRenewDate(String contactRenewDate) {
         this.contactRenewDate = contactRenewDate;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }
