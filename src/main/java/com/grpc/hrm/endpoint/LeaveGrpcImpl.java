@@ -18,7 +18,6 @@ public class LeaveGrpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
 
     @Override
     public void requestLeave(LeaveRequest request, StreamObserver<LeaveResponse> responseObserver) {
-        System.out.println("requestLeave=" + request);
         responseObserver.onNext(leaveFacade.leaveRequest(request));
         responseObserver.onCompleted();
     }
