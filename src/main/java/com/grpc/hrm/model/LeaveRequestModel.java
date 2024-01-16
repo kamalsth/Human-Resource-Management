@@ -1,6 +1,6 @@
 package com.grpc.hrm.model;
 
-public class LeaveModel {
+public class LeaveRequestModel {
     private String id;
     private String from;
     private String to;
@@ -8,10 +8,10 @@ public class LeaveModel {
     private LeaveStatus status;
     private int userId;
 
-    public LeaveModel() {
+    public LeaveRequestModel() {
     }
 
-    public LeaveModel(String id, String from, String to, String subject, LeaveStatus status, int userId) {
+    public LeaveRequestModel(String id, String from, String to, String subject, LeaveStatus status, int userId) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -66,5 +66,17 @@ public class LeaveModel {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "LeaveRequestModel{" +
+                "id='" + id + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", subject='" + subject + '\'' +
+                ", status=" + status +
+                ", userId=" + userId +
+                '}';
     }
 }
