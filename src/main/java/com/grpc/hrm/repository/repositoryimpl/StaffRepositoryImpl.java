@@ -29,7 +29,8 @@ public class StaffRepositoryImpl implements StaffRepository {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             try (Statement statement = connection.createStatement()) {
-                String sql = "INSERT INTO staff (name, personal_phone, emergency_contact_number, position,citizenship_photo,contact_doc_pdf,join_date,contact_renew_date) VALUES ('" + staff.getName() + "', '" + staff.getPersonalPhone() + "', '" + staff.getEmergencyContactNumber() + "', '" + staff.getPosition() + "', '" + staff.getCitizenshipPhoto() + "', '" + staff.getContactDocPdf() + "', '" + staff.getJoinDate() + "', '" + staff.getContactRenewDate() + "')";
+                System.out.println("salary="+staff.getSalary());
+                String sql = "INSERT INTO staff (name, personal_phone, emergency_contact_number, position,citizenship_photo,contact_doc_pdf,join_date,contact_renew_date,salary) VALUES ('" + staff.getName() + "', '" + staff.getPersonalPhone() + "', '" + staff.getEmergencyContactNumber() + "', '" + staff.getPosition() + "', '" + staff.getCitizenshipPhoto() + "', '" + staff.getContactDocPdf() + "', '" + staff.getJoinDate() + "', '" + staff.getContactRenewDate() + "','"+staff.getSalary()+"')";
                 statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
                 logger.info("Staff saved successfully");
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
