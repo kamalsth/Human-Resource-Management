@@ -6,6 +6,7 @@ import com.grpc.hrm.dto.LoginDto;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.service.UserService;
 import com.grpc.hrm.utils.ValidateUserLogin;
+import com.grpc.hrm.utils.ValidateUsersForRegister;
 import com.ks.proto.auth.LoginRequest;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserFacade {
     }
 
     public void register(com.ks.proto.user.User user) {
-        validateUsersForRegister(user);
+        ValidateUsersForRegister.validateUsersForRegister(user);
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
         userService.register(user1);
     }
