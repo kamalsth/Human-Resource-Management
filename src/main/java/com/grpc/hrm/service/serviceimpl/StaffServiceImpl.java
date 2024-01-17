@@ -5,10 +5,10 @@ import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.StaffRepository;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.StaffService;
+import com.grpc.hrm.utils.GenerateUUID;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -26,10 +26,7 @@ public class StaffServiceImpl implements StaffService {
         if (staff.getEmergencyContactNumber().equals(emergencyContactNumber)) {
             throw new RuntimeException("User already exists with this Emergency contact number : " + staff.getEmergencyContactNumber());
         }
-        UUID uuid = UUID.randomUUID();
-        String staffId = uuid.toString().substring(0, 32);
-        staff.setStaffId(staffId);
-
+        staff.setStaffId(GenerateUUID.generateID());
         User user = userRepository.getUserByEmail(staff.getEmail());
         if (user == null) {
             staff.setUserId(null);

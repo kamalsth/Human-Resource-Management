@@ -9,6 +9,7 @@ import com.grpc.hrm.model.Role;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.UserService;
+import com.grpc.hrm.utils.GenerateUUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,8 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,9 +38,8 @@ public class UserServiceImpl implements UserService {
         if(existingUser != null){
             throw new RuntimeException("User already exists for username : " + user.getUsername());
         }
-        UUID uuid = UUID.randomUUID();
-        String userId = uuid.toString().substring(0,32);
-        user.setUserId(userId);
+
+        user.setUserId(GenerateUUID.generateID());
         user.setRole(Role.MEMBER);
         user.setPassword(hashPassword(user.getPassword()));
         userRepository.register(user);
