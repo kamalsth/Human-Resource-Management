@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface StaffService {
     public Staff saveStaff(Staff staff);
-    public Staff getStaffById(int staffId);
+    public Staff getStaffById(String staffId);
     public List<Staff> getAllStaff();
-    public void updateStaff(int staffId,Staff staff);
-    public void deleteStaff(int staffId);
+    public Staff updateStaff(String staffId,Staff staff);
+    public void deleteStaff(String staffId);
 
-    public void addFileByStaffId(int staffId,String filePath);
-    public void addImageByStaffId(int staffId,String filePath);
+    public void addFileByStaffId(String staffId,String filePath);
+    public void addImageByStaffId(String staffId,String filePath);
 
-    double taxCalculation(int staffId);
+    double taxCalculation(String staffId);
 }

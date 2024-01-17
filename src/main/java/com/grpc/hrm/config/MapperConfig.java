@@ -7,6 +7,7 @@ import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.model.User;
 import com.ks.proto.auth.LoginRequest;
 import com.ks.proto.leave.*;
+import com.ks.proto.staff.MaritalStatus;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.user.UserRole;
 import org.mapstruct.Mapper;
@@ -19,9 +20,21 @@ import org.mapstruct.factory.Mappers;
 public interface MapperConfig {
     MapperConfig INSTANCE = Mappers.getMapper(MapperConfig.class);
 
+    @Mapping(source = "maritalStatus", target = "maritalStatus", qualifiedByName = "mapMaritalStatusToString")
     Staff mapToStaff(com.ks.proto.staff.Staff staff);
 
+    @Named("mapMaritalStatusToString")
+    default String mapMaritalStatusToString(MaritalStatus maritalStatus) {
+        return maritalStatus.name();
+    }
+
+    @Mapping(source = "maritalStatus", target = "maritalStatus", qualifiedByName = "mapStringToMaritalStatus")
     StaffResponse mapToProto(Staff staff);
+
+    @Named("mapStringToMaritalStatus")
+    default MaritalStatus mapStringToMaritalStatus(String maritalStatus) {
+        return MaritalStatus.valueOf(maritalStatus);
+    }
 
     com.ks.proto.staff.Staff mapToListProto(Staff staff);
 

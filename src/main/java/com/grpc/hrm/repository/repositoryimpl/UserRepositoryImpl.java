@@ -25,14 +25,15 @@ public class UserRepositoryImpl implements UserRepository {
     public void register(User user) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "INSERT INTO users (username, password, name, email, phone, role) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (user_id,username, password, name, email, phone, role) VALUES (?,?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                preparedStatement.setString(1, user.getUsername());
-                preparedStatement.setString(2, user.getPassword());
-                preparedStatement.setString(3, user.getName());
-                preparedStatement.setString(4, user.getEmail());
-                preparedStatement.setString(5, user.getPhone());
-                preparedStatement.setString(6, user.getRole().name());
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getUsername());
+                preparedStatement.setString(3, user.getPassword());
+                preparedStatement.setString(4, user.getName());
+                preparedStatement.setString(5, user.getEmail());
+                preparedStatement.setString(6, user.getPhone());
+                preparedStatement.setString(7, user.getRole().name());
 
                 preparedStatement.executeUpdate();
 
@@ -40,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
 
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        user.setUserId(generatedKeys.getInt(1));
+                        user.setUserId(generatedKeys.getString(1));
                     } else {
                         throw new SQLException("Creating user failed, no ID obtained.");
                     }
@@ -55,12 +56,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(String userId) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             String sql = "SELECT * FROM users WHERE user_id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setInt(1, userId);
+                preparedStatement.setString(1, userId);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
@@ -101,7 +102,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUser(int userId, User user) {
+    public void updateUser(String userId, User user) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             String sql = "UPDATE users SET username = ?, password = ?, name = ?, email = ?, phone = ?, role = ? WHERE user_id = ?";
@@ -112,7 +113,7 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(4, user.getEmail());
                 preparedStatement.setString(5, user.getPhone());
                 preparedStatement.setString(6, user.getRole().name());
-                preparedStatement.setInt(7, userId);
+                preparedStatement.setString(7, userId);
 
                 preparedStatement.executeUpdate();
 
@@ -127,12 +128,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public void deleteUser(String userId) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             String sql = "DELETE FROM users WHERE user_id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setInt(1, userId);
+                preparedStatement.setString(1, userId);
 
                 preparedStatement.executeUpdate();
 
@@ -169,9 +170,32 @@ public class UserRepositoryImpl implements UserRepository {
         return null;
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        try (Connection connection = dataSource.getConnection()) {
+            logger.info("Connected to the database");
+            String sql = "SELECT * FROM users WHERE email = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, email);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return mapToUser(resultSet);
+                    }
+                }
+            } catch (SQLException e) {
+                logger.error("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            logger.error("Error connecting to the database" + e.getMessage());
+        }
+        return null;
+    }
+
 
     private User mapToUser(ResultSet resultSet) throws SQLException {
-        int userId = resultSet.getInt("user_id");
+        String userId = resultSet.getString("user_id");
         String username = resultSet.getString("username");
         String password = resultSet.getString("password");
         String name = resultSet.getString("name");

@@ -1,18 +1,23 @@
 package com.grpc.hrm.service.serviceimpl;
 
 import com.grpc.hrm.model.Staff;
+import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.StaffRepository;
+import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.StaffService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
+    private final UserRepository userRepository;
 
-    public StaffServiceImpl(StaffRepository staffRepository) {
+    public StaffServiceImpl(StaffRepository staffRepository, UserRepository userRepository) {
         this.staffRepository = staffRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -21,11 +26,22 @@ public class StaffServiceImpl implements StaffService {
         if (staff.getEmergencyContactNumber().equals(emergencyContactNumber)) {
             throw new RuntimeException("User already exists with this Emergency contact number : " + staff.getEmergencyContactNumber());
         }
+        UUID uuid = UUID.randomUUID();
+        String staffId = uuid.toString().substring(0, 32);
+        staff.setStaffId(staffId);
+
+        User user = userRepository.getUserByEmail(staff.getEmail());
+        if (user == null) {
+            staff.setUserId(null);
+        }
+        assert user != null;
+        staff.setUserId(user.getUserId());
+
         return staffRepository.saveStaff(staff);
     }
 
     @Override
-    public Staff getStaffById(int staffId) {
+    public Staff getStaffById(String staffId) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
@@ -39,16 +55,16 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void updateStaff(int staffId, Staff staff) {
+    public Staff updateStaff(String staffId, Staff staff) {
         Staff staff1 = staffRepository.getStaffById(staffId);
         if (staff1 == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
         }
-        staffRepository.updateStaff(staffId, staff);
+        return staffRepository.updateStaff(staffId, staff);
     }
 
     @Override
-    public void deleteStaff(int staffId) {
+    public void deleteStaff(String staffId) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
@@ -57,7 +73,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void addFileByStaffId(int staffId, String filePath) {
+    public void addFileByStaffId(String staffId, String filePath) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
@@ -66,7 +82,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void addImageByStaffId(int staffId, String filePath) {
+    public void addImageByStaffId(String staffId, String filePath) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
@@ -75,7 +91,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public double taxCalculation(int staffId) {
+    public double taxCalculation(String staffId) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);

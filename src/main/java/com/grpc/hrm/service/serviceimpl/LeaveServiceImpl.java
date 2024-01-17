@@ -23,18 +23,15 @@ public class LeaveServiceImpl implements LeaveService {
 
     @Override
     public LeaveRequestModel leaveRequest(LeaveRequestModel leaveRequestModel) {
-        System.out.println("service");
-        System.out.println("LeaveRequestModel="+leaveRequestModel);
         //generate id
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString().substring(0,32);
         leaveRequestModel.setId(id);
-        System.out.println("after set id="+leaveRequestModel);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        int userId= leaveRepository.getUserIdFromUsername(username);
+        String userId= leaveRepository.getUserIdFromUsername(username);
 
         leaveRequestModel.setUserId(userId);
         return leaveRepository.leaveRequest(leaveRequestModel);
@@ -63,7 +60,7 @@ public class LeaveServiceImpl implements LeaveService {
         System.out.println("id="+id);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        int userId= leaveRepository.getUserIdFromUsername(username);
+        String userId= leaveRepository.getUserIdFromUsername(username);
         leaveRequestModel.setUserId(userId);
         leaveRepository.updateLeaveRequest(id, leaveRequestModel);
     }

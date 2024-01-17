@@ -7,8 +7,8 @@ import com.grpc.hrm.model.User;
 public interface UserService {
     public void register(User user);
     public JwtTokenResponse login(LoginDto loginDto);
-    public User getUserById(int userId);
-    public void updateUser(int userId,User user);
-    public void deleteUser(int userId);
+    public User getUserById(String userId);
+    public void updateUser(String userId,User user);
+    public void deleteUser(String userId);
 
 }
