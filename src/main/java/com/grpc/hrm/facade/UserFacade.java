@@ -27,17 +27,8 @@ public class UserFacade {
     public JwtTokenResponse login(LoginRequest loginRequest) {
         ValidateUserLogin.validateUserLogin(loginRequest);
         LoginDto loginDto = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
-        return  userService.login(loginDto);
+        return userService.login(loginDto);
     }
 
-
-    public void validateUsersForRegister(com.ks.proto.user.User user){
-        if(user==null){
-            throw new NullPointerException("User is null");
-        }
-        if(user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Fields should not be empty");
-        }
-    }
 
 }
