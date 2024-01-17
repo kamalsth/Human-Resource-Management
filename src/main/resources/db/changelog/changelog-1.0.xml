@@ -92,10 +92,18 @@
     </changeSet>
 
 
+    <changeSet id="5" author="kamal">
+        <addColumn tableName="staff">
+            <column name="salary" type="DOUBLE">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
 
 
 
-<!--    <changeSet id="3" author="kamal">-->
+
+    <!--    <changeSet id="3" author="kamal">-->
 <!--        <createTable tableName="leave_request">-->
 <!--            <column name="id" type="VARCHAR(32)" >-->
 <!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->

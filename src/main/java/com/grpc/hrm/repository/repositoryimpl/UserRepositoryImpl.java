@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -23,15 +20,25 @@ public class UserRepositoryImpl implements UserRepository {
         this.dataSource = dataSource;
     }
 
+
     @Override
     public void register(User user) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "INSERT INTO users (username, password, name, email, phone, role) VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', '" + user.getEmail() + "', '" + user.getPhone() + "', '" + user.getRole() + "')";
-                statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+            String sql = "INSERT INTO users (username, password, name, email, phone, role) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+                preparedStatement.setString(5, user.getPhone());
+                preparedStatement.setString(6, user.getRole().name());
+
+                preparedStatement.executeUpdate();
+
                 logger.info("User saved successfully");
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         user.setUserId(generatedKeys.getInt(1));
                     } else {
@@ -51,11 +58,14 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUserById(int userId) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "SELECT * FROM users WHERE user_id = " + userId;
-                ResultSet resultSet = statement.executeQuery(sql);
-                if (resultSet.next()) {
-                    return mapToUser(resultSet);
+            String sql = "SELECT * FROM users WHERE user_id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, userId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return mapToUser(resultSet);
+                    }
                 }
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
@@ -67,16 +77,18 @@ public class UserRepositoryImpl implements UserRepository {
         return null;
     }
 
-
     @Override
     public User getUserByUsername(String username) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "SELECT * FROM users WHERE username = '" + username + "'";
-                ResultSet resultSet = statement.executeQuery(sql);
-                if (resultSet.next()) {
-                    return mapToUser(resultSet);
+            String sql = "SELECT * FROM users WHERE username = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, username);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return mapToUser(resultSet);
+                    }
                 }
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
@@ -92,9 +104,18 @@ public class UserRepositoryImpl implements UserRepository {
     public void updateUser(int userId, User user) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', email = '" + user.getEmail() + "', phone = '" + user.getPhone() + "', role = '" + user.getRole() + "' WHERE user_id = " + userId;
-                statement.executeUpdate(sql);
+            String sql = "UPDATE users SET username = ?, password = ?, name = ?, email = ?, phone = ?, role = ? WHERE user_id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+                preparedStatement.setString(5, user.getPhone());
+                preparedStatement.setString(6, user.getRole().name());
+                preparedStatement.setInt(7, userId);
+
+                preparedStatement.executeUpdate();
+
                 logger.info("User updated successfully");
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
@@ -107,11 +128,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void deleteUser(int userId) {
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "DELETE FROM users WHERE user_id = " + userId;
-                statement.executeUpdate(sql);
+            String sql = "DELETE FROM users WHERE user_id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, userId);
+
+                preparedStatement.executeUpdate();
+
                 logger.info("User deleted successfully");
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
@@ -124,13 +148,16 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public String getRoleByUsername(String username) {
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "SELECT role FROM users WHERE username = '" + username + "'";
-                ResultSet resultSet = statement.executeQuery(sql);
-                if (resultSet.next()) {
-                    return resultSet.getString("role");
+            String sql = "SELECT role FROM users WHERE username = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, username);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("role");
+                    }
                 }
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
@@ -141,6 +168,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return null;
     }
+
 
     private User mapToUser(ResultSet resultSet) throws SQLException {
         int userId = resultSet.getInt("user_id");

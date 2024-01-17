@@ -13,4 +13,6 @@ public interface StaffService {
 
     public void addFileByStaffId(int staffId,String filePath);
     public void addImageByStaffId(int staffId,String filePath);
+
+    double taxCalculation(int staffId);
 }

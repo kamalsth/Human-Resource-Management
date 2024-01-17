@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +31,17 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     public LeaveRequestModel leaveRequest(LeaveRequestModel leaveRequestModel) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "INSERT INTO leave_request ( id, `from`, `to`, subject, `status`, user_id) VALUES ('" + leaveRequestModel.getId() + "', '" + leaveRequestModel.getFrom() + "', '" + leaveRequestModel.getTo() + "', '" + leaveRequestModel.getSubject() + "', '" + leaveRequestModel.getStatus() + "', '" + leaveRequestModel.getUserId() + "' )";
-                statement.executeUpdate(sql);
+            String sql = "INSERT INTO leave_request (id, `from`, `to`, subject, `status`, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, leaveRequestModel.getId());
+                preparedStatement.setString(2, leaveRequestModel.getFrom());
+                preparedStatement.setString(3, leaveRequestModel.getTo());
+                preparedStatement.setString(4, leaveRequestModel.getSubject());
+                preparedStatement.setString(5, leaveRequestModel.getStatus().name());
+                preparedStatement.setInt(6, leaveRequestModel.getUserId());
+
+                preparedStatement.executeUpdate();
+
                 logger.info("Leave request saved successfully");
 
             } catch (SQLException e) {
@@ -47,24 +55,23 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         return leaveRequestModel;
     }
 
-
     @Override
     public List<LeaveRequestModel> getAllLeaveRequest() {
         List<LeaveRequestModel> leaveRequestModelList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "SELECT * FROM leave_request";
-                ResultSet resultSet = statement.executeQuery(sql);
-                while (resultSet.next()) {
-                    leaveRequestModelList.add(mapToLeaveRequestModel(resultSet));
+            String sql = "SELECT * FROM leave_request";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        leaveRequestModelList.add(mapToLeaveRequestModel(resultSet));
+                    }
+                    logger.info("Leave request fetched successfully");
+
+                } catch (SQLException e) {
+                    logger.error("Error executing the SQL query" + e.getMessage());
+                    throw new SQLException("Error executing the SQL query" + e.getMessage());
                 }
-                logger.info("Leave request fetched successfully");
-
-            } catch (SQLException e) {
-                logger.error("Error executing the SQL query" + e.getMessage());
-                throw new SQLException("Error executing the SQL query" + e.getMessage());
-
             }
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
@@ -72,33 +79,23 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         return leaveRequestModelList;
     }
 
-
-    private LeaveRequestModel mapToLeaveRequestModel(ResultSet resultSet) throws SQLException {
-        return new LeaveRequestModel(
-                resultSet.getString("id"),
-                resultSet.getString("from"),
-                resultSet.getString("to"),
-                resultSet.getString("subject"),
-                LeaveStatus.valueOf(resultSet.getString("status")),
-                resultSet.getInt("user_id"));
-    }
-
     @Override
     public LeaveRequestModel getLeaveRequestById(String id) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "SELECT * FROM leave_request WHERE id = '" + id + "'";
-                ResultSet resultSet = statement.executeQuery(sql);
-                if (resultSet.next()) {
-                    logger.info("Leave request fetched successfully");
-                    return mapToLeaveRequestModel(resultSet);
+            String sql = "SELECT * FROM leave_request WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, id);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        logger.info("Leave request fetched successfully");
+                        return mapToLeaveRequestModel(resultSet);
+                    }
+                } catch (SQLException e) {
+                    logger.error("Error executing the SQL query" + e.getMessage());
+                    throw new SQLException("Error executing the SQL query" + e.getMessage());
                 }
-
-            } catch (SQLException e) {
-                logger.error("Error executing the SQL query" + e.getMessage());
-                throw new SQLException("Error executing the SQL query" + e.getMessage());
-
             }
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
@@ -110,15 +107,20 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     public void updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "UPDATE leave_request SET `from` = '" + leaveRequestModel.getFrom() + "', `to` = '" + leaveRequestModel.getTo() + "', subject = '" + leaveRequestModel.getSubject() + "' WHERE id = '" + id + "'";
-                statement.executeUpdate(sql);
+            String sql = "UPDATE leave_request SET `from` = ?, `to` = ?, subject = ? WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, leaveRequestModel.getFrom());
+                preparedStatement.setString(2, leaveRequestModel.getTo());
+                preparedStatement.setString(3, leaveRequestModel.getSubject());
+                preparedStatement.setString(4, id);
+
+                preparedStatement.executeUpdate();
+
                 logger.info("Leave request updated successfully");
 
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
-
             }
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
@@ -129,15 +131,17 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     public void deleteLeaveRequest(String id) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "DELETE FROM leave_request WHERE id = '" + id + "'";
-                statement.executeUpdate(sql);
+            String sql = "DELETE FROM leave_request WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, id);
+
+                preparedStatement.executeUpdate();
+
                 logger.info("Leave request deleted successfully");
 
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
-
             }
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
@@ -148,15 +152,18 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     public void confirmLeaveRequest(LeaveRequestModel leaveRequestModel) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "UPDATE leave_request SET `status` = '" + leaveRequestModel.getStatus().name() + "' WHERE id = '" + leaveRequestModel.getId() + "'";
-                statement.executeUpdate(sql);
+            String sql = "UPDATE leave_request SET `status` = ? WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, leaveRequestModel.getStatus().name());
+                preparedStatement.setString(2, leaveRequestModel.getId());
+
+                preparedStatement.executeUpdate();
+
                 logger.info("Leave request confirmed successfully");
 
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
-
             }
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
@@ -167,22 +174,33 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     public int getUserIdFromUsername(String username) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            try (Statement statement = connection.createStatement()) {
-                String sql = "SELECT user_id FROM users WHERE username = '" + username + "'";
-                ResultSet resultSet = statement.executeQuery(sql);
-                if (resultSet.next()) {
-                    return resultSet.getInt("user_id");
+            String sql = "SELECT user_id FROM users WHERE username = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, username);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        logger.info("User id fetched successfully");
+                        return resultSet.getInt("user_id");
+                    }
+                } catch (SQLException e) {
+                    logger.error("Error executing the SQL query" + e.getMessage());
+                    throw new SQLException("Error executing the SQL query" + e.getMessage());
                 }
-                logger.info("User id fetched successfully");
-
-            } catch (SQLException e) {
-                logger.error("Error executing the SQL query" + e.getMessage());
-                throw new SQLException("Error executing the SQL query" + e.getMessage());
-
             }
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
         }
         return 0;
+    }
+
+    private LeaveRequestModel mapToLeaveRequestModel(ResultSet resultSet) throws SQLException {
+        return new LeaveRequestModel(
+                resultSet.getString("id"),
+                resultSet.getString("from"),
+                resultSet.getString("to"),
+                resultSet.getString("subject"),
+                LeaveStatus.valueOf(resultSet.getString("status")),
+                resultSet.getInt("user_id"));
     }
 }
