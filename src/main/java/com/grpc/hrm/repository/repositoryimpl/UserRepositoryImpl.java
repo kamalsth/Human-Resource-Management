@@ -82,9 +82,10 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUserByUsername(String username) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "SELECT * FROM users WHERE username = ?";
+            String sql = "SELECT * FROM users WHERE username = ? or email = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, username);
+                preparedStatement.setString(2, username);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
