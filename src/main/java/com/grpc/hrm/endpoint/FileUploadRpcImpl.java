@@ -20,27 +20,14 @@ public class FileUploadRpcImpl extends FileUploadServiceGrpc.FileUploadServiceIm
 
     @Override
     public void uploadFile(FileUploadRequest request, StreamObserver<FileUploadResponse> responseObserver) {
-        String filePath = request.getFilePath();
-        String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
-        staffFacade.addFileByStaffId(request.getStaffId(), request.getFilePath());
-
-        responseObserver.onNext(FileUploadResponse.newBuilder()
-                .setFileName(fileName)
-                .setUploadStatus("File uploaded successfully")
-                .build());
+        responseObserver.onNext(staffFacade.addFileByStaffId(request.getStaffId(), request.getFilePath()));
         responseObserver.onCompleted();
     }
 
     @Override
     public void uploadImage(FileUploadRequest request, StreamObserver<FileUploadResponse> responseObserver) {
-        String filePath = request.getFilePath();
-        String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
-        staffFacade.addImageByStaffId(request.getStaffId(), request.getFilePath());
-        responseObserver.onNext(FileUploadResponse.newBuilder()
-                .setFileName(fileName)
-                .setUploadStatus("Image uploaded successfully")
-                .build());
+        responseObserver.onNext(staffFacade.addImageByStaffId(request.getStaffId(), request.getFilePath()));
         responseObserver.onCompleted();
 
-   }
+    }
 }
