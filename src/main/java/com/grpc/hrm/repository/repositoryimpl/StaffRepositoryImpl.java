@@ -26,7 +26,7 @@ public class StaffRepositoryImpl implements StaffRepository {
     public Staff saveStaff(Staff staff) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "INSERT INTO staff (staff_id,name, personal_phone, emergency_contact_number, position,citizenship_photo,contact_doc_pdf,join_date,contact_renew_date,salary,marital_status,email,user_id) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO staff (staff_id,name, personal_phone, emergency_contact_number, position,citizenship_photo,contact_doc_pdf,join_date,contact_renew_date,salary,marital_status,email) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setString(1, staff.getStaffId());
                 preparedStatement.setString(2, staff.getName());
@@ -40,7 +40,6 @@ public class StaffRepositoryImpl implements StaffRepository {
                 preparedStatement.setDouble(10, staff.getSalary());
                 preparedStatement.setString(11, staff.getMaritalStatus().name());
                 preparedStatement.setString(12, staff.getEmail());
-                preparedStatement.setString(13, staff.getUserId());
 
                 preparedStatement.executeUpdate();
 
@@ -253,7 +252,6 @@ private Staff mapToStaff(ResultSet resultSet) throws SQLException {
     double salary = resultSet.getDouble("salary");
     MaritalStatus maritalStatus = MaritalStatus.valueOf(resultSet.getString("marital_status"));
     String email = resultSet.getString("email");
-    String userId = resultSet.getString("user_id");
-    return new Staff(staffId, name, personalPhone, emergencyContactNumber, position, citizenshipPhoto, contactDocPdf, joinDate, contactRenewDate, salary, maritalStatus, email, userId);
+    return new Staff(staffId, name, personalPhone, emergencyContactNumber, position, citizenshipPhoto, contactDocPdf, joinDate, contactRenewDate, salary, maritalStatus, email);
 }
     }

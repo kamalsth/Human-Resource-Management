@@ -2,7 +2,6 @@ package com.grpc.hrm.service.serviceimpl;
 
 import com.grpc.hrm.model.MaritalStatus;
 import com.grpc.hrm.model.Staff;
-import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.StaffRepository;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.StaffService;
@@ -29,12 +28,6 @@ public class StaffServiceImpl implements StaffService {
             throw new RuntimeException("User already exists with this Emergency contact number : " + staff.getEmergencyContactNumber());
         }
         staff.setStaffId(GenerateUUID.generateID());
-        User user = userRepository.getUserByEmail(staff.getEmail());
-        if (user == null) {
-            staff.setUserId(null);
-        }
-        assert user != null;
-        staff.setUserId(user.getUserId());
 
         return staffRepository.saveStaff(staff);
     }
