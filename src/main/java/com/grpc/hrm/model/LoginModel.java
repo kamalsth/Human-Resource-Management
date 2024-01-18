@@ -1,10 +1,10 @@
-package com.grpc.hrm.dto;
+package com.grpc.hrm.model;
 
-public class LoginDto {
+public class LoginModel {
     private String username;
     private String password;
 
-    public LoginDto(String username, String password) {
+    public LoginModel(String username, String password) {
 
         this.username = username;
         this.password = password;

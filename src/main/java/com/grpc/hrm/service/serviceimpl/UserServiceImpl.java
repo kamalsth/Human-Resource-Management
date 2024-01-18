@@ -4,7 +4,7 @@ import com.grpc.hrm.config.JwtAuthProvider;
 import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.config.JwtTokenUtil;
 import com.grpc.hrm.config.PasswordEncoder;
-import com.grpc.hrm.dto.LoginDto;
+import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.Role;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     //Login
     @Override
-    public JwtTokenResponse login(LoginDto user) {
+    public JwtTokenResponse login(LoginModel user) {
         UserDetails userDetails = jwtAuthProvider.loadUserByUsername(user.getUsername());
         if (userDetails == null) {
             throw new UsernameNotFoundException("User not found with username: " + user.getUsername());

@@ -1,7 +1,7 @@
 package com.grpc.hrm.config;
 
 
-import com.grpc.hrm.dto.LoginDto;
+import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.LeaveRequestModel;
 import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.model.TaxCalculation;
@@ -57,7 +57,7 @@ public interface MapperConfig {
         return UserRole.valueOf(role);
     }
 
-    LoginDto mapToLoginDto(LoginRequest loginRequest);
+    LoginModel mapToLoginDto(LoginRequest loginRequest);
 
     @Mapping(source = "leaveStatus", target = "status", qualifiedByName = "mapLeaveStatusToString")
     LeaveRequestModel mapTOLeaveRequestModel(LeaveRequest leaveRequest);
