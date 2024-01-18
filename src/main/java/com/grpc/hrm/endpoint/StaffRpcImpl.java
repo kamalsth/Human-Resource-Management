@@ -63,10 +63,7 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
     @Override
     public void removeStaff(StaffRequestById request, StreamObserver<StatusResponse> responseObserver) {
         try {
-            staffFacade.deleteStaff(request.getStaffId());
-            responseObserver.onNext(StatusResponse.newBuilder()
-                    .setStatus("Staff deleted successfully!!")
-                    .build());
+            responseObserver.onNext(staffFacade.deleteStaff(request.getStaffId()));
             responseObserver.onCompleted();
         } catch (RuntimeException e) {
             responseObserver.onError(e);
@@ -77,9 +74,7 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
     @Override
     public void taxCalculation(StaffRequestById request, StreamObserver<TaxResponse> responseObserver) {
         try {
-            responseObserver.onNext(TaxResponse.newBuilder()
-                    .setTotalTax(staffFacade.taxCalculation(request.getStaffId()))
-                    .build());
+            responseObserver.onNext(staffFacade.taxCalculation(request.getStaffId()));
             responseObserver.onCompleted();
         } catch (RuntimeException e) {
             responseObserver.onError(e);

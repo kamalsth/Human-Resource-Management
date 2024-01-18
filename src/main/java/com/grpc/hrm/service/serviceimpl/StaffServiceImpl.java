@@ -2,9 +2,7 @@ package com.grpc.hrm.service.serviceimpl;
 
 import com.grpc.hrm.model.MaritalStatus;
 import com.grpc.hrm.model.Staff;
-import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.StaffRepository;
-import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.GenerateUUID;
 import com.grpc.hrm.utils.TaxCalculation;
@@ -15,26 +13,25 @@ import java.util.List;
 @Service
 public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
-    private final UserRepository userRepository;
 
-    public StaffServiceImpl(StaffRepository staffRepository, UserRepository userRepository) {
+    public StaffServiceImpl(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
-        this.userRepository = userRepository;
     }
+
 
     @Override
     public Staff saveStaff(Staff staff) {
-        String emergencyContactNumber = staffRepository.getEmergencyContactNumber(staff.getName());
-        if (staff.getEmergencyContactNumber().equals(emergencyContactNumber)) {
-            throw new RuntimeException("User already exists with this Emergency contact number : " + staff.getEmergencyContactNumber());
+        Staff existingStaffWithEmail = staffRepository.getStaffByEmail(staff.getEmail());
+        if (existingStaffWithEmail != null) {
+            throw new RuntimeException("Staff already exists with this email : " + staff.getEmail());
         }
+
+        Staff existingStaff = staffRepository.getStaffByEmergencyContactNumber(staff.getEmergencyContactNumber());
+        if (existingStaff != null) {
+            throw new RuntimeException("Staff already exists with this emergency contact number : " + staff.getEmergencyContactNumber());
+        }
+
         staff.setStaffId(GenerateUUID.generateID());
-        User user = userRepository.getUserByEmail(staff.getEmail());
-        if (user == null) {
-            staff.setUserId(null);
-        }
-        assert user != null;
-        staff.setUserId(user.getUserId());
 
         return staffRepository.saveStaff(staff);
     }
@@ -105,20 +102,20 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public com.grpc.hrm.model.TaxCalculation calculateTax(String staffId) {
         Staff staff = staffRepository.getStaffById(staffId);
-        var tax= 0.0;
+        var tax = 0.0;
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
         }
         if (staff.getMaritalStatus().equals(MaritalStatus.MARRIED)) {
-             tax= TaxCalculation.taxCalculationPerYearForMarried(staff);
-        }else {
+            tax = TaxCalculation.taxCalculationPerYearForMarried(staff);
+        } else {
             tax = TaxCalculation.taxCalculationPerYearForUnmarried(staff);
         }
 
         return new com.grpc.hrm.model.TaxCalculation(staff.getName(),
                 staff.getMaritalStatus().name(),
                 staff.getSalary(),
-                staff.getSalary()*12,
+                staff.getSalary() * 12,
                 tax);
     }
 

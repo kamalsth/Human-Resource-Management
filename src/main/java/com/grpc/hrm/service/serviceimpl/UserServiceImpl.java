@@ -4,7 +4,7 @@ import com.grpc.hrm.config.JwtAuthProvider;
 import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.config.JwtTokenUtil;
 import com.grpc.hrm.config.PasswordEncoder;
-import com.grpc.hrm.dto.LoginDto;
+import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.Role;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final JwtAuthProvider jwtAuthProvider;
-    private final Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository, JwtTokenUtil jwtTokenUtil, JwtAuthProvider jwtAuthProvider) {
         this.userRepository = userRepository;
@@ -35,8 +35,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(User user) {
         User existingUser = userRepository.getUserByUsername(user.getUsername());
-        if(existingUser != null){
+        if (existingUser != null) {
             throw new RuntimeException("User already exists for username : " + user.getUsername());
+        }
+
+        User existingUserByEmail = userRepository.getUserByEmail(user.getEmail());
+        if (existingUserByEmail != null) {
+            throw new RuntimeException("User already exists for email : " + user.getEmail());
         }
 
         user.setUserId(GenerateUUID.generateID());
@@ -47,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     //Login
     @Override
-    public JwtTokenResponse login(LoginDto user) {
+    public JwtTokenResponse login(LoginModel user) {
         UserDetails userDetails = jwtAuthProvider.loadUserByUsername(user.getUsername());
         if (userDetails == null) {
             throw new UsernameNotFoundException("User not found with username: " + user.getUsername());

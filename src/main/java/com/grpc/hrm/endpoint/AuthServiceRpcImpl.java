@@ -22,10 +22,10 @@ public class AuthServiceRpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
-        try{
+        try {
             responseObserver.onNext(userFacade.login(request));
             responseObserver.onCompleted();
-        }catch (UsernameNotFoundException | BadCredentialsException | IllegalArgumentException e){
+        } catch (UsernameNotFoundException | BadCredentialsException | IllegalArgumentException e) {
             responseObserver.onError(e);
         }
 
@@ -33,10 +33,10 @@ public class AuthServiceRpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void register(RegisterRequest request, StreamObserver<StatusResponse> responseObserver) {
-        try{
-        responseObserver.onNext(userFacade.register(request.getUser()));
-        responseObserver.onCompleted();
-        }catch (IllegalArgumentException | NullPointerException e){
+        try {
+            responseObserver.onNext(userFacade.register(request.getUser()));
+            responseObserver.onCompleted();
+        } catch (IllegalArgumentException | NullPointerException e) {
             responseObserver.onError(e);
         }
     }

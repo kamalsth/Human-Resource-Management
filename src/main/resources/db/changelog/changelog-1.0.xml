@@ -68,19 +68,8 @@
             <column name="marital_status" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <!-- Adding foreign key -->
-            <column name="user_id" type="CHAR(32)">
-                <constraints nullable="false"/>
-            </column>
-<!--            <fkConstraint foreignKeyColumns="user_id" baseTableName="users" baseColumnNames="user_id" referencedTableName="staff" referencedColumnNames="staff_id"/>-->
         </createTable>
-        <addForeignKeyConstraint
-                baseColumnNames="user_id"
-                baseTableName="staff"
-                constraintName="fk_user_id"
-                referencedColumnNames="user_id"
-                referencedTableName="users"
-                onDelete="CASCADE"/>
+
     </changeSet>
 
     <changeSet id="3" author="kamal">

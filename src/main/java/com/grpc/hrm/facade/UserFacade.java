@@ -1,7 +1,7 @@
 package com.grpc.hrm.facade;
 
 import com.grpc.hrm.config.MapperConfig;
-import com.grpc.hrm.dto.LoginDto;
+import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.service.UserService;
 import com.grpc.hrm.utils.ValidateUserLogin;
@@ -30,9 +30,9 @@ public class UserFacade {
 
     public LoginResponse login(LoginRequest loginRequest) {
         ValidateUserLogin.validateUserLogin(loginRequest);
-        LoginDto loginDto = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
+        LoginModel loginModel = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
         return  LoginResponse.newBuilder()
-                .setToken(userService.login(loginDto).getToken())
+                .setToken(userService.login(loginModel).getToken())
                 .build();
     }
 

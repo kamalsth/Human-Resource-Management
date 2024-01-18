@@ -3,6 +3,7 @@ package com.grpc.hrm.facade;
 import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.model.LeaveRequestModel;
 import com.grpc.hrm.service.LeaveService;
+import com.ks.proto.common.StatusResponse;
 import com.ks.proto.leave.ConfirmLeaveRequest;
 import com.ks.proto.leave.LeaveRequest;
 import com.ks.proto.leave.LeaveResponse;
@@ -39,12 +40,17 @@ public class LeaveFacade {
         return MapperConfig.INSTANCE.mapToLeaveRequestProto(leaveRequestModel);
     }
 
-    public void deleteLeaveRequest(String id) {
+    public StatusResponse deleteLeaveRequest(String id) {
         leaveService.deleteLeaveRequest(id);
+        return StatusResponse.newBuilder()
+                .setStatus("Leave request deleted successfully")
+                .build();
     }
 
-    public void confirmLeaveRequest(ConfirmLeaveRequest request) {
-        com.grpc.hrm.model.ConfirmLeaveRequest confirmLeaveRequest = MapperConfig.INSTANCE.mapToConfirmLeaveRequest(request);
-        leaveService.confirmLeaveRequest(confirmLeaveRequest);
+    public StatusResponse confirmLeaveRequest(ConfirmLeaveRequest request) {
+        leaveService.confirmLeaveRequest(MapperConfig.INSTANCE.mapToConfirmLeaveRequest(request));
+        return StatusResponse.newBuilder()
+                .setStatus("Leave request confirmed successfully")
+                .build();
     }
 }
