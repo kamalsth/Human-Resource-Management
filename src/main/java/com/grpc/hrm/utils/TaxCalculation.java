@@ -9,6 +9,14 @@ public class TaxCalculation {
         double totalSalary = staff.getSalary() * 12;
         double tax = 0.0;
 
+        double socialSecurityFund=0.0;
+        double employeeProvidentFund=0.0;
+        double citizenInvestmentTrust=0.0;
+        double insurance=0.0;
+        double totalDeduction=0.0;
+
+
+
         if (totalSalary <= 500000) {
             tax = totalSalary * 0.01;
         } else if (totalSalary <= 700000) {
