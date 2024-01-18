@@ -12,10 +12,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @GrpcService
-public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
+public class AuthServiceRpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
     private final UserFacade userFacade;
 
-    public AuthServiceGrpcImpl(UserFacade userFacade) {
+    public AuthServiceRpcImpl(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 

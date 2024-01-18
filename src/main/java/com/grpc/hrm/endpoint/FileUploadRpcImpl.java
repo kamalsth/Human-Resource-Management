@@ -9,12 +9,12 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
-public class FileUploadGrpcImpl extends FileUploadServiceGrpc.FileUploadServiceImplBase {
+public class FileUploadRpcImpl extends FileUploadServiceGrpc.FileUploadServiceImplBase {
 
 
     private final StaffFacade staffFacade;
 
-    public FileUploadGrpcImpl(StaffFacade staffFacade) {
+    public FileUploadRpcImpl(StaffFacade staffFacade) {
         this.staffFacade = staffFacade;
     }
 
