@@ -6,12 +6,12 @@ public class LeaveRequestModel {
     private String to;
     private String subject;
     private LeaveStatus status;
-    private int userId;
+    private String userId;
 
     public LeaveRequestModel() {
     }
 
-    public LeaveRequestModel(String id, String from, String to, String subject, LeaveStatus status, int userId) {
+    public LeaveRequestModel(String id, String from, String to, String subject, LeaveStatus status, String userId) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -60,11 +60,11 @@ public class LeaveRequestModel {
         this.status = status;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

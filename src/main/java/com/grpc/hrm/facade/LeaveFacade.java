@@ -19,7 +19,6 @@ public class LeaveFacade {
     }
 
     public LeaveResponse leaveRequest(LeaveRequest leaveRequest) {
-        System.out.println("facade");
         LeaveRequestModel leaveRequestModel = MapperConfig.INSTANCE.mapTOLeaveRequestModel(leaveRequest);
         return MapperConfig.INSTANCE.mapToLeaveRequestProto(leaveService.leaveRequest(leaveRequestModel));
     }

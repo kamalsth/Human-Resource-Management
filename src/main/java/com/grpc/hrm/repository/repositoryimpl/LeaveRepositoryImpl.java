@@ -38,7 +38,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
                 preparedStatement.setString(3, leaveRequestModel.getTo());
                 preparedStatement.setString(4, leaveRequestModel.getSubject());
                 preparedStatement.setString(5, leaveRequestModel.getStatus().name());
-                preparedStatement.setInt(6, leaveRequestModel.getUserId());
+                preparedStatement.setString(6, leaveRequestModel.getUserId());
 
                 preparedStatement.executeUpdate();
 
@@ -171,7 +171,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     }
 
     @Override
-    public int getUserIdFromUsername(String username) {
+    public String getUserIdFromUsername(String username) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             String sql = "SELECT user_id FROM users WHERE username = ?";
@@ -181,7 +181,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         logger.info("User id fetched successfully");
-                        return resultSet.getInt("user_id");
+                        return resultSet.getString("user_id");
                     }
                 } catch (SQLException e) {
                     logger.error("Error executing the SQL query" + e.getMessage());
@@ -191,7 +191,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
         }
-        return 0;
+        return null;
     }
 
     private LeaveRequestModel mapToLeaveRequestModel(ResultSet resultSet) throws SQLException {
@@ -201,6 +201,6 @@ public class LeaveRepositoryImpl implements LeaveRepository {
                 resultSet.getString("to"),
                 resultSet.getString("subject"),
                 LeaveStatus.valueOf(resultSet.getString("status")),
-                resultSet.getInt("user_id"));
+                resultSet.getString("user_id"));
     }
 }

@@ -1,12 +1,14 @@
 package com.grpc.hrm.facade;
 
-import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.dto.LoginDto;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.service.UserService;
 import com.grpc.hrm.utils.ValidateUserLogin;
+import com.grpc.hrm.utils.ValidateUsersForRegister;
 import com.ks.proto.auth.LoginRequest;
+import com.ks.proto.auth.LoginResponse;
+import com.ks.proto.common.StatusResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,26 +19,22 @@ public class UserFacade {
         this.userService = userService;
     }
 
-    public void register(com.ks.proto.user.User user) {
-        validateUsersForRegister(user);
+    public StatusResponse register(com.ks.proto.user.User user) {
+        ValidateUsersForRegister.validateUsersForRegister(user);
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
         userService.register(user1);
+        return StatusResponse.newBuilder()
+                .setStatus("User registered successfully!!")
+                .build();
     }
 
-    public JwtTokenResponse login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) {
         ValidateUserLogin.validateUserLogin(loginRequest);
         LoginDto loginDto = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
-        return  userService.login(loginDto);
+        return  LoginResponse.newBuilder()
+                .setToken(userService.login(loginDto).getToken())
+                .build();
     }
 
-
-    public void validateUsersForRegister(com.ks.proto.user.User user){
-        if(user==null){
-            throw new NullPointerException("User is null");
-        }
-        if(user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Fields should not be empty");
-        }
-    }
 
 }

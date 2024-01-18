@@ -18,5 +18,5 @@ public interface LeaveRepository {
     void confirmLeaveRequest(LeaveRequestModel leaveRequestModel);
 
 
-    int getUserIdFromUsername(String username);
+    String getUserIdFromUsername(String username);
 }

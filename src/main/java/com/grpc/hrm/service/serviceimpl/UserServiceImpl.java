@@ -9,6 +9,7 @@ import com.grpc.hrm.model.Role;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.UserService;
+import com.grpc.hrm.utils.GenerateUUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService {
         if(existingUser != null){
             throw new RuntimeException("User already exists for username : " + user.getUsername());
         }
+
+        user.setUserId(GenerateUUID.generateID());
         user.setRole(Role.MEMBER);
         user.setPassword(hashPassword(user.getPassword()));
         userRepository.register(user);
@@ -59,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(String userId) {
         User user = userRepository.getUserById(userId);
         if (user == null) {
             throw new RuntimeException("User not found for user id : " + userId);
@@ -69,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUser(int userId, User user) {
+    public void updateUser(String userId, User user) {
         User user1 = userRepository.getUserById(userId);
         if (user1 == null) {
             throw new RuntimeException("User not found for user id : " + userId);
@@ -78,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public void deleteUser(String userId) {
         User user = userRepository.getUserById(userId);
         if (user == null) {
             throw new RuntimeException("User not found for user id : " + userId);

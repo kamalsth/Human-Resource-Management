@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class User {
-    private int userId;
+    private String userId;
     private String username;
     private String password;
     private String name;
@@ -17,7 +17,7 @@ public class User {
     private Role role;
 
 
-    public User(int userId, String username, String password, String name, String email, String phone, Role role) {
+    public User(String userId, String username, String password, String name, String email, String phone, Role role) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -27,11 +27,11 @@ public class User {
         this.role = role;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

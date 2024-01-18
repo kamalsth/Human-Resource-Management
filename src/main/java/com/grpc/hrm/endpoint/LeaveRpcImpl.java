@@ -9,10 +9,10 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
-public class LeaveGrpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
+public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
     private final LeaveFacade leaveFacade;
 
-    public LeaveGrpcImpl(LeaveFacade leaveFacade) {
+    public LeaveRpcImpl(LeaveFacade leaveFacade) {
         this.leaveFacade = leaveFacade;
     }
 

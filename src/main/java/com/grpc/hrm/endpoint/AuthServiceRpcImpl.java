@@ -1,6 +1,5 @@
 package com.grpc.hrm.endpoint;
 
-import com.grpc.hrm.config.JwtTokenResponse;
 import com.grpc.hrm.facade.UserFacade;
 import com.ks.proto.auth.AuthServiceGrpc;
 import com.ks.proto.auth.LoginRequest;
@@ -13,10 +12,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @GrpcService
-public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
+public class AuthServiceRpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
     private final UserFacade userFacade;
 
-    public AuthServiceGrpcImpl(UserFacade userFacade) {
+    public AuthServiceRpcImpl(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 
@@ -24,10 +23,7 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
         try{
-            JwtTokenResponse jwtTokenResponse = userFacade.login(request);
-            responseObserver.onNext(LoginResponse.newBuilder()
-                    .setToken(jwtTokenResponse.getToken())
-                    .build());
+            responseObserver.onNext(userFacade.login(request));
             responseObserver.onCompleted();
         }catch (UsernameNotFoundException | BadCredentialsException | IllegalArgumentException e){
             responseObserver.onError(e);
@@ -38,10 +34,7 @@ public class AuthServiceGrpcImpl extends AuthServiceGrpc.AuthServiceImplBase {
     @Override
     public void register(RegisterRequest request, StreamObserver<StatusResponse> responseObserver) {
         try{
-        userFacade.register(request.getUser());
-        responseObserver.onNext(StatusResponse.newBuilder()
-                .setStatus("User registered successfully!!")
-                .build());
+        responseObserver.onNext(userFacade.register(request.getUser()));
         responseObserver.onCompleted();
         }catch (IllegalArgumentException | NullPointerException e){
             responseObserver.onError(e);
