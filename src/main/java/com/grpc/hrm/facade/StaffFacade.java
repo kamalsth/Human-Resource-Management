@@ -5,6 +5,7 @@ import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.ValidateStaff;
 import com.ks.proto.staff.StaffResponse;
+import com.ks.proto.staff.TaxCalResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +54,10 @@ public class StaffFacade {
 
     public double taxCalculation(String staffId) {
         return staffService.taxCalculation(staffId);
+    }
+
+    public TaxCalResponse calculateTax(String staffId) {
+
+        return MapperConfig.INSTANCE.mapToProtoTax(staffService.calculateTax(staffId));
     }
 }

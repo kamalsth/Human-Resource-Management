@@ -102,5 +102,25 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+    @Override
+    public com.grpc.hrm.model.TaxCalculation calculateTax(String staffId) {
+        Staff staff = staffRepository.getStaffById(staffId);
+        var tax= 0.0;
+        if (staff == null) {
+            throw new RuntimeException("Staff not found for staff id : " + staffId);
+        }
+        if (staff.getMaritalStatus().equals(MaritalStatus.MARRIED)) {
+             tax= TaxCalculation.taxCalculationPerYearForMarried(staff);
+        }else {
+            tax = TaxCalculation.taxCalculationPerYearForUnmarried(staff);
+        }
+
+        return new com.grpc.hrm.model.TaxCalculation(staff.getName(),
+                staff.getMaritalStatus().name(),
+                staff.getSalary(),
+                staff.getSalary()*12,
+                tax);
+    }
+
 
 }

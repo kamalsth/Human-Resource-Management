@@ -4,11 +4,13 @@ package com.grpc.hrm.config;
 import com.grpc.hrm.dto.LoginDto;
 import com.grpc.hrm.model.LeaveRequestModel;
 import com.grpc.hrm.model.Staff;
+import com.grpc.hrm.model.TaxCalculation;
 import com.grpc.hrm.model.User;
 import com.ks.proto.auth.LoginRequest;
 import com.ks.proto.leave.*;
 import com.ks.proto.staff.MaritalStatus;
 import com.ks.proto.staff.StaffResponse;
+import com.ks.proto.staff.TaxCalResponse;
 import com.ks.proto.user.UserRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -80,5 +82,5 @@ public interface MapperConfig {
     com.grpc.hrm.model.ConfirmLeaveRequest mapToConfirmLeaveRequest(ConfirmLeaveRequest request);
 
 
-
+    TaxCalResponse mapToProtoTax(TaxCalculation taxCalculation);
 }
