@@ -4,9 +4,11 @@ import com.grpc.hrm.config.MapperConfig;
 import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.ValidateStaff;
+import com.ks.proto.common.StatusResponse;
 import com.ks.proto.staff.FileUploadResponse;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.staff.TaxCalResponse;
+import com.ks.proto.staff.TaxResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +42,11 @@ public class StaffFacade {
         return MapperConfig.INSTANCE.mapToProto(staffService.updateStaff(staffId, staff1));
     }
 
-    public void deleteStaff(String staffId) {
+    public StatusResponse deleteStaff(String staffId) {
         staffService.deleteStaff(staffId);
+        return StatusResponse.newBuilder()
+                .setStatus("Staff deleted successfully!!")
+                .build();
     }
 
     public FileUploadResponse addFileByStaffId(String staffId, String filePath) {
@@ -63,8 +68,10 @@ public class StaffFacade {
     }
 
 
-    public double taxCalculation(String staffId) {
-        return staffService.taxCalculation(staffId);
+    public TaxResponse taxCalculation(String staffId) {
+        return TaxResponse.newBuilder()
+                .setTotalTax(staffService.taxCalculation(staffId))
+                .build();
     }
 
     public TaxCalResponse calculateTax(String staffId) {
