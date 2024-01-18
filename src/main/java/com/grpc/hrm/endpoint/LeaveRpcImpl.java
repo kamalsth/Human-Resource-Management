@@ -44,19 +44,13 @@ public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
 
     @Override
     public void deleteLeave(LeaveRequestById request, StreamObserver<StatusResponse> responseObserver) {
-        leaveFacade.deleteLeaveRequest(request.getId());
-        responseObserver.onNext(StatusResponse.newBuilder()
-                .setStatus("Leave request deleted successfully")
-                .build());
+        responseObserver.onNext(leaveFacade.deleteLeaveRequest(request.getId()));
         responseObserver.onCompleted();
     }
 
     @Override
     public void confirmLeave(ConfirmLeaveRequest request, StreamObserver<StatusResponse> responseObserver) {
-        leaveFacade.confirmLeaveRequest(request);
-        responseObserver.onNext(StatusResponse.newBuilder()
-                .setStatus("Leave request confirmed successfully")
-                .build());
+        responseObserver.onNext(leaveFacade.confirmLeaveRequest(request));
         responseObserver.onCompleted();
     }
 }
