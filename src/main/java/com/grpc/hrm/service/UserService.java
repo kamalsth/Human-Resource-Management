@@ -5,10 +5,14 @@ import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.User;
 
 public interface UserService {
-    public void register(User user);
-    public JwtTokenResponse login(LoginModel loginModel);
-    public User getUserById(String userId);
-    public void updateUser(String userId,User user);
-    public void deleteUser(String userId);
+    void register(User user);
+
+    JwtTokenResponse login(LoginModel loginModel);
+
+    User getUserById(String userId);
+
+    void updateUser(String userId, User user);
+
+    void deleteUser(String userId);
 
 }

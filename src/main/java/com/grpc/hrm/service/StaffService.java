@@ -6,14 +6,19 @@ import com.grpc.hrm.model.TaxCalculation;
 import java.util.List;
 
 public interface StaffService {
-    public Staff saveStaff(Staff staff);
-    public Staff getStaffById(String staffId);
-    public List<Staff> getAllStaff();
-    public Staff updateStaff(String staffId,Staff staff);
-    public void deleteStaff(String staffId);
+    Staff saveStaff(Staff staff);
 
-    public void addFileByStaffId(String staffId,String filePath);
-    public void addImageByStaffId(String staffId,String filePath);
+    Staff getStaffById(String staffId);
+
+    List<Staff> getAllStaff();
+
+    Staff updateStaff(String staffId, Staff staff);
+
+    void deleteStaff(String staffId);
+
+    void addFileByStaffId(String staffId, String filePath);
+
+    void addImageByStaffId(String staffId, String filePath);
 
     double taxCalculation(String staffId);
 

@@ -4,13 +4,17 @@ import com.grpc.hrm.model.User;
 
 public interface UserRepository {
 
-    public void register(User user);
-    public User getUserById(String userId);
-    public User getUserByUsername(String username);
-    public void updateUser(String userId,User user);
-    public void deleteUser(String userId);
+    void register(User user);
 
-    public String getRoleByUsername(String username);
+    User getUserById(String userId);
+
+    User getUserByUsername(String username);
+
+    void updateUser(String userId, User user);
+
+    void deleteUser(String userId);
+
+    String getRoleByUsername(String username);
 
     User getUserByEmail(String email);
 }
