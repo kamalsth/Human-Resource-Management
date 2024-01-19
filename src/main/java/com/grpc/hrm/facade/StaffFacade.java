@@ -1,6 +1,6 @@
 package com.grpc.hrm.facade;
 
-import com.grpc.hrm.config.MapperConfig;
+import com.grpc.hrm.mapper.MapperConfig;
 import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.ValidateStaff;
