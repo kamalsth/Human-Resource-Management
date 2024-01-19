@@ -5,20 +5,20 @@ import com.grpc.hrm.model.Staff;
 import java.util.List;
 
 public interface StaffRepository {
-    public Staff saveStaff(Staff staff);
+    Staff saveStaff(Staff staff);
 
-    public Staff getStaffById(String staffId);
+    Staff getStaffById(String staffId);
 
-    public List<Staff> getAllStaff();
+    List<Staff> getAllStaff();
 
-    public Staff updateStaff(String staffId, Staff staff);
+    Staff updateStaff(String staffId, Staff staff);
 
-    public void deleteStaff(String staffId);
+    void deleteStaff(String staffId);
 
-    public void addFileByStaffId(String staffId, String filePath);
+    void addFileByStaffId(String staffId, String filePath);
 
 
-    public void addImageByStaffId(String staffId, String filePath);
+    void addImageByStaffId(String staffId, String filePath);
 
     Staff getStaffByEmail(String email);
 
