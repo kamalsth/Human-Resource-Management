@@ -34,8 +34,8 @@ public class LeaveRepositoryImpl implements LeaveRepository {
             String sql = "INSERT INTO leave_request (id, `from`, `to`, subject, `status`, user_id) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, leaveRequestModel.getId());
-                preparedStatement.setString(2, leaveRequestModel.getFrom());
-                preparedStatement.setString(3, leaveRequestModel.getTo());
+                preparedStatement.setLong(2, leaveRequestModel.getFrom());
+                preparedStatement.setLong(3, leaveRequestModel.getTo());
                 preparedStatement.setString(4, leaveRequestModel.getSubject());
                 preparedStatement.setString(5, leaveRequestModel.getStatus().name());
                 preparedStatement.setString(6, leaveRequestModel.getUserId());
@@ -111,8 +111,8 @@ public class LeaveRepositoryImpl implements LeaveRepository {
             logger.info("Connected to the database");
             String sql = "UPDATE leave_request SET `from` = ?, `to` = ?, subject = ? WHERE id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, leaveRequestModel.getFrom());
-                preparedStatement.setString(2, leaveRequestModel.getTo());
+                preparedStatement.setLong(1, leaveRequestModel.getFrom());
+                preparedStatement.setLong(2, leaveRequestModel.getTo());
                 preparedStatement.setString(3, leaveRequestModel.getSubject());
                 preparedStatement.setString(4, id);
 
@@ -199,8 +199,8 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     private LeaveRequestModel mapToLeaveRequestModel(ResultSet resultSet) throws SQLException {
         return new LeaveRequestModel(
                 resultSet.getString("id"),
-                resultSet.getString("from"),
-                resultSet.getString("to"),
+                resultSet.getLong("from"),
+                resultSet.getLong("to"),
                 resultSet.getString("subject"),
                 LeaveStatus.valueOf(resultSet.getString("status")),
                 resultSet.getString("user_id"));

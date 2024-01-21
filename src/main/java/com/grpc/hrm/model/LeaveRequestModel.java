@@ -2,8 +2,8 @@ package com.grpc.hrm.model;
 
 public class LeaveRequestModel {
     private String id;
-    private String from;
-    private String to;
+    private long from;
+    private long to;
     private String subject;
     private LeaveStatus status;
     private String userId;
@@ -11,7 +11,7 @@ public class LeaveRequestModel {
     public LeaveRequestModel() {
     }
 
-    public LeaveRequestModel(String id, String from, String to, String subject, LeaveStatus status, String userId) {
+    public LeaveRequestModel(String id, long from, long to, String subject, LeaveStatus status, String userId) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -28,19 +28,19 @@ public class LeaveRequestModel {
         this.id = id;
     }
 
-    public String getFrom() {
+    public long getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(long from) {
         this.from = from;
     }
 
-    public String getTo() {
+    public long getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(long to) {
         this.to = to;
     }
 

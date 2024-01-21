@@ -105,6 +105,17 @@
 
     </changeSet>
 
+        <changeSet id="4" author="kamal">
+            <modifyDataType tableName="staff" columnName="join_date" newDataType="BIGINT"/>
+            <modifyDataType tableName="staff" columnName="contact_renew_date" newDataType="BIGINT"/>
+        </changeSet>
+
+
+    <changeSet id="5" author="kamal">
+        <modifyDataType tableName="leave_request" columnName="from" newDataType="BIGINT"/>
+        <modifyDataType tableName="leave_request" columnName="to" newDataType="BIGINT"/>
+    </changeSet>
+
 
     <!--    <changeSet id="1" author="kamal">-->
 <!--        <createTable tableName="staff">-->
