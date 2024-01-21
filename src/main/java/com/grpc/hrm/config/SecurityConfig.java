@@ -32,14 +32,14 @@ import java.util.List;
 
 
 @Configuration
-public class SecurityConifg {
+public class SecurityConfig {
 
 
     private final JwtAuthProvider jwtAuthProvider;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
 
-    public SecurityConifg(JwtAuthProvider jwtAuthProvider, JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {
+    public SecurityConfig(JwtAuthProvider jwtAuthProvider, JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
