@@ -111,6 +111,12 @@
         </changeSet>
 
 
+    <changeSet id="5" author="kamal">
+        <modifyDataType tableName="leave_request" columnName="from" newDataType="BIGINT"/>
+        <modifyDataType tableName="leave_request" columnName="to" newDataType="BIGINT"/>
+    </changeSet>
+
+
     <!--    <changeSet id="1" author="kamal">-->
 <!--        <createTable tableName="staff">-->
 <!--            <column name="staff_id" type="INT" autoIncrement="true">-->
