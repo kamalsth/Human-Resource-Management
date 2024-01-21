@@ -1,4 +1,4 @@
-package com.grpc.hrm.config;
+package com.grpc.hrm.jwt;
 
 public class JwtTokenResponse {
     private String token;

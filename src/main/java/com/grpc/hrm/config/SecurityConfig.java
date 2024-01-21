@@ -1,5 +1,7 @@
 package com.grpc.hrm.config;
 
+import com.grpc.hrm.jwt.JwtAuthProvider;
+import com.grpc.hrm.jwt.JwtTokenUtil;
 import com.grpc.hrm.model.Role;
 import com.ks.proto.auth.AuthServiceGrpc;
 import com.ks.proto.leave.LeaveServiceGrpc;

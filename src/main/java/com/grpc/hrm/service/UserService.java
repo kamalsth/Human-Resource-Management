@@ -1,6 +1,6 @@
 package com.grpc.hrm.service;
 
-import com.grpc.hrm.config.JwtTokenResponse;
+import com.grpc.hrm.jwt.JwtTokenResponse;
 import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.User;
 

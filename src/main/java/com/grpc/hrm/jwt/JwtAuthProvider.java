@@ -1,5 +1,6 @@
-package com.grpc.hrm.config;
+package com.grpc.hrm.jwt;
 
+import com.grpc.hrm.config.CustomUserDetails;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -1,4 +1,4 @@
-package com.grpc.hrm.config;
+package com.grpc.hrm.jwt;
 
 
 import io.jsonwebtoken.Claims;
@@ -43,7 +43,7 @@ public class JwtTokenUtil {
                 .getPayload();
     }
 
-    String extractUsername(String token) throws SignatureException {
+    public String extractUsername(String token) throws SignatureException {
         return extractAllClaims(token).getSubject();
     }
 
