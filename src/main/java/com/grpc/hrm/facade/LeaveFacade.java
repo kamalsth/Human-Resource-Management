@@ -1,6 +1,6 @@
 package com.grpc.hrm.facade;
 
-import com.grpc.hrm.config.MapperConfig;
+import com.grpc.hrm.mapper.MapperConfig;
 import com.grpc.hrm.model.LeaveRequestModel;
 import com.grpc.hrm.service.LeaveService;
 import com.ks.proto.common.StatusResponse;

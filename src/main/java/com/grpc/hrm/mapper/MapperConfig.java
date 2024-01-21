@@ -1,4 +1,4 @@
-package com.grpc.hrm.config;
+package com.grpc.hrm.mapper;
 
 
 import com.grpc.hrm.model.LoginModel;
