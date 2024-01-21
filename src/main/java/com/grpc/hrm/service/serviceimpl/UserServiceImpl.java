@@ -1,8 +1,8 @@
 package com.grpc.hrm.service.serviceimpl;
 
-import com.grpc.hrm.config.JwtAuthProvider;
-import com.grpc.hrm.config.JwtTokenResponse;
-import com.grpc.hrm.config.JwtTokenUtil;
+import com.grpc.hrm.jwt.JwtAuthProvider;
+import com.grpc.hrm.jwt.JwtTokenResponse;
+import com.grpc.hrm.jwt.JwtTokenUtil;
 import com.grpc.hrm.config.PasswordEncoder;
 import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.Role;
