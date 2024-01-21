@@ -1,7 +1,6 @@
 package com.grpc.hrm.endpoint;
 
 
-import com.google.protobuf.Empty;
 import com.grpc.hrm.facade.LeaveFacade;
 import com.ks.proto.common.StatusResponse;
 import com.ks.proto.leave.*;
@@ -23,9 +22,9 @@ public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
     }
 
     @Override
-    public void getLeaveList(Empty request, StreamObserver<LeaveListResponse> responseObserver) {
+    public void getLeaveList(LeaveListRequest request, StreamObserver<LeaveListResponse> responseObserver) {
         responseObserver.onNext(LeaveListResponse.newBuilder()
-                        .addAllLeaveResponse(leaveFacade.getAllLeaveRequest())
+                        .addAllLeaveResponse(leaveFacade.getAllLeaveRequest(request.getPageNumber(),request.getPageSize()))
                 .build());
     }
 

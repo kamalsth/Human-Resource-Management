@@ -7,7 +7,7 @@ import java.util.List;
 public interface LeaveRepository {
     LeaveRequestModel leaveRequest(LeaveRequestModel leaveRequestModel);
 
-    List<LeaveRequestModel> getAllLeaveRequest();
+    List<LeaveRequestModel> getAllLeaveRequest(int pageNumber, int pageSize);
 
     LeaveRequestModel getLeaveRequestById(String id);
 
