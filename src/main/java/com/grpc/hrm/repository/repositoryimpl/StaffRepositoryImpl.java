@@ -35,8 +35,8 @@ public class StaffRepositoryImpl implements StaffRepository {
                 preparedStatement.setString(5, staff.getPosition());
                 preparedStatement.setString(6, staff.getCitizenshipPhoto());
                 preparedStatement.setString(7, staff.getContactDocPdf());
-                preparedStatement.setString(8, staff.getJoinDate());
-                preparedStatement.setString(9, staff.getContactRenewDate());
+                preparedStatement.setLong(8, staff.getJoinDate());
+                preparedStatement.setLong(9, staff.getContactRenewDate());
                 preparedStatement.setDouble(10, staff.getSalary());
                 preparedStatement.setString(11, staff.getMaritalStatus().name());
                 preparedStatement.setString(12, staff.getEmail());
@@ -127,8 +127,8 @@ public class StaffRepositoryImpl implements StaffRepository {
                 preparedStatement.setString(4, staff.getPosition());
                 preparedStatement.setString(5, staff.getCitizenshipPhoto());
                 preparedStatement.setString(6, staff.getContactDocPdf());
-                preparedStatement.setString(7, staff.getJoinDate());
-                preparedStatement.setString(8, staff.getContactRenewDate());
+                preparedStatement.setLong(7, staff.getJoinDate());
+                preparedStatement.setLong(8, staff.getContactRenewDate());
                 preparedStatement.setDouble(9, staff.getSalary());
                 preparedStatement.setString(10, staff.getMaritalStatus().name());
                 preparedStatement.setString(11, staff.getEmail());
@@ -277,8 +277,8 @@ public class StaffRepositoryImpl implements StaffRepository {
         String position = resultSet.getString("position");
         String citizenshipPhoto = resultSet.getString("citizenship_photo");
         String contactDocPdf = resultSet.getString("contact_doc_pdf");
-        String joinDate = resultSet.getString("join_date");
-        String contactRenewDate = resultSet.getString("contact_renew_date");
+        long joinDate = resultSet.getLong("join_date");
+        long contactRenewDate = resultSet.getLong("contact_renew_date");
         double salary = resultSet.getDouble("salary");
         MaritalStatus maritalStatus = MaritalStatus.valueOf(resultSet.getString("marital_status"));
         String email = resultSet.getString("email");
