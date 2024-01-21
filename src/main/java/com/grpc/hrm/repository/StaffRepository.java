@@ -9,7 +9,7 @@ public interface StaffRepository {
 
     Staff getStaffById(String staffId);
 
-    List<Staff> getAllStaff();
+    List<Staff> getAllStaff(int pageNumber, int pageSize);
 
     Staff updateStaff(String staffId, Staff staff);
 

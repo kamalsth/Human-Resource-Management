@@ -90,12 +90,15 @@ public class StaffRepositoryImpl implements StaffRepository {
     }
 
     @Override
-    public List<Staff> getAllStaff() {
+    public List<Staff> getAllStaff(int pageNumber, int pageSize) {
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "SELECT * FROM staff";
+            String sql = "SELECT * FROM staff LIMIT ?, ?";
+
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, pageNumber * pageSize);
+                preparedStatement.setInt(2, pageSize);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                         staffList.add(mapToStaff(resultSet));

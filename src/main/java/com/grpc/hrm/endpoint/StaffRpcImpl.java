@@ -44,7 +44,7 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
     @Override
     public void getAllStaffInfo(StaffListRequest  request, StreamObserver<StaffListResponse> responseObserver) {
         responseObserver.onNext(StaffListResponse.newBuilder()
-                .addAllStaffList(staffFacade.getAllStaff())
+                .addAllStaffList(staffFacade.getAllStaff(request.getPageNumber(),request.getPageSize()))
                 .build());
         responseObserver.onCompleted();
     }

@@ -32,8 +32,8 @@ public class StaffFacade {
         return MapperConfig.INSTANCE.mapToProto(staffService.getStaffById(staffId));
     }
 
-    public List<com.ks.proto.staff.Staff> getAllStaff() {
-        List<Staff> staffs = staffService.getAllStaff();
+    public List<com.ks.proto.staff.Staff> getAllStaff(int pageNumber, int pageSize) {
+        List<Staff> staffs = staffService.getAllStaff(pageNumber,pageSize);
         return staffs.stream().map(MapperConfig.INSTANCE::mapToListProto).toList();
     }
 
