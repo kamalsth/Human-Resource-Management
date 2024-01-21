@@ -46,8 +46,8 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Staff> getAllStaff() {
-        return staffRepository.getAllStaff();
+    public List<Staff> getAllStaff(int pageNumber, int pageSize) {
+        return staffRepository.getAllStaff(pageNumber,pageSize);
     }
 
     @Override
