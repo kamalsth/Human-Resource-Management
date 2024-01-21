@@ -56,12 +56,14 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     }
 
     @Override
-    public List<LeaveRequestModel> getAllLeaveRequest() {
+    public List<LeaveRequestModel> getAllLeaveRequest(int pageNumber, int pageSize) {
         List<LeaveRequestModel> leaveRequestModelList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "SELECT * FROM leave_request";
+            String sql = "SELECT * FROM leave_request LIMIT ?, ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, pageNumber * pageSize);
+                preparedStatement.setInt(2, pageSize);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                         leaveRequestModelList.add(mapToLeaveRequestModel(resultSet));

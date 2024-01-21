@@ -31,8 +31,8 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<LeaveRequestModel> getAllLeaveRequest() {
-        return leaveRepository.getAllLeaveRequest();
+    public List<LeaveRequestModel> getAllLeaveRequest(int pageNumber, int pageSize) {
+        return leaveRepository.getAllLeaveRequest(pageNumber, pageSize);
     }
 
     @Override
