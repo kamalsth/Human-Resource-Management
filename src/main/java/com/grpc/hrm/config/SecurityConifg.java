@@ -93,14 +93,15 @@ public class SecurityConifg {
         source.set(AuthServiceGrpc.getLoginMethod(), AccessPredicate.permitAll());
         source.set(AuthServiceGrpc.getRegisterMethod(), AccessPredicate.permitAll());
 
-        source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
-        source.set(StaffServiceGrpc.getGetAllStaffInfoMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
-        source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
-        source.set(StaffServiceGrpc.getUpdateStaffMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
-        source.set(StaffServiceGrpc.getRemoveStaffMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(StaffServiceGrpc.getAddStaffMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.SUPER_ADMIN.name()));
+        source.set(StaffServiceGrpc.getGetAllStaffInfoMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.ADMIN.name()));
+        source.set(StaffServiceGrpc.getGetStaffInfoMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.ADMIN.name()));
+        source.set(StaffServiceGrpc.getUpdateStaffMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.ADMIN.name()));
+        source.set(StaffServiceGrpc.getRemoveStaffMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.ADMIN.name()));
 
-        source.set(FileUploadServiceGrpc.getUploadFileMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
-        source.set(FileUploadServiceGrpc.getUploadImageMethod(), AccessPredicate.hasRole(Role.SUPER_ADMIN.name()));
+        source.set(FileUploadServiceGrpc.getUploadFileMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.ADMIN.name()));
+        source.set(FileUploadServiceGrpc.getUploadImageMethod(), AccessPredicate.hasAnyRole(Role.SUPER_ADMIN.name(), Role.ADMIN.name()));
+
         source.set(LeaveServiceGrpc.getRequestLeaveMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
         source.set(LeaveServiceGrpc.getUpdateLeaveMethod(), AccessPredicate.hasRole(Role.MEMBER.name()));
 
