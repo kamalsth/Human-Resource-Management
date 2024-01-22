@@ -71,13 +71,5 @@ public class StaffRpcImpl extends StaffServiceGrpc.StaffServiceImplBase {
 
     }
 
-    @Override
-    public void taxCalculation(StaffRequestById request, StreamObserver<TaxResponse> responseObserver) {
-        try {
-            responseObserver.onNext(staffFacade.taxCalculation(request.getStaffId()));
-            responseObserver.onCompleted();
-        } catch (RuntimeException e) {
-            responseObserver.onError(e);
-        }
-    }
+
 }

@@ -20,7 +20,5 @@ public interface StaffService {
 
     void addImageByStaffId(String staffId, String filePath);
 
-    double taxCalculation(String staffId);
-
     TaxCalculation calculateTax(String staffId);
 }
