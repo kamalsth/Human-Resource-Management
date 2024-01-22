@@ -6,8 +6,10 @@ import com.grpc.hrm.repository.StaffRepository;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.GenerateUUID;
 import com.grpc.hrm.utils.TaxCalculation;
+import com.grpc.hrm.utils.TaxCalculationOfStaff;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -47,7 +49,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public List<Staff> getAllStaff(int pageNumber, int pageSize) {
-        return staffRepository.getAllStaff(pageNumber,pageSize);
+        return staffRepository.getAllStaff(pageNumber, pageSize);
     }
 
     @Override
@@ -102,20 +104,32 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public com.grpc.hrm.model.TaxCalculation calculateTax(String staffId) {
         Staff staff = staffRepository.getStaffById(staffId);
-        var tax = 0.0;
+
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
         }
-        if (staff.getMaritalStatus().equals(MaritalStatus.MARRIED)) {
-            tax = TaxCalculation.taxCalculationPerYearForMarried(staff);
+
+        double tax = 0.0;
+        double totalSalary = staff.getSalary() * 12;
+        double[] deductions = {
+                staff.getSocialSecurityFund() * 12,
+                staff.getEmployeesProvidentFund() * 12,
+                staff.getCitizenInvestmentTrust() * 12,
+                staff.getInsurance() * 12
+        };
+        double totalDeduction = Arrays.stream(deductions).sum();
+
+        if (staff.getMaritalStatus().equals(MaritalStatus.UNMARRIED)) {
+            tax = TaxCalculationOfStaff.calculateTaxForUnmarried(totalSalary, totalDeduction);
+
         } else {
-            tax = TaxCalculation.taxCalculationPerYearForUnmarried(staff);
+            tax = TaxCalculationOfStaff.calculateTaxForMarried(totalSalary, totalDeduction);
         }
 
         return new com.grpc.hrm.model.TaxCalculation(staff.getName(),
                 staff.getMaritalStatus().name(),
                 staff.getSalary(),
-                staff.getSalary() * 12,
+                totalSalary,
                 tax);
     }
 
