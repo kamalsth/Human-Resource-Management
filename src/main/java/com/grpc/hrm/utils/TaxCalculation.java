@@ -1,60 +1,78 @@
 package com.grpc.hrm.utils;
 
-import com.grpc.hrm.model.Staff;
-
 public class TaxCalculation {
+    public static double calculateTaxForUnmarried(double totalSalary, double totalDeduction) {
+        double netAssessable = totalDeduction > 0
+                ? totalSalary - totalDeduction
+                : totalSalary;
+
+        double[] taxRates = totalDeduction > 0
+                ? new double[]{0.0, 0.1, 0.2, 0.3}
+                : new double[]{0.01, 0.1, 0.2, 0.3};
+
+        double[] taxSlabs = {500000, 200000, 300000, 1000000};
 
 
-    public static double taxCalculationPerYearForUnmarried(Staff staff) {
-        double totalSalary = staff.getSalary() * 12;
         double tax = 0.0;
+        double remainingIncome = netAssessable;
 
-        double socialSecurityFund=0.0;
-        double employeeProvidentFund=0.0;
-        double citizenInvestmentTrust=0.0;
-        double insurance=0.0;
-        double totalDeduction=0.0;
-
-
-
-        if (totalSalary <= 500000) {
-            tax = totalSalary * 0.01;
-        } else if (totalSalary <= 700000) {
-            // 5,00,000 * 0.01 + (totalSalary - 5,00,000) * 0.1
-            tax = 5000 + (totalSalary - 500000) * 0.1;
-        } else if (totalSalary <= 1000000) {
-            // 5,00,000 * 0.01 + 2,00,000 * 0.1 + (totalSalary - 7,00,000) * 0.2
-            tax = 5000 + 20000 + (totalSalary - 700000) * 0.2;
-        } else if (totalSalary <= 2000000) {
-            // 5,00,000 * 0.01 + 2,00,000 * 0.1 + 3,00,000 * 0.2 + (totalSalary - 10,00,000) * 0.3
-            tax = 5000 + 20000 + 60000 + (totalSalary - 1000000) * 0.3;
+        if (netAssessable <= 2000000) {
+            for (int i = 0; i < taxSlabs.length; i++) {
+                if (remainingIncome <= taxSlabs[i]) {
+                    tax += remainingIncome * taxRates[i];
+                    break;
+                } else {
+                    tax += taxSlabs[i] * taxRates[i];
+                    remainingIncome -= taxSlabs[i];
+                }
+            }
         } else {
-            // 5,00,000 * 0.01 + 2,00,000 * 0.1 + 3,00,000 * 0.2 + 10,00,000 * 0.3 + (totalSalary - 20,00,000) * 0.36
-            tax = 5000 + 20000 + 60000 + 300000 + (totalSalary - 2000000) * 0.36;
+            for (int i = 0; i < taxSlabs.length; i++) {
+                tax += taxSlabs[i] * taxRates[i];
+                remainingIncome -= taxSlabs[i];
+            }
+            tax += remainingIncome * 0.36;
         }
+
         return tax;
     }
 
 
-    public static double taxCalculationPerYearForMarried(Staff staff) {
-        double totalSalary = staff.getSalary() * 12;
-        double tax = 0.0;
+    public static double calculateTaxForMarried(double totalSalary, double totalDeduction) {
 
-        if (totalSalary <= 600000) {
-            tax = totalSalary * 0.01;
-        } else if (totalSalary <= 800000) {
-            // 6,00,000 * 0.01 + (totalSalary - 6,00,000) * 0.1
-            tax = 6000 + (totalSalary - 600000) * 0.1;
-        } else if (totalSalary <= 1100000) {
-            // 6,00,000 * 0.01 + 2,00,000 * 0.1 + (totalSalary - 8,00,000) * 0.2
-            tax = 6000 + 20000 + (totalSalary - 800000) * 0.2;
-        } else if (totalSalary <= 2000000) {
-            // 6,00,000 * 0.01 + 2,00,000 * 0.1 + 3,00,000 * 0.2 + (totalSalary - 11,00,000) * 0.3
-            tax = 6000 + 20000 + 60000 + (totalSalary - 1100000) * 0.3;
+        double netAssessable = totalDeduction > 0
+                ? totalSalary - totalDeduction
+                : totalSalary;
+
+        double[] taxRates = totalDeduction > 0
+                ? new double[]{0.0, 0.1, 0.2, 0.3}
+                : new double[]{0.01, 0.1, 0.2, 0.3};
+
+        double[] taxSlabs = {600000, 200000, 300000, 1000000};
+
+
+        double tax = 0.0;
+        double remainingIncome = netAssessable;
+
+        if (netAssessable <= 2100000) {
+            for (int i = 0; i < taxSlabs.length; i++) {
+                if (remainingIncome <= taxSlabs[i]) {
+                    tax += remainingIncome * taxRates[i];
+                    break;
+                } else {
+                    tax += taxSlabs[i] * taxRates[i];
+                    remainingIncome -= taxSlabs[i];
+                }
+            }
         } else {
-            // 6,00,000 * 0.01 + 2,00,000 * 0.1 + 3,00,000 * 0.2 + 10,00,000 * 0.3 + (totalSalary - 20,00,000) * 0.36
-            tax = 6000 + 20000 + 60000 + 300000 + (totalSalary - 2000000) * 0.36;
+            for (int i = 0; i < taxSlabs.length; i++) {
+                tax += taxSlabs[i] * taxRates[i];
+                remainingIncome -= taxSlabs[i];
+            }
+            tax += remainingIncome * 0.36;
         }
+
         return tax;
     }
+
 }

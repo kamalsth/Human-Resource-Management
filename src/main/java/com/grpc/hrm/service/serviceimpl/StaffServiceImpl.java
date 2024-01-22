@@ -6,7 +6,6 @@ import com.grpc.hrm.repository.StaffRepository;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.GenerateUUID;
 import com.grpc.hrm.utils.TaxCalculation;
-import com.grpc.hrm.utils.TaxCalculationOfStaff;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -88,18 +87,7 @@ public class StaffServiceImpl implements StaffService {
         staffRepository.addImageByStaffId(staffId, filePath);
     }
 
-    @Override
-    public double taxCalculation(String staffId) {
-        Staff staff = staffRepository.getStaffById(staffId);
-        if (staff == null) {
-            throw new RuntimeException("Staff not found for staff id : " + staffId);
-        }
-        if (staff.getMaritalStatus().equals(MaritalStatus.MARRIED)) {
-            return TaxCalculation.taxCalculationPerYearForMarried(staff);
-        }
-        return TaxCalculation.taxCalculationPerYearForUnmarried(staff);
 
-    }
 
     @Override
     public com.grpc.hrm.model.TaxCalculation calculateTax(String staffId) {
@@ -120,10 +108,10 @@ public class StaffServiceImpl implements StaffService {
         double totalDeduction = Arrays.stream(deductions).sum();
 
         if (staff.getMaritalStatus().equals(MaritalStatus.UNMARRIED)) {
-            tax = TaxCalculationOfStaff.calculateTaxForUnmarried(totalSalary, totalDeduction);
+            tax = TaxCalculation.calculateTaxForUnmarried(totalSalary, totalDeduction);
 
         } else {
-            tax = TaxCalculationOfStaff.calculateTaxForMarried(totalSalary, totalDeduction);
+            tax = TaxCalculation.calculateTaxForMarried(totalSalary, totalDeduction);
         }
 
         return new com.grpc.hrm.model.TaxCalculation(staff.getName(),

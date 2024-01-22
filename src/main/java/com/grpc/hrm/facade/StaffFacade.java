@@ -8,7 +8,6 @@ import com.ks.proto.common.StatusResponse;
 import com.ks.proto.staff.FileUploadResponse;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.staff.TaxCalResponse;
-import com.ks.proto.staff.TaxResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,11 +67,6 @@ public class StaffFacade {
     }
 
 
-    public TaxResponse taxCalculation(String staffId) {
-        return TaxResponse.newBuilder()
-                .setTotalTax(staffService.taxCalculation(staffId))
-                .build();
-    }
 
     public TaxCalResponse calculateTax(String staffId) {
 
