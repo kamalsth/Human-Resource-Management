@@ -22,11 +22,17 @@ public class StaffRepositoryImpl implements StaffRepository {
         this.dataSource = dataSource;
     }
 
+
     @Override
     public Staff saveStaff(Staff staff) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "INSERT INTO staff (staff_id,name, personal_phone, emergency_contact_number, position,citizenship_photo,contact_doc_pdf,join_date,contact_renew_date,salary,marital_status,email) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO staff (staff_id,name, personal_phone, emergency_contact_number, " +
+                    "position,citizenship_photo,contact_doc_pdf,join_date," +
+                    "contact_renew_date,salary,marital_status,email," +
+                    "social_security_fund,employees_provident_fund,citizen_investment_trust,insurance) " +
+                    "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
+
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setString(1, staff.getStaffId());
                 preparedStatement.setString(2, staff.getName());
@@ -40,6 +46,10 @@ public class StaffRepositoryImpl implements StaffRepository {
                 preparedStatement.setDouble(10, staff.getSalary());
                 preparedStatement.setString(11, staff.getMaritalStatus().name());
                 preparedStatement.setString(12, staff.getEmail());
+                preparedStatement.setDouble(13, staff.getSocialSecurityFund());
+                preparedStatement.setDouble(14, staff.getEmployeesProvidentFund());
+                preparedStatement.setDouble(15, staff.getCitizenInvestmentTrust());
+                preparedStatement.setDouble(16, staff.getInsurance());
 
                 preparedStatement.executeUpdate();
 
@@ -119,7 +129,17 @@ public class StaffRepositoryImpl implements StaffRepository {
     public Staff updateStaff(String staffId, Staff staff) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "UPDATE staff SET name = ?, personal_phone = ?, emergency_contact_number = ?, position = ?, citizenship_photo = ?, contact_doc_pdf = ?, join_date = ?, contact_renew_date = ?, salary = ? , marital_status=? ,email=? WHERE staff_id = ?";
+            String sql = "UPDATE staff SET name = ?, personal_phone = ?, " +
+                    "emergency_contact_number = ?, position = ?, " +
+                    "citizenship_photo = ?, contact_doc_pdf = ?, join_date = ?," +
+                    " contact_renew_date = ?, salary = ? , " +
+                    "marital_status=? ,email=? ," +
+                    "social_security_fund=?, " +
+                    "employees_provident_fund=? ," +
+                    "citizen_investment_trust=?, " +
+                    "insurance=?" +
+                    "WHERE staff_id = ?";
+
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, staff.getName());
                 preparedStatement.setString(2, staff.getPersonalPhone());
@@ -132,7 +152,12 @@ public class StaffRepositoryImpl implements StaffRepository {
                 preparedStatement.setDouble(9, staff.getSalary());
                 preparedStatement.setString(10, staff.getMaritalStatus().name());
                 preparedStatement.setString(11, staff.getEmail());
-                preparedStatement.setString(12, staffId);
+                preparedStatement.setDouble(12, staff.getSocialSecurityFund());
+                preparedStatement.setDouble(13, staff.getEmployeesProvidentFund());
+                preparedStatement.setDouble(14, staff.getCitizenInvestmentTrust());
+                preparedStatement.setDouble(15, staff.getInsurance());
+                preparedStatement.setString(16, staffId);
+
 
                 int rowsUpdated = preparedStatement.executeUpdate();
 
@@ -282,6 +307,10 @@ public class StaffRepositoryImpl implements StaffRepository {
         double salary = resultSet.getDouble("salary");
         MaritalStatus maritalStatus = MaritalStatus.valueOf(resultSet.getString("marital_status"));
         String email = resultSet.getString("email");
-        return new Staff(staffId, name, personalPhone, emergencyContactNumber, position, citizenshipPhoto, contactDocPdf, joinDate, contactRenewDate, salary, maritalStatus, email);
+        double socialSecurityFund = resultSet.getDouble("social_security_fund");
+        double employeesProvidentFund = resultSet.getDouble("employees_provident_fund");
+        double citizenInvestmentTrust = resultSet.getDouble("citizen_investment_trust");
+        double insurance = resultSet.getDouble("insurance");
+        return new Staff(staffId, name, personalPhone, emergencyContactNumber, position, citizenshipPhoto, contactDocPdf, joinDate, contactRenewDate, salary, maritalStatus, email, socialSecurityFund, employeesProvidentFund, citizenInvestmentTrust, insurance);
     }
 }

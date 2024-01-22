@@ -60,7 +60,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="salary" type="DOUBLE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="email" type="VARCHAR(255)">
                 <constraints nullable="false"/>
@@ -74,7 +74,7 @@
 
     <changeSet id="3" author="kamal">
         <createTable tableName="leave_request">
-            <column name="id" type="CHAR(32)" >
+            <column name="id" type="CHAR(32)">
                 <constraints primaryKey="true" unique="true" nullable="false"/>
             </column>
             <column name="from" type="VARCHAR(255)">
@@ -105,10 +105,10 @@
 
     </changeSet>
 
-        <changeSet id="4" author="kamal">
-            <modifyDataType tableName="staff" columnName="join_date" newDataType="BIGINT"/>
-            <modifyDataType tableName="staff" columnName="contact_renew_date" newDataType="BIGINT"/>
-        </changeSet>
+    <changeSet id="4" author="kamal">
+        <modifyDataType tableName="staff" columnName="join_date" newDataType="BIGINT"/>
+        <modifyDataType tableName="staff" columnName="contact_renew_date" newDataType="BIGINT"/>
+    </changeSet>
 
 
     <changeSet id="5" author="kamal">
@@ -117,125 +117,142 @@
     </changeSet>
 
 
+
+    <changeSet id="6" author="kamal">
+        <addColumn tableName="staff">
+            <column name="social_security_fund" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employees_provident_fund" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="citizen_investment_trust" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="insurance" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
     <!--    <changeSet id="1" author="kamal">-->
-<!--        <createTable tableName="staff">-->
-<!--            <column name="staff_id" type="INT" autoIncrement="true">-->
-<!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
+    <!--        <createTable tableName="staff">-->
+    <!--            <column name="staff_id" type="INT" autoIncrement="true">-->
+    <!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
 
-<!--            </column>-->
-<!--            <column name="name" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="personal_phone" type="VARCHAR(15)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="emergency_contact_number" type="VARCHAR(15)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="position" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="citizenship_photo" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="contact_doc_pdf" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="join_date" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="contact_renew_date" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
+    <!--            </column>-->
+    <!--            <column name="name" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="personal_phone" type="VARCHAR(15)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="emergency_contact_number" type="VARCHAR(15)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="position" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="citizenship_photo" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="contact_doc_pdf" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="join_date" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="contact_renew_date" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--        </createTable>-->
+    <!--    </changeSet>-->
 
-<!--    <changeSet id="2" author="kamal">-->
-<!--        <createTable tableName="users">-->
-<!--            <column name="user_id" type="INT" autoIncrement="true">-->
-<!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="username" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="password" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="name" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="email" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="phone" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="role" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
-
-
-<!--    <changeSet id="3" author="kamal">-->
-<!--        <createTable tableName="leave_request">-->
-<!--            <column name="id" type="CHAR(32)" >-->
-<!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="from" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="to" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="subject" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="status" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="user_id" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
-
-<!--    <changeSet id="4" author="kamal">-->
-<!--        <modifyDataType tableName="leave_request" columnName="user_id" newDataType="INT"/>-->
-<!--    </changeSet>-->
-
-
-<!--    <changeSet id="5" author="kamal">-->
-<!--        <addColumn tableName="staff">-->
-<!--            <column name="salary" type="DOUBLE">-->
-<!--                <constraints nullable="false" />-->
-<!--            </column>-->
-<!--        </addColumn>-->
-<!--    </changeSet>-->
-
-
+    <!--    <changeSet id="2" author="kamal">-->
+    <!--        <createTable tableName="users">-->
+    <!--            <column name="user_id" type="INT" autoIncrement="true">-->
+    <!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="username" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="password" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="name" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="email" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="phone" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="role" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--        </createTable>-->
+    <!--    </changeSet>-->
 
 
     <!--    <changeSet id="3" author="kamal">-->
-<!--        <createTable tableName="leave_request">-->
-<!--            <column name="id" type="VARCHAR(32)" >-->
-<!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="from" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="to" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="subject" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="status" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="user_id" type="INT">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
+    <!--        <createTable tableName="leave_request">-->
+    <!--            <column name="id" type="CHAR(32)" >-->
+    <!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="from" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="to" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="subject" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="status" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="user_id" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--        </createTable>-->
+    <!--    </changeSet>-->
+
+    <!--    <changeSet id="4" author="kamal">-->
+    <!--        <modifyDataType tableName="leave_request" columnName="user_id" newDataType="INT"/>-->
+    <!--    </changeSet>-->
+
+
+    <!--    <changeSet id="5" author="kamal">-->
+    <!--        <addColumn tableName="staff">-->
+    <!--            <column name="salary" type="DOUBLE">-->
+    <!--                <constraints nullable="false" />-->
+    <!--            </column>-->
+    <!--        </addColumn>-->
+    <!--    </changeSet>-->
+
+
+    <!--    <changeSet id="3" author="kamal">-->
+    <!--        <createTable tableName="leave_request">-->
+    <!--            <column name="id" type="VARCHAR(32)" >-->
+    <!--                <constraints primaryKey="true" unique="true" nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="from" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="to" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="subject" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="status" type="VARCHAR(255)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="user_id" type="INT">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--        </createTable>-->
+    <!--    </changeSet>-->
 </databaseChangeLog>
