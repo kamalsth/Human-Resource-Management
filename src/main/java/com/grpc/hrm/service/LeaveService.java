@@ -20,4 +20,5 @@ public interface LeaveService {
 
     void confirmLeaveRequest(ConfirmLeaveRequest confirmLeaveRequest);
 
+    List<LeaveRequestModel> getLeaveRequestListByUser(int pageNumber, int pageSize);
 }

@@ -76,4 +76,15 @@ public class LeaveServiceImpl implements LeaveService {
         leaveRequestModel.setStatus(confirmLeaveRequest.getLeaveStatus());
         leaveRepository.confirmLeaveRequest(leaveRequestModel);
     }
+
+    @Override
+    public List<LeaveRequestModel> getLeaveRequestListByUser(int pageNumber, int pageSize) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        String userId = leaveRepository.getUserIdFromUsername(username);
+        if (userId.isEmpty()) {
+            throw new RuntimeException("User not found for username : " + username);
+        }
+        return leaveRepository.getLeaveRequestListByUser(userId, pageNumber, pageSize);
+    }
 }
