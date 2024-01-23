@@ -1,16 +1,16 @@
 package com.grpc.hrm.mapper;
 
 
-import com.grpc.hrm.model.LoginModel;
-import com.grpc.hrm.model.LeaveRequestModel;
-import com.grpc.hrm.model.Staff;
-import com.grpc.hrm.model.TaxCalculation;
-import com.grpc.hrm.model.User;
+import com.grpc.hrm.model.*;
 import com.ks.proto.auth.LoginRequest;
 import com.ks.proto.leave.*;
+import com.ks.proto.leave.ConfirmLeaveRequest;
+import com.ks.proto.leave.LeaveStatus;
 import com.ks.proto.staff.MaritalStatus;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.staff.TaxCalResponse;
+import com.ks.proto.user.ChangePasswordRequest;
+import com.ks.proto.user.UserResponse;
 import com.ks.proto.user.UserRole;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -87,4 +87,9 @@ public interface MapperConfig {
 
 
     TaxCalResponse mapToProtoTax(TaxCalculation taxCalculation);
+
+    @Mapping(source = "role", target = "role", qualifiedByName = "mapStringToRole")
+    UserResponse mapToUserResponse(UserDetail userDetail);
+
+    ChangePassword maptoChangePassword(ChangePasswordRequest request);
 }

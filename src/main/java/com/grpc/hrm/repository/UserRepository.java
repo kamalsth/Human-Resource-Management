@@ -1,6 +1,7 @@
 package com.grpc.hrm.repository;
 
 import com.grpc.hrm.model.User;
+import com.grpc.hrm.model.UserDetail;
 
 public interface UserRepository {
 
@@ -17,4 +18,6 @@ public interface UserRepository {
     String getRoleByUsername(String username);
 
     User getUserByEmail(String email);
+
+    UserDetail getUserByUserDetail(String username);
 }

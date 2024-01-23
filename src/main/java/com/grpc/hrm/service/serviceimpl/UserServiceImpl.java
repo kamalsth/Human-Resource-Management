@@ -1,12 +1,10 @@
 package com.grpc.hrm.service.serviceimpl;
 
+import com.grpc.hrm.config.PasswordEncoder;
 import com.grpc.hrm.jwt.JwtAuthProvider;
 import com.grpc.hrm.jwt.JwtTokenResponse;
 import com.grpc.hrm.jwt.JwtTokenUtil;
-import com.grpc.hrm.config.PasswordEncoder;
-import com.grpc.hrm.model.LoginModel;
-import com.grpc.hrm.model.Role;
-import com.grpc.hrm.model.User;
+import com.grpc.hrm.model.*;
 import com.grpc.hrm.repository.UserRepository;
 import com.grpc.hrm.service.UserService;
 import com.grpc.hrm.utils.GenerateUUID;
@@ -15,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -92,6 +91,34 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User not found for user id : " + userId);
         }
         userRepository.deleteUser(userId);
+    }
+
+    @Override
+    public UserDetail aboutMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserDetail userDetails = userRepository.getUserByUserDetail(username);
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("User not found for username : " + username);
+        }
+        return userDetails;
+    }
+
+    @Override
+    public void changePassword(ChangePassword request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.getUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found for username : " + username);
+        }
+        if (!new PasswordEncoder().matches(request.getOldPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Old password not correct of username: " + username);
+        } else if (request.getOldPassword().equals(request.getNewPassword())) {
+            throw new BadCredentialsException("New password must be different from old password");
+        }
+        user.setPassword(hashPassword(request.getNewPassword()));
+        userRepository.updateUser(user.getUserId(), user);
     }
 
     public String hashPassword(String password) {
