@@ -52,4 +52,12 @@ public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
         responseObserver.onNext(leaveFacade.confirmLeaveRequest(request));
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void getLeaveRequestListByUser(LeaveListRequest request, StreamObserver<LeaveListResponse> responseObserver) {
+        responseObserver.onNext(LeaveListResponse.newBuilder()
+                .addAllLeaveResponse(leaveFacade.getLeaveRequestListByUser(request.getPageNumber(),request.getPageSize()))
+                .build());
+        responseObserver.onCompleted();
+    }
 }

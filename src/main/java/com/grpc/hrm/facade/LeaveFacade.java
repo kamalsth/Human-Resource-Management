@@ -53,4 +53,9 @@ public class LeaveFacade {
                 .setStatus("Leave request confirmed successfully")
                 .build();
     }
+
+    public List<LeaveResponse> getLeaveRequestListByUser(int pageNumber, int pageSize) {
+        List<LeaveRequestModel> leaveRequestModels = leaveService.getLeaveRequestListByUser(pageNumber,pageSize);
+        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveListProto).toList();
+    }
 }

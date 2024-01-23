@@ -19,4 +19,6 @@ public interface LeaveRepository {
 
 
     String getUserIdFromUsername(String username);
+
+    List<LeaveRequestModel> getLeaveRequestListByUser(String userId, int pageNumber, int pageSize);
 }

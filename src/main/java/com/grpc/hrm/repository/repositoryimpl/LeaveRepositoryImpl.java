@@ -196,6 +196,33 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         return null;
     }
 
+    @Override
+    public List<LeaveRequestModel> getLeaveRequestListByUser(String userId, int pageNumber, int pageSize) {
+        try (Connection connection = dataSource.getConnection()) {
+            logger.info("Connected to the database");
+            String sql = "SELECT * FROM leave_request WHERE user_id = ? LIMIT ?, ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, userId);
+                preparedStatement.setInt(2, pageNumber * pageSize);
+                preparedStatement.setInt(3, pageSize);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    List<LeaveRequestModel> leaveRequestModelList = new ArrayList<>();
+                    while (resultSet.next()) {
+                        leaveRequestModelList.add(mapToLeaveRequestModel(resultSet));
+                    }
+                    logger.info("Leave request fetched successfully");
+                    return leaveRequestModelList;
+                } catch (SQLException e) {
+                    logger.error("Error executing the SQL query" + e.getMessage());
+                    throw new SQLException("Error executing the SQL query" + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error connecting to the database" + e.getMessage());
+        }
+        return null;
+    }
+
     private LeaveRequestModel mapToLeaveRequestModel(ResultSet resultSet) throws SQLException {
         return new LeaveRequestModel(
                 resultSet.getString("id"),
