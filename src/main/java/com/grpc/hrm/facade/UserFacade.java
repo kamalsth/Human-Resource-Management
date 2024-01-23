@@ -5,6 +5,7 @@ import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.User;
 import com.grpc.hrm.model.UserDetail;
 import com.grpc.hrm.service.UserService;
+import com.grpc.hrm.utils.ValidateUser;
 import com.grpc.hrm.utils.ValidateUserLogin;
 import com.grpc.hrm.utils.ValidateUsersForRegister;
 import com.ks.proto.auth.LoginRequest;
@@ -46,6 +47,7 @@ public class UserFacade {
     }
 
     public StatusResponse changePassword(ChangePasswordRequest request) {
+        ValidateUser.validationToChangePassword(request);
         userService.changePassword(MapperConfig.INSTANCE.maptoChangePassword(request));
         return StatusResponse.newBuilder()
                 .setStatus("Password changed successfully!!")

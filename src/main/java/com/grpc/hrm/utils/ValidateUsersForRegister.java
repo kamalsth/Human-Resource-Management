@@ -11,5 +11,6 @@ public class ValidateUsersForRegister {
         if(user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPhone().isEmpty()) {
             throw new IllegalArgumentException("Fields should not be empty");
         }
+
     }
 }
