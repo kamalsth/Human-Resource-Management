@@ -1,8 +1,10 @@
 package com.grpc.hrm.service;
 
 import com.grpc.hrm.jwt.JwtTokenResponse;
+import com.grpc.hrm.model.ChangePassword;
 import com.grpc.hrm.model.LoginModel;
 import com.grpc.hrm.model.User;
+import com.grpc.hrm.model.UserDetail;
 
 public interface UserService {
     void register(User user);
@@ -15,4 +17,8 @@ public interface UserService {
 
     void deleteUser(String userId);
 
+    UserDetail aboutMe();
+
+
+    void changePassword(ChangePassword changePassword);
 }

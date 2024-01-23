@@ -2,6 +2,7 @@ package com.grpc.hrm.repository.repositoryimpl;
 
 import com.grpc.hrm.model.Role;
 import com.grpc.hrm.model.User;
+import com.grpc.hrm.model.UserDetail;
 import com.grpc.hrm.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,6 +183,35 @@ public class UserRepositoryImpl implements UserRepository {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         return mapToUser(resultSet);
+                    }
+                }
+            } catch (SQLException e) {
+                logger.error("Error executing the SQL query" + e.getMessage());
+                throw new SQLException("Error executing the SQL query" + e.getMessage());
+            }
+        } catch (SQLException e) {
+            logger.error("Error connecting to the database" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public UserDetail getUserByUserDetail(String username) {
+        try (Connection connection = dataSource.getConnection()) {
+            logger.info("Connected to the database");
+            String sql = "SELECT user_id, username, name, email, phone, role FROM users WHERE username = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, username);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        String userId = resultSet.getString("user_id");
+                        String username1 = resultSet.getString("username");
+                        String name = resultSet.getString("name");
+                        String email = resultSet.getString("email");
+                        String phone = resultSet.getString("phone");
+                        Role role = Role.valueOf(resultSet.getString("role"));
+                        return new UserDetail(userId, username1, name, email, phone, role);
                     }
                 }
             } catch (SQLException e) {

@@ -25,7 +25,7 @@ public class GlobalExceptionHandling {
 
     @GrpcExceptionHandler(BadCredentialsException.class)
     public Status handleBadCredentialsException(BadCredentialsException exception) {
-        return Status.UNKNOWN.withDescription(exception.getMessage()).withCause(exception);
+        return Status.NOT_FOUND.withDescription(exception.getMessage()).withCause(exception);
     }
 
     @GrpcExceptionHandler(RuntimeException.class)
