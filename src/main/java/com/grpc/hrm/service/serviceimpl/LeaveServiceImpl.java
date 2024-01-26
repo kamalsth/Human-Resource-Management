@@ -59,12 +59,13 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public void deleteLeaveRequest(String id) {
+    public String deleteLeaveRequest(String id) {
         LeaveRequestModel leaveRequestModel = leaveRepository.getLeaveRequestById(id);
         if (leaveRequestModel == null) {
             throw new RuntimeException("Leave Request not found for id : " + id);
         }
         leaveRepository.deleteLeaveRequest(id);
+        return "Leave Request deleted successfully";
     }
 
     @Override
