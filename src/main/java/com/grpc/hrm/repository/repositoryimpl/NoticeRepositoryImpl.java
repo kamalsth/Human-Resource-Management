@@ -56,7 +56,7 @@ public class NoticeRepositoryImpl implements NoticeRepository {
         List<Notice> noticeList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connection established");
-            String sql = "SELECT * FROM notice LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM notice ORDER BY updated_at DESC LIMIT ? OFFSET ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setInt(1, pageSize);
                 preparedStatement.setInt(2, pageNumber);
