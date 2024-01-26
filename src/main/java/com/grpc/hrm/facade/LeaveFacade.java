@@ -41,9 +41,8 @@ public class LeaveFacade {
     }
 
     public StatusResponse deleteLeaveRequest(String id) {
-        leaveService.deleteLeaveRequest(id);
         return StatusResponse.newBuilder()
-                .setStatus("Leave request deleted successfully")
+                .setStatus(leaveService.deleteLeaveRequest(id))
                 .build();
     }
 
