@@ -24,6 +24,7 @@ public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
     @Override
     public void getLeaveList(LeaveListRequest request, StreamObserver<LeaveListResponse> responseObserver) {
         responseObserver.onNext(leaveFacade.getAllLeaveRequest(request));
+        responseObserver.onCompleted();
     }
 
     @Override
