@@ -14,11 +14,11 @@ public interface StaffService {
 
     Staff updateStaff(String staffId, Staff staff);
 
-    void deleteStaff(String staffId);
+    String deleteStaff(String staffId);
 
-    void addFileByStaffId(String staffId, String filePath);
+    String addFileByStaffId(String staffId, String filePath);
 
-    void addImageByStaffId(String staffId, String filePath);
+    String addImageByStaffId(String staffId, String filePath);
 
     TaxCalculation calculateTax(String staffId);
 }

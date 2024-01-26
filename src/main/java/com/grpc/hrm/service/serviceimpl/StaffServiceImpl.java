@@ -61,30 +61,33 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void deleteStaff(String staffId) {
+    public String deleteStaff(String staffId) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
         }
         staffRepository.deleteStaff(staffId);
+        return "Staff deleted successfully!!";
     }
 
     @Override
-    public void addFileByStaffId(String staffId, String filePath) {
+    public String addFileByStaffId(String staffId, String filePath) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
         }
         staffRepository.addFileByStaffId(staffId, filePath);
+        return "File uploaded successfully!!";
     }
 
     @Override
-    public void addImageByStaffId(String staffId, String filePath) {
+    public String addImageByStaffId(String staffId, String filePath) {
         Staff staff = staffRepository.getStaffById(staffId);
         if (staff == null) {
             throw new RuntimeException("Staff not found for staff id : " + staffId);
         }
         staffRepository.addImageByStaffId(staffId, filePath);
+        return "Image uploaded successfully!!";
     }
 
 

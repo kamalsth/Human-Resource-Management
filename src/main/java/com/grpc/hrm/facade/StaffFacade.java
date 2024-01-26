@@ -32,7 +32,7 @@ public class StaffFacade {
     }
 
     public List<com.ks.proto.staff.Staff> getAllStaff(int pageNumber, int pageSize) {
-        List<Staff> staffs = staffService.getAllStaff(pageNumber,pageSize);
+        List<Staff> staffs = staffService.getAllStaff(pageNumber, pageSize);
         return staffs.stream().map(MapperConfig.INSTANCE::mapToListProto).toList();
     }
 
@@ -42,30 +42,26 @@ public class StaffFacade {
     }
 
     public StatusResponse deleteStaff(String staffId) {
-        staffService.deleteStaff(staffId);
         return StatusResponse.newBuilder()
-                .setStatus("Staff deleted successfully!!")
+                .setStatus(staffService.deleteStaff(staffId))
                 .build();
     }
 
     public FileUploadResponse addFileByStaffId(String staffId, String filePath) {
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-        staffService.addFileByStaffId(staffId, filePath);
         return FileUploadResponse.newBuilder()
                 .setFileName(fileName)
-                .setUploadStatus("File uploaded successfully")
+                .setUploadStatus(staffService.addFileByStaffId(staffId, filePath))
                 .build();
     }
 
     public FileUploadResponse addImageByStaffId(String staffId, String filePath) {
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-        staffService.addImageByStaffId(staffId, filePath);
         return FileUploadResponse.newBuilder()
                 .setFileName(fileName)
-                .setUploadStatus("Image uploaded successfully")
+                .setUploadStatus(staffService.addImageByStaffId(staffId, filePath))
                 .build();
     }
-
 
 
     public TaxCalResponse calculateTax(String staffId) {
