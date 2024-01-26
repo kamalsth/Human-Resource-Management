@@ -23,9 +23,7 @@ public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
 
     @Override
     public void getLeaveList(LeaveListRequest request, StreamObserver<LeaveListResponse> responseObserver) {
-        responseObserver.onNext(LeaveListResponse.newBuilder()
-                        .addAllLeaveResponse(leaveFacade.getAllLeaveRequest(request.getPageNumber(),request.getPageSize()))
-                .build());
+        responseObserver.onNext(leaveFacade.getAllLeaveRequest(request));
     }
 
     @Override
@@ -55,9 +53,7 @@ public class LeaveRpcImpl extends LeaveServiceGrpc.LeaveServiceImplBase {
 
     @Override
     public void getLeaveRequestListByUser(LeaveListRequest request, StreamObserver<LeaveListResponse> responseObserver) {
-        responseObserver.onNext(LeaveListResponse.newBuilder()
-                .addAllLeaveResponse(leaveFacade.getLeaveRequestListByUser(request.getPageNumber(),request.getPageSize()))
-                .build());
+        responseObserver.onNext(leaveFacade.getLeaveRequestListByUser(request));
         responseObserver.onCompleted();
     }
 }

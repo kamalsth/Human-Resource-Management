@@ -5,9 +5,7 @@ import com.grpc.hrm.model.LeaveRequestModel;
 import com.grpc.hrm.service.LeaveService;
 import com.grpc.hrm.utils.ValidateLeaveRequest;
 import com.ks.proto.common.StatusResponse;
-import com.ks.proto.leave.ConfirmLeaveRequest;
-import com.ks.proto.leave.LeaveRequest;
-import com.ks.proto.leave.LeaveResponse;
+import com.ks.proto.leave.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,9 +25,11 @@ public class LeaveFacade {
     }
 
 
-    public List<LeaveResponse> getAllLeaveRequest(int pageNumber, int pageSize) {
-        List<LeaveRequestModel> leaveRequestModels = leaveService.getAllLeaveRequest(pageNumber, pageSize);
-        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveRequestProto).toList();
+    public LeaveListResponse getAllLeaveRequest(LeaveListRequest request) {
+        List<LeaveRequestModel> leaveRequestModels = leaveService.getAllLeaveRequest(request.getPageNumber(), request.getPageSize());
+        return LeaveListResponse.newBuilder()
+                .addAllLeaveResponse(leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveRequestProto).toList())
+                .build();
     }
 
     public LeaveResponse getLeaveRequestById(String id) {
@@ -58,8 +58,10 @@ public class LeaveFacade {
                 .build();
     }
 
-    public List<LeaveResponse> getLeaveRequestListByUser(int pageNumber, int pageSize) {
-        List<LeaveRequestModel> leaveRequestModels = leaveService.getLeaveRequestListByUser(pageNumber, pageSize);
-        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveRequestProto).toList();
+    public LeaveListResponse getLeaveRequestListByUser(LeaveListRequest request) {
+        List<LeaveRequestModel> leaveRequestModels = leaveService.getLeaveRequestListByUser(request.getPageNumber(), request.getPageSize());
+        return LeaveListResponse.newBuilder()
+                .addAllLeaveResponse(leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveRequestProto).toList())
+                .build();
     }
 }
