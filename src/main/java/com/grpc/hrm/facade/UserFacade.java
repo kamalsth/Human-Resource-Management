@@ -24,9 +24,8 @@ public class UserFacade {
     public StatusResponse register(com.ks.proto.user.User user) {
         ValidateUser.validateUsersForRegister(user);
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
-        userService.register(user1);
         return StatusResponse.newBuilder()
-                .setStatus("User registered successfully!!")
+                .setStatus(userService.register(user1))
                 .build();
     }
 
@@ -46,9 +45,8 @@ public class UserFacade {
 
     public StatusResponse changePassword(ChangePasswordRequest request) {
         ValidateUser.validationToChangePassword(request);
-        userService.changePassword(MapperConfig.INSTANCE.maptoChangePassword(request));
         return StatusResponse.newBuilder()
-                .setStatus("Password changed successfully!!")
+                .setStatus(userService.changePassword(MapperConfig.INSTANCE.maptoChangePassword(request)))
                 .build();
     }
 }
