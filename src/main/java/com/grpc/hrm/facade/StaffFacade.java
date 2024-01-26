@@ -5,9 +5,7 @@ import com.grpc.hrm.model.Staff;
 import com.grpc.hrm.service.StaffService;
 import com.grpc.hrm.utils.ValidateStaff;
 import com.ks.proto.common.StatusResponse;
-import com.ks.proto.staff.FileUploadResponse;
-import com.ks.proto.staff.StaffResponse;
-import com.ks.proto.staff.TaxCalResponse;
+import com.ks.proto.staff.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,9 +30,11 @@ public class StaffFacade {
         return MapperConfig.INSTANCE.mapToProto(staffService.getStaffById(staffId));
     }
 
-    public List<com.ks.proto.staff.Staff> getAllStaff(int pageNumber, int pageSize) {
-        List<Staff> staffs = staffService.getAllStaff(pageNumber, pageSize);
-        return staffs.stream().map(MapperConfig.INSTANCE::mapToListProto).toList();
+    public StaffListResponse getAllStaff(StaffListRequest request) {
+        List<Staff> staffs = staffService.getAllStaff(request.getPageNumber(), request.getPageSize());
+        return StaffListResponse.newBuilder()
+                .addAllStaffList(staffs.stream().map(MapperConfig.INSTANCE::mapToListProto).toList())
+                .build();
     }
 
     public StaffResponse updateStaff(String staffId, com.ks.proto.staff.Staff staff) {
