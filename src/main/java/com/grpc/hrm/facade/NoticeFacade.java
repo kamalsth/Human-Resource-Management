@@ -27,9 +27,8 @@ public class NoticeFacade {
 
     public NoticeListResponse getAllNotice(NoticeListRequest request) {
         List<Notice> notices = noticeService.getAllNotice(request.getPageNumber(), request.getPageSize());
-        List<NoticeResponse> noticeResponseList = notices.stream().map(MapperConfig.INSTANCE::mapNoticeToNoticeResponse).toList();
         return NoticeListResponse.newBuilder()
-                .addAllNotices(noticeResponseList)
+                .addAllNotices(notices.stream().map(MapperConfig.INSTANCE::mapNoticeToNoticeResponse).toList())
                 .build();
     }
 
