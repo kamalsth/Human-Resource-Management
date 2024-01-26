@@ -7,7 +7,7 @@ import com.grpc.hrm.model.User;
 import com.grpc.hrm.model.UserDetail;
 
 public interface UserService {
-    void register(User user);
+    String register(User user);
 
     JwtTokenResponse login(LoginModel loginModel);
 
@@ -20,5 +20,5 @@ public interface UserService {
     UserDetail aboutMe();
 
 
-    void changePassword(ChangePassword changePassword);
+    String changePassword(ChangePassword changePassword);
 }

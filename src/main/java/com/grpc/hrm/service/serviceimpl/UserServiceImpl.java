@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
+    public String register(User user) {
         User existingUser = userRepository.getUserByUsername(user.getUsername());
         if (existingUser != null) {
             throw new RuntimeException("User already exists for username : " + user.getUsername());
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.MEMBER);
         user.setPassword(hashPassword(user.getPassword()));
         userRepository.register(user);
+        return "User registered successfully!!";
     }
 
     //Login
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(ChangePassword request) {
+    public String changePassword(ChangePassword request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userRepository.getUserByUsername(username);
@@ -119,6 +120,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(hashPassword(request.getNewPassword()));
         userRepository.updateUser(user.getUserId(), user);
+        return "Password changed successfully!!";
     }
 
     public String hashPassword(String password) {
