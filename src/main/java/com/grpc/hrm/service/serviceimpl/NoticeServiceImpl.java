@@ -41,12 +41,13 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void deleteNotice(String noticeId) {
+    public String deleteNotice(String noticeId) {
         Notice exNotice = noticeRepository.getNoticeById(noticeId);
         if (exNotice == null) {
             throw new RuntimeException("Notice not found for id : " + noticeId);
         }
         noticeRepository.deleteNotice(noticeId);
+        return "Notice deleted successfully!!";
     }
 
 
