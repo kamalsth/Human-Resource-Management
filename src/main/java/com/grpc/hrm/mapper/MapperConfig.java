@@ -6,6 +6,8 @@ import com.ks.proto.auth.LoginRequest;
 import com.ks.proto.leave.*;
 import com.ks.proto.leave.ConfirmLeaveRequest;
 import com.ks.proto.leave.LeaveStatus;
+import com.ks.proto.notice.NoticeRequest;
+import com.ks.proto.notice.NoticeResponse;
 import com.ks.proto.staff.MaritalStatus;
 import com.ks.proto.staff.StaffResponse;
 import com.ks.proto.staff.TaxCalResponse;
@@ -92,4 +94,8 @@ public interface MapperConfig {
     UserResponse mapToUserResponse(UserDetail userDetail);
 
     ChangePassword maptoChangePassword(ChangePasswordRequest request);
+
+    Notice mapNoticeRequestToNotice(NoticeRequest request);
+
+    NoticeResponse mapNoticeToNoticeResponse(Notice notice);
 }

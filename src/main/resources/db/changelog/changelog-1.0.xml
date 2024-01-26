@@ -117,7 +117,6 @@
     </changeSet>
 
 
-
     <changeSet id="6" author="kamal">
         <addColumn tableName="staff">
             <column name="social_security_fund" type="DOUBLE">
@@ -133,6 +132,23 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="7" author="kamal">
+        <createTable tableName="notice">
+            <column name="notice_id" type="CHAR(32)">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_at" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 
 
