@@ -107,6 +107,7 @@ public class GrpcSecurityConfig {
         source.set(LeaveServiceGrpc.getConfirmLeaveMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
 
         source.set(NoticeServiceGrpc.getAddNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(NoticeServiceGrpc.getUpdateNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
         source.set(NoticeServiceGrpc.getDeleteNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
         return source;
     }
