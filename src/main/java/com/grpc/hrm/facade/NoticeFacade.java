@@ -3,6 +3,7 @@ package com.grpc.hrm.facade;
 import com.grpc.hrm.mapper.MapperConfig;
 import com.grpc.hrm.model.Notice;
 import com.grpc.hrm.service.NoticeService;
+import com.grpc.hrm.utils.ValidateNotice;
 import com.ks.proto.common.StatusResponse;
 import com.ks.proto.notice.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class NoticeFacade {
     }
 
     public NoticeResponse saveNotice(NoticeRequest request) {
+        ValidateNotice.validateNotice(request);
         Notice notice = MapperConfig.INSTANCE.mapNoticeRequestToNotice(request);
         return MapperConfig.INSTANCE.mapNoticeToNoticeResponse(noticeService.addNotice(notice));
     }
@@ -32,11 +34,13 @@ public class NoticeFacade {
     }
 
     public NoticeResponse updateNotice(NoticeRequest request) {
+        ValidateNotice.validateNotice(request);
         Notice notice = MapperConfig.INSTANCE.mapNoticeRequestToNotice(request);
         return MapperConfig.INSTANCE.mapNoticeToNoticeResponse(noticeService.updateNotice(request.getNoticeId(), notice));
     }
 
     public StatusResponse deleteNotice(String noticeId) {
+        ValidateNotice.validateId(noticeId);
         return StatusResponse.newBuilder()
                 .setStatus(noticeService.deleteNotice(noticeId))
                 .build();
