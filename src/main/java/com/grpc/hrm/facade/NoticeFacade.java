@@ -37,9 +37,8 @@ public class NoticeFacade {
     }
 
     public StatusResponse deleteNotice(String noticeId) {
-        noticeService.deleteNotice(noticeId);
         return StatusResponse.newBuilder()
-                .setStatus("Notice deleted successfully!!")
+                .setStatus(noticeService.deleteNotice(noticeId))
                 .build();
     }
 

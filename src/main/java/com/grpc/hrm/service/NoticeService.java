@@ -11,5 +11,5 @@ public interface NoticeService {
 
     Notice updateNotice(String noticeId, Notice notice);
 
-    void deleteNotice(String noticeId);
+    String deleteNotice(String noticeId);
 }
