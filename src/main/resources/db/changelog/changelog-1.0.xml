@@ -151,6 +151,11 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="8" author="kamal">
+        <renameColumn tableName="notice" oldColumnName="added_at" newColumnName="created_at" columnDataType="BIGINT"/>
+    </changeSet>
+
+
 
     <!--    <changeSet id="1" author="kamal">-->
     <!--        <createTable tableName="staff">-->
