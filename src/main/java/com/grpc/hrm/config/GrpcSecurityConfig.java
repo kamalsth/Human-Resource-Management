@@ -58,7 +58,7 @@ public class GrpcSecurityConfig {
     GrpcAuthenticationReader grpcAuthenticationReader() {
         return new BearerAuthenticationReader(token ->
         {
-            String username =null;
+            String username = null;
             if (token != null) {
                 try {
                     username = jwtTokenUtil.extractUsername(token);
@@ -106,9 +106,9 @@ public class GrpcSecurityConfig {
         source.set(LeaveServiceGrpc.getGetLeaveMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         source.set(LeaveServiceGrpc.getConfirmLeaveMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
 
-        source.set(NoticeServiceGrpc.getAddNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
-        source.set(NoticeServiceGrpc.getUpdateNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
-        source.set(NoticeServiceGrpc.getDeleteNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(NoticeServiceGrpc.getAddNoticeMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(NoticeServiceGrpc.getUpdateNoticeMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(NoticeServiceGrpc.getDeleteNoticeMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         return source;
     }
 
