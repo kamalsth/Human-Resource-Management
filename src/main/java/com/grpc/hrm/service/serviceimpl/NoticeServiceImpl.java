@@ -20,7 +20,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Notice addNotice(Notice notice) {
         notice.setNoticeId(GenerateUUID.generateID());
-        notice.setAddedAt(System.currentTimeMillis());
+        notice.setCreatedAt(System.currentTimeMillis());
+        notice.setUpdatedAt(System.currentTimeMillis());
         return noticeRepository.addNotice(notice);
     }
 
@@ -35,6 +36,7 @@ public class NoticeServiceImpl implements NoticeService {
         if (exNotice == null) {
             throw new RuntimeException("Notice not found for id : " + noticeId);
         }
+        notice.setUpdatedAt(System.currentTimeMillis());
         return noticeRepository.updateNotice(noticeId, notice);
     }
 

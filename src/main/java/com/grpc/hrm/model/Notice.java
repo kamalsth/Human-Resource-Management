@@ -4,15 +4,16 @@ public class Notice {
     private String noticeId;
     private String title;
     private String content;
-    private long addedAt;
+    private long createdAt;
+    private long updatedAt;
 
-    public Notice(String noticeId, String title, String content, long addedAt) {
+    public Notice(String noticeId, String title, String content, long createdAt, long updatedAt) {
         this.noticeId = noticeId;
         this.title = title;
         this.content = content;
-        this.addedAt = addedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
-
 
     public String getNoticeId() {
         return noticeId;
@@ -38,11 +39,19 @@ public class Notice {
         this.content = content;
     }
 
-    public long getAddedAt() {
-        return addedAt;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setAddedAt(long addedAt) {
-        this.addedAt = addedAt;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
