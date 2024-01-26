@@ -26,8 +26,8 @@ public class LeaveFacade {
 
 
     public List<LeaveResponse> getAllLeaveRequest(int pageNumber, int pageSize) {
-        List<LeaveRequestModel> leaveRequestModels = leaveService.getAllLeaveRequest(pageNumber,pageSize);
-        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveListProto).toList();
+        List<LeaveRequestModel> leaveRequestModels = leaveService.getAllLeaveRequest(pageNumber, pageSize);
+        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveRequestProto).toList();
     }
 
     public LeaveResponse getLeaveRequestById(String id) {
@@ -55,7 +55,7 @@ public class LeaveFacade {
     }
 
     public List<LeaveResponse> getLeaveRequestListByUser(int pageNumber, int pageSize) {
-        List<LeaveRequestModel> leaveRequestModels = leaveService.getLeaveRequestListByUser(pageNumber,pageSize);
-        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveListProto).toList();
+        List<LeaveRequestModel> leaveRequestModels = leaveService.getLeaveRequestListByUser(pageNumber, pageSize);
+        return leaveRequestModels.stream().map(MapperConfig.INSTANCE::mapToLeaveRequestProto).toList();
     }
 }
