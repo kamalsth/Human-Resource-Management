@@ -5,6 +5,7 @@ import com.grpc.hrm.jwt.JwtTokenUtil;
 import com.grpc.hrm.model.Role;
 import com.ks.proto.auth.AuthServiceGrpc;
 import com.ks.proto.leave.LeaveServiceGrpc;
+import com.ks.proto.notice.NoticeServiceGrpc;
 import com.ks.proto.staff.FileUploadServiceGrpc;
 import com.ks.proto.staff.StaffServiceGrpc;
 import io.jsonwebtoken.Claims;
@@ -104,6 +105,9 @@ public class GrpcSecurityConfig {
         source.set(LeaveServiceGrpc.getGetLeaveListMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         source.set(LeaveServiceGrpc.getGetLeaveMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
         source.set(LeaveServiceGrpc.getConfirmLeaveMethod(), AccessPredicate.hasRole(Role.ADMIN.name()));
+
+        source.set(NoticeServiceGrpc.getAddNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
+        source.set(NoticeServiceGrpc.getDeleteNoticeMethod(),AccessPredicate.hasRole(Role.ADMIN.name()));
         return source;
     }
 
