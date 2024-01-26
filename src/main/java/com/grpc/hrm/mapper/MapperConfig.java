@@ -81,8 +81,6 @@ public interface MapperConfig {
         return LeaveStatus.valueOf(leaveStatus);
     }
 
-    LeaveResponse mapToLeaveListProto(LeaveRequestModel leaveRequestModel);
-
 
     @Mapping(source = "leaveStatus", target = "leaveStatus", qualifiedByName = "mapLeaveStatusToString")
     com.grpc.hrm.model.ConfirmLeaveRequest mapToConfirmLeaveRequest(ConfirmLeaveRequest request);

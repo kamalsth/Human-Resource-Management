@@ -104,7 +104,7 @@ public class StaffRepositoryImpl implements StaffRepository {
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
-            String sql = "SELECT * FROM staff LIMIT ?, ?";
+            String sql = "SELECT * FROM staff ORDER BY name ASC LIMIT ?, ?";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setInt(1, pageNumber * pageSize);
