@@ -2,6 +2,7 @@ package com.grpc.hrm.service;
 
 import com.grpc.hrm.model.ConfirmLeaveRequest;
 import com.grpc.hrm.model.LeaveRequestModel;
+import com.grpc.hrm.model.LeaveStatus;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface LeaveService {
 
     String deleteLeaveRequest(String id);
 
-    void confirmLeaveRequest(ConfirmLeaveRequest confirmLeaveRequest);
+    LeaveStatus confirmLeaveRequest(ConfirmLeaveRequest confirmLeaveRequest);
 
     List<LeaveRequestModel> getLeaveRequestListByUser(int pageNumber, int pageSize);
 }

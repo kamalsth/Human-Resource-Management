@@ -151,7 +151,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     }
 
     @Override
-    public void confirmLeaveRequest(LeaveRequestModel leaveRequestModel) {
+    public LeaveStatus confirmLeaveRequest(LeaveRequestModel leaveRequestModel) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             String sql = "UPDATE leave_request SET `status` = ? WHERE id = ?";
@@ -162,7 +162,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
                 preparedStatement.executeUpdate();
 
                 logger.info("Leave request confirmed successfully");
-
+                return leaveRequestModel.getStatus();
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
                 throw new SQLException("Error executing the SQL query" + e.getMessage());
@@ -170,6 +170,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
         }
+        return null;
     }
 
     @Override

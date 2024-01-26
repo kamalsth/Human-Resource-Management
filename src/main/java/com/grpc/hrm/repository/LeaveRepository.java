@@ -1,6 +1,7 @@
 package com.grpc.hrm.repository;
 
 import com.grpc.hrm.model.LeaveRequestModel;
+import com.grpc.hrm.model.LeaveStatus;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface LeaveRepository {
 
     void deleteLeaveRequest(String id);
 
-    void confirmLeaveRequest(LeaveRequestModel leaveRequestModel);
+    LeaveStatus confirmLeaveRequest(LeaveRequestModel leaveRequestModel);
 
 
     String getUserIdFromUsername(String username);

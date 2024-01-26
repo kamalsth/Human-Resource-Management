@@ -2,6 +2,7 @@ package com.grpc.hrm.service.serviceimpl;
 
 import com.grpc.hrm.model.ConfirmLeaveRequest;
 import com.grpc.hrm.model.LeaveRequestModel;
+import com.grpc.hrm.model.LeaveStatus;
 import com.grpc.hrm.repository.LeaveRepository;
 import com.grpc.hrm.service.LeaveService;
 import com.grpc.hrm.utils.GenerateUUID;
@@ -69,13 +70,21 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public void confirmLeaveRequest(ConfirmLeaveRequest confirmLeaveRequest) {
+    public LeaveStatus confirmLeaveRequest(ConfirmLeaveRequest confirmLeaveRequest) {
         LeaveRequestModel leaveRequestModel = leaveRepository.getLeaveRequestById(confirmLeaveRequest.getId());
         if (leaveRequestModel == null) {
             throw new RuntimeException("Leave Request not found for id : " + confirmLeaveRequest.getId());
         }
         leaveRequestModel.setStatus(confirmLeaveRequest.getLeaveStatus());
-        leaveRepository.confirmLeaveRequest(leaveRequestModel);
+        LeaveStatus status = leaveRepository.confirmLeaveRequest(leaveRequestModel);
+        if (status == null) {
+            throw new RuntimeException("Leave Request not found for id : " + confirmLeaveRequest.getId());
+        } else if (status == LeaveStatus.APPROVED) {
+            return LeaveStatus.APPROVED;
+        } else if (status == LeaveStatus.DECLINED) {
+            return LeaveStatus.DECLINED;
+        }
+        return LeaveStatus.PENDING;
     }
 
     @Override

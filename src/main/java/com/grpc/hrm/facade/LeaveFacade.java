@@ -47,9 +47,8 @@ public class LeaveFacade {
     }
 
     public StatusResponse confirmLeaveRequest(ConfirmLeaveRequest request) {
-        leaveService.confirmLeaveRequest(MapperConfig.INSTANCE.mapToConfirmLeaveRequest(request));
         return StatusResponse.newBuilder()
-                .setStatus("Leave request confirmed successfully")
+                .setStatus(leaveService.confirmLeaveRequest(MapperConfig.INSTANCE.mapToConfirmLeaveRequest(request)).name())
                 .build();
     }
 
