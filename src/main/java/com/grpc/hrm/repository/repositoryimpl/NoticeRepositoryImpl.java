@@ -30,12 +30,13 @@ public class NoticeRepositoryImpl implements NoticeRepository {
     public Notice addNotice(Notice notice) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connection established");
-            String sql = "INSERT INTO notice (notice_id, title, content, added_at) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO notice (notice_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?,?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, notice.getNoticeId());
                 preparedStatement.setString(2, notice.getTitle());
                 preparedStatement.setString(3, notice.getContent());
-                preparedStatement.setLong(4, notice.getAddedAt());
+                preparedStatement.setLong(4, notice.getCreatedAt());
+                preparedStatement.setLong(5, notice.getUpdatedAt());
                 preparedStatement.executeUpdate();
                 logger.info("Notice added successfully ");
             } catch (SQLException e) {
@@ -84,11 +85,12 @@ public class NoticeRepositoryImpl implements NoticeRepository {
     public Notice updateNotice(String noticeId, Notice notice) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connection established");
-            String sql = "UPDATE notice SET title = ?, content = ? WHERE notice_id = ?";
+            String sql = "UPDATE notice SET title = ?, content = ? , updated_at=? WHERE notice_id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, notice.getTitle());
                 preparedStatement.setString(2, notice.getContent());
-                preparedStatement.setString(3, noticeId);
+                preparedStatement.setLong(3, notice.getUpdatedAt());
+                preparedStatement.setString(4, noticeId);
                 int rowsUpdated = preparedStatement.executeUpdate();
                 if (rowsUpdated > 0) {
                     logger.info("Notice updated successfully ");
@@ -164,7 +166,8 @@ public class NoticeRepositoryImpl implements NoticeRepository {
                 resultSet.getString("notice_id"),
                 resultSet.getString("title"),
                 resultSet.getString("content"),
-                resultSet.getLong("added_at")
+                resultSet.getLong("created_at"),
+                resultSet.getLong("updated_at")
         );
     }
 }
