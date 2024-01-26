@@ -6,8 +6,6 @@ import com.grpc.hrm.model.User;
 import com.grpc.hrm.model.UserDetail;
 import com.grpc.hrm.service.UserService;
 import com.grpc.hrm.utils.ValidateUser;
-import com.grpc.hrm.utils.ValidateUserLogin;
-import com.grpc.hrm.utils.ValidateUsersForRegister;
 import com.ks.proto.auth.LoginRequest;
 import com.ks.proto.auth.LoginResponse;
 import com.ks.proto.common.StatusResponse;
@@ -24,7 +22,7 @@ public class UserFacade {
     }
 
     public StatusResponse register(com.ks.proto.user.User user) {
-        ValidateUsersForRegister.validateUsersForRegister(user);
+        ValidateUser.validateUsersForRegister(user);
         User user1 = MapperConfig.INSTANCE.mapToUser(user);
         userService.register(user1);
         return StatusResponse.newBuilder()
@@ -33,7 +31,7 @@ public class UserFacade {
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
-        ValidateUserLogin.validateUserLogin(loginRequest);
+        ValidateUser.validateUserLogin(loginRequest);
         LoginModel loginModel = MapperConfig.INSTANCE.mapToLoginDto(loginRequest);
         return LoginResponse.newBuilder()
                 .setToken(userService.login(loginModel).getToken())
