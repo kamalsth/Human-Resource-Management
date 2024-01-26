@@ -9,4 +9,9 @@ public class ValidateStaff {
     }
 
 
+    public static void validateId(String staffId) {
+        if(staffId.isEmpty()){
+            throw new IllegalArgumentException("staffId should not be empty");
+        }
+    }
 }

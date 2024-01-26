@@ -28,6 +28,7 @@ public class StaffFacade {
     }
 
     public StaffResponse getStaffById(String staffId) {
+        ValidateStaff.validateId(staffId);
         return MapperConfig.INSTANCE.mapToProto(staffService.getStaffById(staffId));
     }
 
@@ -37,17 +38,21 @@ public class StaffFacade {
     }
 
     public StaffResponse updateStaff(String staffId, com.ks.proto.staff.Staff staff) {
+        ValidateStaff.validateId(staffId);
+        ValidateStaff.validateStaff(staff);
         Staff staff1 = MapperConfig.INSTANCE.mapToStaff(staff);
         return MapperConfig.INSTANCE.mapToProto(staffService.updateStaff(staffId, staff1));
     }
 
     public StatusResponse deleteStaff(String staffId) {
+        ValidateStaff.validateId(staffId);
         return StatusResponse.newBuilder()
                 .setStatus(staffService.deleteStaff(staffId))
                 .build();
     }
 
     public FileUploadResponse addFileByStaffId(String staffId, String filePath) {
+        ValidateStaff.validateId(staffId);
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
         return FileUploadResponse.newBuilder()
                 .setFileName(fileName)
@@ -56,6 +61,7 @@ public class StaffFacade {
     }
 
     public FileUploadResponse addImageByStaffId(String staffId, String filePath) {
+        ValidateStaff.validateId(staffId);
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
         return FileUploadResponse.newBuilder()
                 .setFileName(fileName)
@@ -65,7 +71,7 @@ public class StaffFacade {
 
 
     public TaxCalResponse calculateTax(String staffId) {
-
+        ValidateStaff.validateId(staffId);
         return MapperConfig.INSTANCE.mapToProtoTax(staffService.calculateTax(staffId));
     }
 }
