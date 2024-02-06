@@ -12,7 +12,7 @@ public interface LeaveRepository {
 
     LeaveRequestModel getLeaveRequestById(String id);
 
-    void updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel);
+    LeaveRequestModel updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel);
 
     void deleteLeaveRequest(String id);
 
@@ -23,5 +23,6 @@ public interface LeaveRepository {
 
     List<LeaveRequestModel> getLeaveRequestListByUser(String userId, int pageNumber, int pageSize);
 
-    LeaveRequestModel getLeaveRequestByUserId(String userId);
+
+    boolean getPendingLeaveRequestByUserId(String userId);
 }
