@@ -27,7 +27,16 @@ public class LeaveServiceImpl implements LeaveService {
         leaveRequestModel.setId(GenerateUUID.generateID());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        leaveRequestModel.setUserId(leaveRepository.getUserIdFromUsername(username));
+        String userId = leaveRepository.getUserIdFromUsername(username);
+        if (userId.isEmpty()) {
+            throw new RuntimeException("User not found for username : " + username);
+        }
+
+        if (leaveRepository.getPendingLeaveRequestByUserId(userId)) {
+            throw new RuntimeException("Leave Request already exists for user : " + username);
+        }
+
+        leaveRequestModel.setUserId(userId);
         return leaveRepository.leaveRequest(leaveRequestModel);
     }
 
@@ -46,16 +55,14 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public void updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel) {
-        LeaveRequestModel leaveRequestModel1 = leaveRepository.getLeaveRequestById(id);
-        if (leaveRequestModel1 == null) {
+    public LeaveRequestModel updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel) {
+        LeaveRequestModel exLeaveRequestModel = leaveRepository.getLeaveRequestById(id);
+        if (exLeaveRequestModel == null) {
             throw new RuntimeException("Leave Request not found for id : " + id);
+        }else if(exLeaveRequestModel.getStatus() != LeaveStatus.PENDING){
+            throw new RuntimeException("Leave Request cannot be update because it is already confirmed");
         }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        String userId = leaveRepository.getUserIdFromUsername(username);
-        leaveRequestModel.setUserId(userId);
-        leaveRepository.updateLeaveRequest(id, leaveRequestModel);
+        return leaveRepository.updateLeaveRequest(id, leaveRequestModel);
     }
 
     @Override

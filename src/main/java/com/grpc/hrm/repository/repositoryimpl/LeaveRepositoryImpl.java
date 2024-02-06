@@ -106,7 +106,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
     }
 
     @Override
-    public void updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel) {
+    public LeaveRequestModel updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel) {
         try (Connection connection = dataSource.getConnection()) {
             logger.info("Connected to the database");
             String sql = "UPDATE leave_request SET `from` = ?, `to` = ?, subject = ? WHERE id = ?";
@@ -116,9 +116,13 @@ public class LeaveRepositoryImpl implements LeaveRepository {
                 preparedStatement.setString(3, leaveRequestModel.getSubject());
                 preparedStatement.setString(4, id);
 
-                preparedStatement.executeUpdate();
+                int rowsUpdated=preparedStatement.executeUpdate();
+                if(rowsUpdated==0){
+                    throw new SQLException("Error updating the leave request" + id);
+                }
 
                 logger.info("Leave request updated successfully");
+                return getLeaveRequestById(id);
 
             } catch (SQLException e) {
                 logger.error("Error executing the SQL query" + e.getMessage());
@@ -127,6 +131,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         } catch (Exception e) {
             logger.error("Error connecting to the database" + e.getMessage());
         }
+        return null;
     }
 
     @Override
@@ -223,6 +228,33 @@ public class LeaveRepositoryImpl implements LeaveRepository {
         }
         return null;
     }
+
+    @Override
+    public boolean getPendingLeaveRequestByUserId(String userId) {
+        try(Connection connection = dataSource.getConnection()){
+            logger.info("Connected to the database");
+            String sql = "SELECT * FROM leave_request WHERE user_id = ? AND status = ?";
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1, userId);
+                preparedStatement.setString(2, LeaveStatus.PENDING.name());
+                try(ResultSet resultSet = preparedStatement.executeQuery()){
+                    if(resultSet.next()){
+                        logger.info("Pending leave request fetched successfully");
+                        return true;
+                    }
+                } catch (SQLException e) {
+                    logger.error("Error executing the SQL query" + e.getMessage());
+                    throw new SQLException("Error executing the SQL query" + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error connecting to the database" + e.getMessage());
+        }
+        return false;
+    }
+
+
+
 
     private LeaveRequestModel mapToLeaveRequestModel(ResultSet resultSet) throws SQLException {
         return new LeaveRequestModel(

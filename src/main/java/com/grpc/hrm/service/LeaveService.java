@@ -15,7 +15,7 @@ public interface LeaveService {
 
     LeaveRequestModel getLeaveRequestById(String id);
 
-    void updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel);
+    LeaveRequestModel updateLeaveRequest(String id, LeaveRequestModel leaveRequestModel);
 
     String deleteLeaveRequest(String id);
 

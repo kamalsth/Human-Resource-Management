@@ -40,8 +40,7 @@ public class LeaveFacade {
     public LeaveResponse updateLeaveRequest(LeaveRequest request) {
         ValidateLeaveRequest.validateLeaveRequest(request);
         LeaveRequestModel leaveRequestModel = MapperConfig.INSTANCE.mapTOLeaveRequestModel(request);
-        leaveService.updateLeaveRequest(request.getId(), leaveRequestModel);
-        return MapperConfig.INSTANCE.mapToLeaveRequestProto(leaveRequestModel);
+        return MapperConfig.INSTANCE.mapToLeaveRequestProto(leaveService.updateLeaveRequest(request.getId(), leaveRequestModel));
     }
 
     public StatusResponse deleteLeaveRequest(String id) {
