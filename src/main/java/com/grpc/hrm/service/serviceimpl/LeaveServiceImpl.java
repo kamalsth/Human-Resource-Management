@@ -27,7 +27,16 @@ public class LeaveServiceImpl implements LeaveService {
         leaveRequestModel.setId(GenerateUUID.generateID());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        leaveRequestModel.setUserId(leaveRepository.getUserIdFromUsername(username));
+        String userId = leaveRepository.getUserIdFromUsername(username);
+        if (userId.isEmpty()) {
+            throw new RuntimeException("User not found for username : " + username);
+        }
+        LeaveRequestModel exLeaveRequest = leaveRepository.getLeaveRequestByUserId(userId);
+        if (exLeaveRequest != null && exLeaveRequest.getStatus() == LeaveStatus.PENDING) {
+            throw new RuntimeException("Leave Request already exists for user : " + username);
+        }
+
+        leaveRequestModel.setUserId(userId);
         return leaveRepository.leaveRequest(leaveRequestModel);
     }
 
