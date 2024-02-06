@@ -51,7 +51,6 @@ public class LeaveServiceImpl implements LeaveService {
         if (leaveRequestModel1 == null) {
             throw new RuntimeException("Leave Request not found for id : " + id);
         }
-        System.out.println("id=" + id);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         String userId = leaveRepository.getUserIdFromUsername(username);
@@ -74,11 +73,13 @@ public class LeaveServiceImpl implements LeaveService {
         LeaveRequestModel leaveRequestModel = leaveRepository.getLeaveRequestById(confirmLeaveRequest.getId());
         if (leaveRequestModel == null) {
             throw new RuntimeException("Leave Request not found for id : " + confirmLeaveRequest.getId());
+        } else if (leaveRequestModel.getStatus() != LeaveStatus.PENDING) {
+            throw new RuntimeException("Leave Request is already confirmed");
         }
         leaveRequestModel.setStatus(confirmLeaveRequest.getLeaveStatus());
         LeaveStatus status = leaveRepository.confirmLeaveRequest(leaveRequestModel);
         if (status == null) {
-            throw new RuntimeException("Leave Request not found for id : " + confirmLeaveRequest.getId());
+            throw new RuntimeException("Leave status is not set ");
         } else if (status == LeaveStatus.APPROVED) {
             return LeaveStatus.APPROVED;
         } else if (status == LeaveStatus.DECLINED) {
