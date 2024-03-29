@@ -5,8 +5,11 @@ import com.ks.proto.notice.NoticeRequest;
 public class ValidateNotice {
 
     public static void validateNotice(NoticeRequest notice){
-        if(notice.getTitle().isEmpty() || notice.getContent().isEmpty()){
-            throw new IllegalArgumentException("Fields should not be empty");
+        if (notice.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Title should not be empty");
+
+        } else if (notice.getContent().isEmpty()){
+            throw new IllegalArgumentException("Content should not be empty");
         }
     }
 
