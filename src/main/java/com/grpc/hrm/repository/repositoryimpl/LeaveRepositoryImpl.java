@@ -237,6 +237,7 @@ public class LeaveRepositoryImpl implements LeaveRepository {
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, userId);
                 preparedStatement.setString(2, LeaveStatus.PENDING.name());
+
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
                     if(resultSet.next()){
                         logger.info("Pending leave request fetched successfully");
