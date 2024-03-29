@@ -16,17 +16,21 @@ public class ValidateUser {
     }
 
 
-    public static void validateUserLogin(LoginRequest loginRequest){
-        if(loginRequest.getUsername().isEmpty() || loginRequest.getPassword().isEmpty()){
-            throw new IllegalArgumentException("Fields should not be empty");
+    public static void validateUserLogin(LoginRequest loginRequest) {
+        if (loginRequest.getUsername().isEmpty()) {
+            throw new NullPointerException("username is required");
+
+        } else if (loginRequest.getPassword().isEmpty()) {
+            throw new NullPointerException("password is required");
+
         }
     }
 
-    public static void validateUsersForRegister(User user){
-        if(user==null){
+    public static void validateUsersForRegister(User user) {
+        if (user == null) {
             throw new NullPointerException("User is null");
         }
-        if(user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPhone().isEmpty()) {
+        if (user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPhone().isEmpty()) {
             throw new IllegalArgumentException("Fields should not be empty");
         }
 
