@@ -29,9 +29,21 @@ public class ValidateUser {
     public static void validateUsersForRegister(User user) {
         if (user == null) {
             throw new NullPointerException("User is null");
-        }
-        if (user.getUsername().isEmpty() || user.getName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty() || user.getPhone().isEmpty()) {
-            throw new IllegalArgumentException("Fields should not be empty");
+        } else if (user.getUsername().isEmpty()) {
+            throw new IllegalArgumentException("Username field should not be empty");
+
+        } else if (user.getName().isEmpty()) {
+            throw new IllegalArgumentException("Name field should not be empty");
+
+        } else if (user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password field should not be empty");
+
+        } else if (user.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Email field should not be empty");
+
+        } else if (user.getPhone().isEmpty()) {
+            throw new IllegalArgumentException("Phone field should not be empty");
+
         }
 
     }
