@@ -31,4 +31,18 @@ public class ValidateUser {
         }
 
     }
+
+
+//    public static boolean validateEmail(String email) {
+//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+//        return email.matches(emailRegex);
+//    }
+//
+//    public static boolean validatePassword(String password) {
+//        String passwordRegex = "^(?=.*[0-9])"
+//                + "(?=.*[a-z])(?=.*[A-Z])"
+//                + "(?=.*[@#$%^&+=])"
+//                + "(?=\\S+$).{8,20}$";
+//        return password.matches(passwordRegex);
+//    }
 }
